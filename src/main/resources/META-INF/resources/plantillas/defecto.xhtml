@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<title><ui:insert name="titulo">titulo defecto</ui:insert></title>
+	<h:outputStylesheet name="/recursos/css/estilos.css" />
+	<h:outputScript name="/recursos/js/funciones.js"></h:outputScript>
+	<script name="jquery/jquery.js" library="primefaces"></script>
+</h:head>
+
+<h:body>
+	<!-- begin container -->
+	<div id="container">
+		<!-- begin header -->
+		<div id="header">
+			<div id="logo">
+				<ui:insert name="logo">
+					<ui:include src="logo.xhtml" />
+				</ui:insert>
+			</div>
+
+			<div id="banner"></div>
+			<div class="clear"></div>
+			<div id="usuario" style="margin: 0; padding: 0px">
+				<h:form
+					style="display:inline-block;margin:0;padding:0px;padding-right:10px;">
+					<h:outputLabel value="#{usuarioMB.mostrarNombreUsuario()}" />
+					<p:splitButton value="Salir" style="width: 65px;" 
+						onclick="PF('confirmationCerrarSesion').show()" icon="ui-icon-unlocked">
+				        <p:menuitem value="Cambiar contraseña" icon="ui-icon-arrowrefresh-1-w" />
+				        <p:menuitem value="Datos Usuario"
+											url="paginas/administracion/usuarios.xhtml" icon="ui-icon-arrowrefresh-1-w"/>
+				        <p:separator />
+				        <p:menuitem value="Ir a Inicio" url="paginas/inicio/bienvenido.xhtml" icon="ui-icon-extlink" />
+				    </p:splitButton>
+				</h:form>
+			</div>
+			<!-- begin menu -->
+			<div id="menu"
+				style="position: relative; visibility: visible; z-index: 1;">
+
+				<ui:insert name="menu">
+					<h:form>
+						<ui:include src="menu.xhtml" />
+					</h:form>
+				</ui:insert>
+
+			</div>
+			<!-- end menu -->
+			<div style="clear: both;"></div>
+		</div>
+		<!-- end header -->
+		<!-- begin content -->
+		<div id="contenido">
+			<!-- InstanceBeginEditable name="pageContent" -->
+			<ui:insert name="contenido">
+    		aqui el contenido
+  			</ui:insert>
+			<!-- InstanceEndEditable -->
+		</div>
+		<!-- end content -->
+		<!-- footer -->
+		<div id="footer">
+			<ui:insert name="pie">
+				<ui:include src="pie.xhtml" />
+			</ui:insert>
+		</div>
+	</div>
+
+	<p:confirmDialog message="¿Está seguro que desea salir de la consulta?"
+		width="300" showEffect="explode" hideEffect="explode"
+		style="left: 30px; top: 150px; position: absolute;"
+		header="Mensaje de Confirmación" severity="alert"
+		widgetVar="confirmationCerrarSesion" modal="true">
+		<h:form onsubmit="this.action='#{request.contextPath}/logout';">
+			<p:commandButton value="Si" action="#{usuarioMB.logOut}"
+				ajax="false"/>
+			<p:commandButton value="No"
+				onclick="PF('confirmationCerrarSesion').hide()" type="button" />
+		</h:form>
+
+	</p:confirmDialog>
+
+
+</h:body>
+
+</html>

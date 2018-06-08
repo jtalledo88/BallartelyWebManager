@@ -1,0 +1,584 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="../../plantillas/defecto.xhtml">
+	<ui:define name="titulo">Administrar Parametros</ui:define>
+	<ui:define name="contenido">
+
+		<script type="text/javascript">
+		<!--
+			-->
+		</script>
+
+
+		<h1>Administrar Parametros</h1>
+		<h:form id="wLisParam">
+			<!-- <p:panel header="Criterios de b&#250;squeda" toggleable="true"> -->
+
+			<p:growl life="3000" showDetail="true" id="msjLisParam"
+				autoUpdate="true" />
+
+			<p:accordionPanel>
+				<p:tab title="Criterios de b&#250;squeda">
+					<div class="filas">
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="cboTipoParam" value="Tipo:" />
+								</div>
+								<div class="dostercios">
+									<div class="combo">
+										<p:selectOneMenu id="cboTipoParam"
+											value="#{parametroGeneralMB.objParametroGeneralSearch.paramType}">
+											<f:selectItem itemLabel="Todos" itemValue="" />
+											<f:selectItems
+												value="#{parametroGeneralMB.lstTiposParametros}"
+												var="tipoParametro" itemLabel="#{tipoParametro.description}"
+												itemValue="#{tipoParametro.item}" />
+										</p:selectOneMenu>
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgTipoParam"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgTipoParam" value="Tipo de parametro" />
+									</div>
+								</div>
+								<p:message for="cboTipoParam" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtCodigo" value="C&#243;digo:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:autoComplete id="txtCodigo" maxResults="10"
+											value="#{parametroGeneralMB.objParametroGeneralSearch.paramCode}"
+											completeMethod="#{parametroGeneralMB.completeCod}"
+											autocomplete="false" ajax="false" />
+
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgCodigo"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgCodigo" value="C&#243;digo de parametro" />
+									</div>
+								</div>
+								<p:message for="txtCodigo" />
+							</div>
+						</div>
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtDescParam" value="Descripción:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:autoComplete id="txtDescParam" maxResults="10"
+											value="#{parametroGeneralMB.objParametroGeneralSearch.paramDescription}"
+											completeMethod="#{parametroGeneralMB.completeDesc}"
+											autocomplete="false" ajax="false" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgDescParamGeneral"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgDescParamGeneral" value="Nombre Parametro" />
+									</div>
+								</div>
+								<p:message for="txtDescParam" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="cboEstado" value="Estado:" />
+								</div>
+								<div class="dostercios">
+									<div class="combo">
+										<p:selectOneMenu id="cboEstado"
+											value="#{parametroGeneralMB.objParametroGeneralSearch.paramStatus}">
+											<f:selectItem itemLabel="-- Todos --" itemValue="" />
+											<f:selectItem itemLabel="Activo" itemValue="1" />
+											<f:selectItem itemLabel="Inactivo" itemValue="0" />
+										</p:selectOneMenu>
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgEstado"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgEstado" value="Estado del parametro" />
+									</div>
+								</div>
+								<p:message for="cboEstado" />
+							</div>
+						</div>
+					</div>
+					<div class="boton">
+						<p:commandButton value="Buscar" icon="ui-icon-search"
+							actionListener="#{parametroGeneralMB.buscarParametrosGenerales}"
+							update=":wLisParam:tblParametrosGenerales" />
+					</div>
+					<div style="clear: both;"></div>
+					<!-- </p:panel> -->
+				</p:tab>
+			</p:accordionPanel>
+			<h2>Resultados</h2>
+			<p:separator />
+
+			<div class="opcionesTabla" style="text-align: left;">
+				<p:commandButton value="Agregar Parametro General"
+					icon="ui-icon-plus"
+					actionListener="#{parametroGeneralMB.openAgregarParametroGeneral}"
+					oncomplete="PF('dlgAgregarParametroGeneral').show()"
+					update=":iddlgAgregarParametroGeneral" />
+				<div style="clear: both;"></div>
+			</div>
+
+			<div class="scrollTabla">
+				<p:dataTable paginator="true" paginatorPosition="top" rows="10"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+					style="width: 100%; margin-bottom:20px;" var="parametroGeneral"
+					value="#{parametroGeneralMB.lstParametrosGeneralesMain}"
+					id="tblParametrosGenerales"
+					emptyMessage="No se encontraron registros">
+					<f:facet name="{Exporters}">
+						<h:commandLink>
+							<p:graphicImage url="../../recursos/imagenes/excel.png"
+								width="24" />
+							<p:dataExporter type="xls" target="tblParametrosGenerales"
+								fileName="ParametrosGenerales" />
+						</h:commandLink>
+
+						<h:commandLink>
+							<p:graphicImage url="../../recursos/imagenes/pdf.png" width="24" />
+							<p:dataExporter type="pdf" target="tblParametrosGenerales"
+								fileName="ParametrosGenerales" />
+						</h:commandLink>
+
+						<h:commandLink>
+							<p:graphicImage url="../../recursos/imagenes/csv.png" width="24" />
+							<p:dataExporter type="csv" target="tblParametrosGenerales"
+								fileName="ParametrosGenerales" />
+						</h:commandLink>
+
+						<h:commandLink>
+							<p:graphicImage url="../../recursos/imagenes/xml.png" width="24" />
+							<p:dataExporter type="xml" target="tblParametrosGenerales"
+								fileName="ParametrosGenerales" />
+						</h:commandLink>
+					</f:facet>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Item" />
+						</f:facet>
+						<h:outputText value="#{parametroGeneral.paramId}" />
+					</p:column>
+					<p:column styleClass="oficina" exportable="false">
+						<f:facet name="header">
+							<h:outputText value="Editar" title="Editar" />
+						</f:facet>
+						<p:commandLink value="Editar"
+							onclick="PF('dlgEditarParametroGeneral').show()"
+							action="#{parametroGeneralMB.openEditarParametroGeneral}"
+							update=":wEditParamGen:pEditParamGen">
+							<f:param name="itemParametroGeneral"
+								value="#{parametroGeneral.paramId}" id="itemParametroGeneral" />
+						</p:commandLink>
+					</p:column>
+
+					<p:column styleClass="eliminar" exportable="false">
+						<f:facet name="header">
+							<h:outputText value="Eliminar" />
+						</f:facet>
+						<p:commandLink value="Eliminar"
+							action="#{parametroGeneralMB.visibleConfirmElimParametroGeneral}"
+							update="@form :confirmEliminarParametroGeneral">
+							<f:setPropertyActionListener value="#{parametroGeneral}"
+								target="#{parametroGeneralMB.objParametroGeneralMain}" />
+							<h:outputText value="#{parametroGeneral.paramId}" />
+						</p:commandLink>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="C&#243;digo" />
+						</f:facet>
+						<h:outputText value="#{parametroGeneral.paramType}" />
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="C&#243;digo" />
+						</f:facet>
+						<h:outputText value="#{parametroGeneral.paramCode}" />
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Parametro" />
+						</f:facet>
+						<h:outputText value="#{parametroGeneral.paramDescription}" />
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Valor" />
+						</f:facet>
+						<h:outputText value="#{parametroGeneral.paramValue}" />
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Estado" />
+						</f:facet>
+						<h:outputText value="#{parametroGeneral.paramStatus}" converter="#{statusConverter}" />
+					</p:column>
+					<p:column styleClass="fecha">
+						<f:facet name="header">
+							<h:outputText value="Fecha Registro" />
+						</f:facet>
+						<h:outputText value="#{parametroGeneral.paramCreationDate}">
+							<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+						</h:outputText>
+					</p:column>
+					<p:column styleClass="fecha">
+						<f:facet name="header">
+							<h:outputText value="Fecha de Act." />
+						</f:facet>
+						<h:outputText value="#{parametroGeneral.paramModificationDate}">
+							<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+						</h:outputText>
+					</p:column>
+					<f:facet name="footer">  
+          			Total registros: <h:outputText
+							value="#{parametroGeneralMB.canRegTablaPrincipal}" />
+					</f:facet>
+				</p:dataTable>
+			</div>
+			<!-- <div class="opcionesTabla" style="text-align: left;">
+				<p:commandButton value="Exportar"
+					action="exportar/productos.jsp" icon="ui-icon-disk"
+					target="_blank" ajax="false" />
+			<div style="clear: both;"></div>
+			</div> -->
+		</h:form>
+
+		<!-- ******************************************* PRODUCTOS ************************************************ -->
+
+		<p:dialog header="Agregar Parametro General"
+			widgetVar="dlgAgregarParametroGeneral" modal="true" width="930"
+			position="top" id="iddlgAgregarParametroGeneral">
+
+			<p:growl life="3000" showDetail="true"
+				id="msjAgregarParametroGeneral" autoUpdate="true" />
+
+			<h1>Agregar Parametro General</h1>
+			<h:form id="wAgregarParamGen">
+				<p:panel header="Datos del parametro" toggleable="false"
+					id="pAgregarParamGe">
+					<div class="filas">
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="cboTipoParametroNuevo" value="Tipo:" />
+									<h:outputLabel value="*" style="Color:red" />
+								</div>
+								<div class="dostercios">
+									<div class="combo">
+										<p:selectOneMenu id="cboTipoParametroNuevo"
+											value="#{parametroGeneralMB.objParametroGeneralMain.paramType}">
+											<f:selectItem itemLabel="-- Seleccione --" itemValue="" />
+											<f:selectItems
+												value="#{parametroGeneralMB.lstTiposParametros}"
+												var="tipoParametro" itemLabel="#{tipoParametro.description}"
+												itemValue="#{tipoParametro.item}" />
+										</p:selectOneMenu>
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgTipoParametro"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgTipoParametro" value="Tipo de parametro" />
+									</div>
+								</div>
+								<p:message for="cboTipoParametroNuevo" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtCodParametroNuevo" value="C&#243;digo" />
+									<h:outputLabel value="*" style="Color:red" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtCodParametroNuevo"
+											value="#{parametroGeneralMB.objParametroGeneralMain.paramCode}" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgCodParametro"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgCodParametro"
+											value="C&#243;digo de etiqueta" />
+									</div>
+								</div>
+								<p:message for="txtCodParametroNuevo" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="cboEstado" value="Estado:" />
+									<h:outputLabel value="*" style="Color:red" />
+								</div>
+								<div class="dostercios">
+									<div class="combo">
+										<p:selectOneMenu id="cboEstado"
+											value="#{parametroGeneralMB.objParametroGeneralMain.paramStatus}">
+											<f:selectItem itemLabel="-- Seleccione --" itemValue="" />
+											<f:selectItem itemLabel="Activo" itemValue="1" />
+											<f:selectItem itemLabel="Inactivo" itemValue="0" />
+										</p:selectOneMenu>
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgEstado"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgEstado" value="Estado del parametro" />
+									</div>
+								</div>
+								<p:message for="cboEstado" />
+							</div>
+						</div>
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtParametroNuevo" value="Descripción:" />
+									<h:outputLabel value="*" style="Color:red" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtParametroNuevo"
+											value="#{parametroGeneralMB.objParametroGeneralMain.paramDescription}" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgParametro"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgParametro"
+											value="Descripción del parametro" />
+									</div>
+								</div>
+								<p:message for="txtParametroNuevo" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtValorParametroNuevo" value="Valor:" />
+									<h:outputLabel value="*" style="Color:red" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtValorParametroNuevo"
+											value="#{parametroGeneralMB.objParametroGeneralMain.paramValue}" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgValorParametro"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgValorParametro" value="Valor del parametro" />
+									</div>
+								</div>
+								<p:message for="txtValorParametroNuevo" />
+							</div>
+						</div>
+					</div>
+					<div class="boton">
+						<p:commandButton value="Agregar" icon="ui-icon-disk"
+							onclick="PF('confirmationAgregarParametroGeneral').show()" />
+					</div>
+					<div style="clear: both;"></div>
+				</p:panel>
+
+				<div style="clear: both;"></div>
+			</h:form>
+		</p:dialog>
+
+		<!-- ******************************************** EDITAR PRODUCTO ****************************************** -->
+
+		<p:dialog header="Editar Parametro General"
+			widgetVar="dlgEditarParametroGeneral" modal="true" width="930"
+			position="top">
+
+			<p:growl life="3000" showDetail="true" id="msjEditarParametroGeneral"
+				autoUpdate="true" />
+
+			<h1>Editar Parametro General</h1>
+			<h:form id="wEditParamGen">
+				<p:accordionPanel id="pEditParamGen">
+					<p:tab title="Datos de la etiqueta">
+						<div class="filas">
+							<div class="mitad">
+								<div class="completo">
+									<div class="tercio">
+										<h:outputLabel for="cboTipoParametroEditar"
+											value="Tipo Parametro:" />
+										<h:outputLabel value="*" style="Color:red" />
+									</div>
+									<div class="dostercios">
+										<div class="combo">
+											<p:selectOneMenu id="cboTipoParametroEditar"
+												value="#{parametroGeneralMB.objParametroGeneralMain.paramType}">
+												<f:selectItem itemLabel="-- Seleccione --" itemValue="" />
+												<f:selectItems
+													value="#{parametroGeneralMB.lstTiposParametros}"
+													var="tipoParametro"
+													itemLabel="#{tipoParametro.description}"
+													itemValue="#{tipoParametro.item}" />
+											</p:selectOneMenu>
+										</div>
+										<div class="tooltip">
+											<h:graphicImage id="imgTipoParametro"
+												url="../../recursos/imagenes/help.png"></h:graphicImage>
+											<p:tooltip for="imgTipoParametro" value="Tipo de parametro" />
+										</div>
+									</div>
+									<p:message for="cboTipoParametroEditar" />
+								</div>
+								<div class="completo">
+									<div class="tercio">
+										<h:outputLabel for="txtCodParametroEditar"
+											value="C&#243;digo:" />
+										<h:outputLabel value="*" style="Color:red" />
+									</div>
+									<div class="dostercios">
+										<div class="input">
+											<p:inputText id="txtCodParametroEditar"
+												value="#{parametroGeneralMB.objParametroGeneralMain.paramCode}" />
+										</div>
+										<div class="tooltip">
+											<h:graphicImage id="imgCodParametroEditar"
+												url="../../recursos/imagenes/help.png"></h:graphicImage>
+											<p:tooltip for="imgCodParametroEditar"
+												value="C&#243;digo de parametro" />
+										</div>
+									</div>
+									<p:message for="txtCodParametroEditar" />
+								</div>
+								<div class="completo">
+									<div class="tercio">
+										<h:outputLabel for="cboEstadoEditar" value="Estado:" />
+										<h:outputLabel value="*" style="Color:red" />
+									</div>
+									<div class="dostercios">
+										<div class="combo">
+											<p:selectOneMenu id="cboEstadoEditar"
+												value="#{parametroGeneralMB.objParametroGeneralMain.paramStatus}">
+												<f:selectItem itemLabel="-- Seleccione --" itemValue="" />
+												<f:selectItem itemLabel="Activo" itemValue="1" />
+												<f:selectItem itemLabel="Inactivo" itemValue="0" />
+											</p:selectOneMenu>
+										</div>
+										<div class="tooltip">
+											<h:graphicImage id="imgEstadoEditar"
+												url="../../recursos/imagenes/help.png"></h:graphicImage>
+											<p:tooltip for="imgEstadoEditar" value="Estado del parametro" />
+										</div>
+									</div>
+									<p:message for="cboEstadoEditar" />
+								</div>
+							</div>
+							<div class="mitad">
+								<div class="completo">
+									<div class="tercio">
+										<h:outputLabel for="txtParametroGeneralEditar"
+											value="Parametro:" />
+										<h:outputLabel value="*" style="Color:red" />
+									</div>
+									<div class="dostercios">
+										<div class="input">
+											<p:inputText id="txtParametroGeneralEditar"
+												value="#{parametroGeneralMB.objParametroGeneralMain.paramDescription}" />
+										</div>
+										<div class="tooltip">
+											<h:graphicImage id="imgParametroEditar"
+												url="../../recursos/imagenes/help.png"></h:graphicImage>
+											<p:tooltip for="imgParametroEditar"
+												value="Descripción del parametro" />
+										</div>
+									</div>
+									<p:message for="txtParametroGeneralEditar" />
+								</div>
+								<div class="completo">
+									<div class="tercio">
+										<h:outputLabel for="txtValorParametroEditar" value="Valor:" />
+										<h:outputLabel value="*" style="Color:red" />
+									</div>
+									<div class="dostercios">
+										<div class="input">
+											<p:inputText id="txtValorParametroEditar"
+												value="#{parametroGeneralMB.objParametroGeneralMain.paramValue}" />
+										</div>
+										<div class="tooltip">
+											<h:graphicImage id="imgValorParametro"
+												url="../../recursos/imagenes/help.png"></h:graphicImage>
+											<p:tooltip for="imgValorParametro"
+												value="Valor del parametro" />
+										</div>
+									</div>
+									<p:message for="txtValorParametroEditar" />
+								</div>
+							</div>
+						</div>
+						<div class="boton">
+							<p:commandButton value="Guardar" icon="ui-icon-disk"
+								onclick="PF('confirmationEditarParametroGeneral').show()" />
+						</div>
+					</p:tab>
+				</p:accordionPanel>
+
+			</h:form>
+		</p:dialog>
+
+
+		<p:confirmDialog message="¿Está seguro de agregar el registro?"
+			width="300" showEffect="explode" hideEffect="explode"
+			header="Mensaje de Confirmación" severity="alert"
+			widgetVar="confirmationAgregarParametroGeneral" modal="true">
+			<h:form>
+				<p:commandButton value="Si"
+					actionListener="#{parametroGeneralMB.agregarParametroGeneral}"
+					update=":msjAgregarParametroGeneral,:wLisParam:tblParametrosGenerales"
+					oncomplete="PF('confirmationAgregarParametroGeneral').hide()" />
+				<p:commandButton value="No"
+					onclick="PF('confirmationAgregarParametroGeneral').hide()"
+					type="button" />
+			</h:form>
+		</p:confirmDialog>
+
+
+		<p:confirmDialog message="¿Está seguro de editar los datos?"
+			width="300" showEffect="explode" hideEffect="explode"
+			header="Mensaje de Confirmación" severity="alert"
+			widgetVar="confirmationEditarParametroGeneral" modal="true">
+			<h:form>
+				<p:commandButton value="Si" ajax="true"
+					actionListener="#{parametroGeneralMB.editarParametroGeneral}"
+					update=":msjEditarParametroGeneral,:wLisParam:tblParametrosGenerales"
+					oncomplete="PF('confirmationEditarParametroGeneral').hide()" />
+				<p:commandButton value="No"
+					onclick="PF('confirmationEditarParametroGeneral').hide()"
+					type="button" />
+			</h:form>
+		</p:confirmDialog>
+
+
+		<p:confirmDialog
+			message="¿Está usted seguro que desea eliminar el registro?"
+			width="300" showEffect="explode" hideEffect="explode"
+			header="Mensaje de Confirmación" severity="alert"
+			widgetVar="confirmationEliminarParametroGeneral" modal="true"
+			id="confirmEliminarParametroGeneral"
+			visible="#{parametroGeneralMB.flagConfirmEliParamGen}">
+			<h:form>
+				<p:commandButton value="Si" ajax="false"
+					actionListener="#{parametroGeneralMB.eliminarParametroGeneral}"
+					update="msjLisParam,:wLisParam:tblParametrosGenerales"
+					oncomplete="PF('confirmationEliminarParametroGeneral').hide()" />
+				<p:commandButton value="No"
+					onclick="PF('confirmationEliminarParametroGeneral').hide()"
+					type="button" />
+			</h:form>
+		</p:confirmDialog>
+
+
+
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,472 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="../../plantillas/defecto.xhtml">
+	<ui:define name="titulo">Administrar Etiqueta Productos</ui:define>
+	<ui:define name="contenido">
+
+		<script type="text/javascript">
+		<!--
+			-->
+		</script>
+
+
+		<h1>Administrar Etiqueta Productos</h1>
+		<h:form id="wLisEtiqProd">
+			<!-- <p:panel header="Criterios de b&#250;squeda" toggleable="true"> -->
+
+			<p:growl life="3000" showDetail="true" id="msjLisEtiqProd"
+				autoUpdate="true" />
+
+			<p:accordionPanel>
+				<p:tab title="Criterios de b&#250;squeda">
+					<div class="filas">
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtDescEtiquetaProducto"
+										value="Descripción:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:autoComplete id="txtDescEtiquetaProducto" maxResults="10"
+											value="#{etiquetaProductoMB.objEtiquetaProductoSearch.productLabelDescription}"
+											completeMethod="#{etiquetaProductoMB.completeDesc}"
+											autocomplete="false" ajax="false" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgDescEtiquetaProducto"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgDescEtiquetaProducto"
+											value="Nombre Etiqueta" />
+									</div>
+								</div>
+								<p:message for="txtDescEtiquetaProducto" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="cboEstado" value="Estado:" />
+								</div>
+								<div class="dostercios">
+									<div class="combo">
+										<p:selectOneMenu id="cboEstado"
+											value="#{etiquetaProductoMB.objEtiquetaProductoSearch.productLabelStatus}">
+											<f:selectItem itemLabel="-- Todos --" itemValue="" />
+											<f:selectItem itemLabel="Activo" itemValue="1" />
+											<f:selectItem itemLabel="Inactivo" itemValue="0" />
+										</p:selectOneMenu>
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgEstado"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgEstado" value="Estado de la etiqueta" />
+									</div>
+								</div>
+								<p:message for="cboEstado" />
+							</div>
+						</div>
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio" style="width: 20%">
+									<h:outputLabel for="txtCodigo" value="C&#243;digo:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:autoComplete id="txtCodigo" maxResults="10"
+											value="#{etiquetaProductoMB.objEtiquetaProductoSearch.productLabelCode}"
+											completeMethod="#{etiquetaProductoMB.completeCod}"
+											autocomplete="false" ajax="false" />
+
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgCodigo"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgCodigo" value="C&#243;digo de etiqueta" />
+									</div>
+								</div>
+								<p:message for="txtCodigo" />
+							</div>
+						</div>
+					</div>
+					<div class="boton">
+						<p:commandButton value="Buscar" icon="ui-icon-search"
+							actionListener="#{etiquetaProductoMB.buscarEtiquetaProductos}"
+							update=":wLisEtiqProd:tblEtiquetaProductos" />
+					</div>
+					<div style="clear: both;"></div>
+					<!-- </p:panel> -->
+				</p:tab>
+			</p:accordionPanel>
+			<h2>Resultados</h2>
+			<p:separator />
+
+			<div class="opcionesTabla" style="text-align: left;">
+				<p:commandButton value="Agregar Etiqueta Producto"
+					icon="ui-icon-plus"
+					actionListener="#{etiquetaProductoMB.openAgregarEtiquetaProducto}"
+					oncomplete="PF('dlgAgregarEtiquetaProducto').show()"
+					update=":iddlgAgregarEtiquetaProducto" />
+				<div style="clear: both;"></div>
+			</div>
+
+			<div class="scrollTabla">
+				<p:dataTable paginator="true" paginatorPosition="top" rows="10"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+					style="width: 100%; margin-bottom:20px;" var="etiquetaProducto"
+					value="#{etiquetaProductoMB.lstEtiquetaProductosMain}"
+					id="tblEtiquetaProductos"
+					emptyMessage="No se encontraron registros">
+					<f:facet name="{Exporters}">
+						<h:commandLink>
+							<p:graphicImage url="../../recursos/imagenes/excel.png"
+								width="24" />
+							<p:dataExporter type="xls" target="tblEtiquetaProductos"
+								fileName="EtiquetaProductos" />
+						</h:commandLink>
+
+						<h:commandLink>
+							<p:graphicImage url="../../recursos/imagenes/pdf.png" width="24" />
+							<p:dataExporter type="pdf" target="tblEtiquetaProductos"
+								fileName="EtiquetaProductos" />
+						</h:commandLink>
+
+						<h:commandLink>
+							<p:graphicImage url="../../recursos/imagenes/csv.png" width="24" />
+							<p:dataExporter type="csv" target="tblEtiquetaProductos"
+								fileName="EtiquetaProductos" />
+						</h:commandLink>
+
+						<h:commandLink>
+							<p:graphicImage url="../../recursos/imagenes/xml.png" width="24" />
+							<p:dataExporter type="xml" target="tblEtiquetaProductos"
+								fileName="EtiquetaProductos" />
+						</h:commandLink>
+					</f:facet>
+
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Item" />
+						</f:facet>
+						<h:outputText value="#{etiquetaProducto.productLabelId}" />
+					</p:column>
+					<p:column styleClass="oficina" exportable="false">
+						<f:facet name="header">
+							<h:outputText value="Editar" title="Editar" />
+						</f:facet>
+						<p:commandLink value="Editar"
+							onclick="PF('dlgEditarEtiquetaProducto').show()"
+							action="#{etiquetaProductoMB.openEditarEtiquetaProducto}"
+							update=":wEditEtiqProd:pEditEtiqProd">
+							<f:param name="itemEtiquetaProducto"
+								value="#{etiquetaProducto.productLabelId}"
+								id="itemEtiquetaProducto" />
+						</p:commandLink>
+					</p:column>
+
+					<p:column styleClass="eliminar" exportable="false">
+						<f:facet name="header">
+							<h:outputText value="Eliminar" />
+						</f:facet>
+						<p:commandLink value="Eliminar"
+							action="#{etiquetaProductoMB.visibleConfirmElimEtiquetaProducto}"
+							update="@form :confirmEliminarEtiquetaProducto">
+							<f:setPropertyActionListener value="#{etiquetaProducto}"
+								target="#{etiquetaProductoMB.objEtiquetaProductoMain}" />
+							<h:outputText value="#{etiquetaProducto.productLabelId}" />
+						</p:commandLink>
+					</p:column>
+
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="C&#243;digo" />
+						</f:facet>
+						<h:outputText value="#{etiquetaProducto.productLabelCode}" />
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Descripción" />
+						</f:facet>
+						<h:outputText value="#{etiquetaProducto.productLabelDescription}" />
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Estado" />
+						</f:facet>
+						<h:outputText
+							value="#{etiquetaProducto.productLabelStatus}" converter="#{statusConverter}"  />
+					</p:column>
+					<p:column styleClass="fecha">
+						<f:facet name="header">
+							<h:outputText value="Fecha Registro" />
+						</f:facet>
+						<h:outputText value="#{etiquetaProducto.productLabelCreationDate}">
+							<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+						</h:outputText>
+					</p:column>
+					<p:column styleClass="fecha">
+						<f:facet name="header">
+							<h:outputText value="Fecha de Act." />
+						</f:facet>
+						<h:outputText
+							value="#{etiquetaProducto.productLabelModificationDate}">
+							<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+						</h:outputText>
+					</p:column>
+					<f:facet name="footer">  
+          			Total registros: <h:outputText
+							value="#{etiquetaProductoMB.canRegTablaPrincipal}" />
+					</f:facet>
+				</p:dataTable>
+			</div>
+			<!-- <div class="opcionesTabla" style="text-align: left;">
+				<p:commandButton value="Exportar"
+					action="exportar/productos.jsp" icon="ui-icon-disk"
+					target="_blank" ajax="false" />
+			<div style="clear: both;"></div>
+			</div> -->
+		</h:form>
+
+		<!-- ******************************************* PRODUCTOS ************************************************ -->
+
+		<p:dialog header="Agregar Etiqueta Producto"
+			widgetVar="dlgAgregarEtiquetaProducto" modal="true" width="930"
+			position="top" id="iddlgAgregarEtiquetaProducto">
+
+			<p:growl life="3000" showDetail="true"
+				id="msjAgregarEtiquetaProducto" autoUpdate="true" />
+
+			<h1>Agregar Etiqueta Producto</h1>
+			<h:form id="wAgregarEtiqProd">
+				<p:panel header="Datos de la etiqueta" toggleable="false"
+					id="pAgregarEtiqProd">
+					<div class="filas">
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtEtiquetaProductoNuevo"
+										value="Descripción:" />
+									<h:outputLabel value="*" style="Color:red" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtEtiquetaProductoNuevo"
+											value="#{etiquetaProductoMB.objEtiquetaProductoMain.productLabelDescription}" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgEtiquetaProducto"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgEtiquetaProducto"
+											value="Descripción de la etiqueta" />
+									</div>
+								</div>
+								<p:message for="txtEtiquetaProductoNuevo" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="cboEstado" value="Estado:" />
+									<h:outputLabel value="*" style="Color:red" />
+								</div>
+								<div class="dostercios">
+									<div class="combo">
+										<p:selectOneMenu id="cboEstado"
+											value="#{etiquetaProductoMB.objEtiquetaProductoMain.productLabelStatus}">
+											<f:selectItem itemLabel="-- Seleccione --" itemValue="" />
+											<f:selectItem itemLabel="Activo" itemValue="1" />
+											<f:selectItem itemLabel="Inactivo" itemValue="0" />
+										</p:selectOneMenu>
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgEstado"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgEstado" value="Estado de la etiqueta" />
+									</div>
+								</div>
+								<p:message for="cboEstado" />
+							</div>
+						</div>
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtCodEtiquetaNuevo" value="C&#243;digo" />
+									<h:outputLabel value="*" style="Color:red" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtCodEtiquetaNuevo"
+											value="#{etiquetaProductoMB.objEtiquetaProductoMain.productLabelCode}" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgCodEtiqueta"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgCodEtiqueta"
+											value="C&#243;digo de etiqueta" />
+									</div>
+								</div>
+								<p:message for="txtCodEtiquetaNuevo" />
+							</div>
+						</div>
+
+					</div>
+					<div class="boton">
+						<p:commandButton value="Agregar" icon="ui-icon-disk"
+							onclick="PF('confirmationAgregarEtiquetaProducto').show()" />
+					</div>
+					<div style="clear: both;"></div>
+				</p:panel>
+
+				<div style="clear: both;"></div>
+			</h:form>
+		</p:dialog>
+
+		<!-- ******************************************** EDITAR PRODUCTO ****************************************** -->
+
+		<p:dialog header="Editar Etiqueta Producto"
+			widgetVar="dlgEditarEtiquetaProducto" modal="true" width="930"
+			position="top">
+
+			<p:growl life="3000" showDetail="true" id="msjEditarEtiquetaProducto"
+				autoUpdate="true" />
+
+			<h1>Editar Etiqueta Producto</h1>
+			<h:form id="wEditEtiqProd">
+				<p:accordionPanel id="pEditEtiqProd">
+					<p:tab title="Datos de la etiqueta">
+						<div class="filas">
+							<div class="mitad">
+								<div class="completo">
+									<div class="tercio">
+										<h:outputLabel for="txtEtiquetaProductoEditar"
+											value="Descripción:" />
+										<h:outputLabel value="*" style="Color:red" />
+									</div>
+									<div class="dostercios">
+										<div class="input">
+											<p:inputText id="txtEtiquetaProductoEditar"
+												value="#{etiquetaProductoMB.objEtiquetaProductoMain.productLabelDescription}" />
+										</div>
+										<div class="tooltip">
+											<h:graphicImage id="imgEtiquetaProductoEditar"
+												url="../../recursos/imagenes/help.png"></h:graphicImage>
+											<p:tooltip for="imgEtiquetaProductoEditar"
+												value="Descripción de la etiqueta" />
+										</div>
+									</div>
+									<p:message for="txtEtiquetaProductoEditar" />
+								</div>
+
+								<div class="completo">
+									<div class="tercio">
+										<h:outputLabel for="txtCodEtiquetaEditar" value="C&#243;digo:" />
+										<h:outputLabel value="*" style="Color:red" />
+									</div>
+									<div class="dostercios">
+										<div class="input">
+											<p:inputText id="txtCodEtiquetaEditar"
+												value="#{etiquetaProductoMB.objEtiquetaProductoMain.productLabelCode}" />
+										</div>
+										<div class="tooltip">
+											<h:graphicImage id="imgCodEtiquetaEditar"
+												url="../../recursos/imagenes/help.png"></h:graphicImage>
+											<p:tooltip for="imgCodEtiquetaEditar"
+												value="C&#243;digo de etiqueta" />
+										</div>
+									</div>
+									<p:message for="txtCodEtiquetaEditar" />
+								</div>
+							</div>
+							<div class="mitad">
+								<div class="completo">
+									<div class="tercio">
+										<h:outputLabel for="cboEstadoEditar" value="Estado:" />
+										<h:outputLabel value="*" style="Color:red" />
+									</div>
+									<div class="dostercios">
+										<div class="combo">
+											<p:selectOneMenu id="cboEstadoEditar"
+												value="#{etiquetaProductoMB.objEtiquetaProductoMain.productLabelStatus}">
+												<f:selectItem itemLabel="-- Seleccione --" itemValue="" />
+												<f:selectItem itemLabel="Activo" itemValue="1" />
+												<f:selectItem itemLabel="Inactivo" itemValue="0" />
+											</p:selectOneMenu>
+										</div>
+										<div class="tooltip">
+											<h:graphicImage id="imgEstadoEditar"
+												url="../../recursos/imagenes/help.png"></h:graphicImage>
+											<p:tooltip for="imgEstadoEditar"
+												value="Estado de la etiqueta" />
+										</div>
+									</div>
+									<p:message for="cboEstadoEditar" />
+								</div>
+							</div>
+						</div>
+						<div class="boton">
+							<p:commandButton value="Guardar" icon="ui-icon-disk"
+								onclick="PF('confirmationEditarEtiquetaProducto').show()" />
+						</div>
+					</p:tab>
+				</p:accordionPanel>
+
+			</h:form>
+		</p:dialog>
+
+
+		<p:confirmDialog message="¿Está seguro de agregar el registro?"
+			width="300" showEffect="explode" hideEffect="explode"
+			header="Mensaje de Confirmación" severity="alert"
+			widgetVar="confirmationAgregarEtiquetaProducto" modal="true">
+			<h:form>
+				<p:commandButton value="Si"
+					actionListener="#{etiquetaProductoMB.agregarEtiquetaProducto}"
+					update=":msjAgregarEtiquetaProducto,:wLisEtiqProd:tblEtiquetaProductos"
+					oncomplete="PF('confirmationAgregarEtiquetaProducto').hide()" />
+				<p:commandButton value="No"
+					onclick="PF('confirmationAgregarEtiquetaProducto').hide()"
+					type="button" />
+			</h:form>
+		</p:confirmDialog>
+
+
+		<p:confirmDialog message="¿Está seguro de editar los datos?"
+			width="300" showEffect="explode" hideEffect="explode"
+			header="Mensaje de Confirmación" severity="alert"
+			widgetVar="confirmationEditarEtiquetaProducto" modal="true">
+			<h:form>
+				<p:commandButton value="Si" ajax="true"
+					actionListener="#{etiquetaProductoMB.editarEtiquetaProducto}"
+					update=":msjEditarEtiquetaProducto,:wLisEtiqProd:tblEtiquetaProductos"
+					oncomplete="PF('confirmationEditarEtiquetaProducto').hide()" />
+				<p:commandButton value="No"
+					onclick="PF('confirmationEditarEtiquetaProducto').hide()"
+					type="button" />
+			</h:form>
+		</p:confirmDialog>
+
+
+		<p:confirmDialog
+			message="¿Está usted seguro que desea eliminar el registro?"
+			width="300" showEffect="explode" hideEffect="explode"
+			header="Mensaje de Confirmación" severity="alert"
+			widgetVar="confirmationEliminarEtiquetaProducto" modal="true"
+			id="confirmEliminarEtiquetaProducto"
+			visible="#{etiquetaProductoMB.flagConfirmEliEtiqProd}">
+			<h:form>
+				<p:commandButton value="Si" ajax="false"
+					actionListener="#{etiquetaProductoMB.eliminarEtiquetaProducto}"
+					update="msjLisEtiqProd,:wLisEtiqProd:tblEtiquetaProductos"
+					oncomplete="PF('confirmationEliminarEtiquetaProducto').hide()" />
+				<p:commandButton value="No"
+					onclick="PF('confirmationEliminarEtiquetaProducto').hide()"
+					type="button" />
+			</h:form>
+		</p:confirmDialog>
+
+
+
+	</ui:define>
+
+</ui:composition>

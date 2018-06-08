@@ -1,0 +1,380 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="../../plantillas/defecto.xhtml">
+	<ui:define name="titulo">Compras</ui:define>
+	<ui:define name="contenido">
+
+		<script type="text/javascript">
+		<!--
+			-->
+		</script>
+
+
+		<h1>Compras</h1>
+		<h:form id="wLisShipping">
+			<!-- <p:panel header="Criterios de b&#250;squeda" toggleable="true"> -->
+
+			<p:growl life="3000" showDetail="true" id="msjLisShipping"
+				autoUpdate="true" />
+
+			<p:accordionPanel>
+				<p:tab title="Datos de Cabecera">
+					<div class="filas">
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtProveedor" value="Proveedor:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:autoComplete id="txtProveedor" value="#{compraMB.objShippingHeadMain.provider}" 
+											completeMethod="#{compraMB.completeProvider}" var="provider" itemLabel="#{provider.providerSocialReason}" 
+											itemValue="#{provider}" converter="#{providerConverter}" forceSelection="true" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgProveedor"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgProveedor"
+											value="Proveedor de la compra" />
+									</div>
+								</div>
+								<p:message for="txtProveedor" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtCantidadTotalV"
+										value="Cantidad Total Vivos:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputNumber id="txtCantidadTotalV" decimalPlaces="0"
+											value="#{compraMB.objShippingHeadMain.shippingTotalQuantityLive}" >
+											<p:ajax event="blur" update="wLisShipping:tblItemCompra"/>
+										</p:inputNumber>
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgCantidadTotalV"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgCantidadTotalV"
+											value="Cantidad total de pollos vivos" />
+									</div>
+								</div>
+								<p:message for="txtCantidadTotalV" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<p:selectBooleanCheckbox value="#{compraMB.flagMuertos}">
+            							<p:ajax update="txtCantidadTotalM,txtPesoTotalM"  />
+            						</p:selectBooleanCheckbox>
+									<h:outputLabel for="txtCantidadTotalM"
+										value=" Total Muertos:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputNumber id="txtCantidadTotalM" decimalPlaces="0" disabled="#{!compraMB.flagMuertos}"
+											value="#{compraMB.objShippingHeadMain.shippingTotalQuantityDead}" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgCantidadTotalM"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgCantidadTotalM"
+											value="Cantidad total de pollos muertos" />
+									</div>
+								</div>
+								<p:message for="txtCantidadTotalM" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtRutaComp" value="Archivo Digital:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtRutaComp" disabled="true"
+											value="#{compraMB.objShippingHeadMain.shippingPaymentFile}" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgRutaComp"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgRutaComp" value="Nombre de archivo a subir" />
+									</div>
+								</div>
+								<p:message for="txtRutaComp" />
+							</div>
+						</div>
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtNumComp" value="Número comprobante:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtNumComp" maxlength="25"
+											value="#{compraMB.objShippingHeadMain.paymentDocumentNumber}" />
+
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgNumComp"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgNumComp"
+											value="Número de comprobante de pago" />
+									</div>
+								</div>
+								<p:message for="txtNumComp" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtPesoTotalV" value="Peso Total Vivos:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputNumber id="txtPesoTotalV"
+											value="#{compraMB.objShippingHeadMain.shippingTotalWeightLive}" />
+
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgPesoTotalV"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgPesoTotalV"
+											value="Peso total de pollos vivos" />
+									</div>
+								</div>
+								<p:message for="txtPesoTotalV" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtPesoTotalM" value="Peso Total Muertos:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputNumber id="txtPesoTotalM" disabled="#{!compraMB.flagMuertos}"
+											value="#{compraMB.objShippingHeadMain.shippingTotalWeightDead}" />
+
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgPesoTotalM"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgPesoTotalM"
+											value="Peso total de pollos muertos" />
+									</div>
+								</div>
+								<p:message for="txtPesoTotalV" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtCostoTotal" value="Costo total:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputNumber id="txtCostoTotal" disabled="true"
+											value="#{compraMB.objShippingHeadMain.shippingTotalAmount}" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgCostoTotal"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgCostoTotal" value="Costo total de la compra" />
+									</div>
+								</div>
+								<p:message for="txtCostoTotal" />
+							</div>
+						</div>
+					</div>
+					<div style="clear: both;"></div>
+					<!-- </p:panel> -->
+				</p:tab>
+			</p:accordionPanel>
+			<h2>Acciones</h2>
+			<p:separator />
+
+			<div class="opcionesTabla" style="text-align: left;">
+				<p:commandButton value="Subir Comprobante"
+					icon="ui-icon-plus"
+					onclick="PF('dlgSubirComprobante').show()"
+					update="wSubirComprobante:pSubirComprobante"/>
+				<p:commandButton value="Agregar Item"
+					icon="ui-icon-plus"
+					actionListener="#{compraMB.agregarItemCompra}"
+					process="@this" 
+					update="wLisShipping:tblItemCompra,wLisShipping:msjLisShipping"/>
+				<p:commandButton value="Registrar Compra"
+					icon="ui-icon-disk"
+					onclick="PF('confirmationRegistrarCompra').show()"
+					update="wLisShipping:msjLisShipping"/>
+				
+				<div style="clear: both;"></div>
+			</div>
+
+			<div class="scrollTabla">
+				<p:remoteCommand name="onRowEdit"  update="wLisShipping" />
+				<p:dataTable style="width: 100%;" var="itemCompra" value="#{compraMB.lstItemsCompraMain}" 
+					id="tblItemCompra" editable="true" widgetVar="tblItemCompra"
+					emptyMessage="Agregar Items a la compra">
+					
+					<p:ajax event="rowEdit" listener="#{compraMB.editarItem}" oncomplete="if (!args.validationFailed) {onRowEdit()}" update="wLisShipping:msjLisShipping" />
+					<p:ajax event="rowEditCancel" listener="#{compraMB.eliminarItem}" oncomplete="onRowEdit()" />
+					
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Item" />
+						</f:facet>
+							<h:outputText value="#{itemCompra.shippingDetailId}"/>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Etiqueta Producto" />
+						</f:facet>
+						<p:cellEditor>
+		                	<f:facet name="output">
+		                		<h:outputText value="#{itemCompra.productLabel.productLabelDescription}"/>
+		                	</f:facet>
+		                  	<f:facet name="input">
+		                  		<p:selectOneMenu value="#{itemCompra.productLabel}" >
+									<f:selectItems value="#{compraMB.lstEtiquetasProducto}"
+										var="producto" itemLabel="#{producto.productLabelDescription}"
+										itemValue="#{producto}"/>
+									<f:converter binding="#{productLabelConverter}" />
+								</p:selectOneMenu>
+							</f:facet>
+		              	</p:cellEditor>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Cantidad" />
+						</f:facet>
+						<p:cellEditor>
+		                	<f:facet name="output">
+		                		<h:outputText value="#{itemCompra.shippingQuantityBenefit}" >
+		                			<f:convertNumber maxFractionDigits="2" maxIntegerDigits="8" groupingUsed="true"/>
+		                		</h:outputText>
+		                	</f:facet>
+		                  	<f:facet name="input">
+		                  		<p:inputNumber value="#{itemCompra.shippingQuantityBenefit}" decimalPlaces="0" 
+		                  			maxlength="10" minValue="0" 
+		                  			maxValue="#{compraMB.objShippingHeadMain.shippingTotalQuantityLive - compraMB.shippingTotalQuantityLive}"/>
+							</f:facet>
+		              	</p:cellEditor>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Precio Unitario" />
+						</f:facet>
+						<p:cellEditor>
+		                	<f:facet name="output">
+		                		<h:outputText value="#{itemCompra.shippingUnitPrice}">
+		                			<f:convertNumber maxFractionDigits="2" minFractionDigits="2" maxIntegerDigits="8" />
+		                		</h:outputText>
+		                	</f:facet>
+		                  	<f:facet name="input">
+		                  		<p:inputNumber value="#{itemCompra.shippingUnitPrice}" minValue="0" maxlength="10"/>
+							</f:facet>
+		              	</p:cellEditor>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Saldo" />
+						</f:facet>
+						<p:cellEditor>
+		                	<f:facet name="output">
+		                		<h:outputText value="#{itemCompra.shippingAmout}">
+		                			 <f:convertNumber maxFractionDigits="2" minFractionDigits="2" maxIntegerDigits="8" />
+		                		</h:outputText>
+		                	</f:facet>
+		                  	<f:facet name="input">
+		                  		<p:inputNumber value="#{itemCompra.shippingAmout}" readonly="true" />
+							</f:facet>
+		              	</p:cellEditor>
+					</p:column>
+					<p:column style="width:32px">
+			           <p:rowEditor />
+			       </p:column>
+					<f:facet name="footer">  
+       					<div align="right">
+    						<h:outputText value="Precio Bruto: "/>
+	       					<p:inputNumber value="#{compraMB.totalCompraBruto}" disabled="true" size="5" id="inbTotCompBruto" />
+	       					<div style="clear: both;"></div>
+	       					<h:outputText value="IGV: "/>
+	       					<p:inputNumber value="#{compraMB.igvGeneral}" symbol="%" disabled="true" size="5"/>
+	       					<div style="clear: both;"></div>
+	       					<h:outputText value="Precio Neto: "/>
+	       					<p:inputNumber value="#{compraMB.totalCompraNeto}" disabled="true" size="5" id="inbTotCompNeto" />
+       				</div>
+					</f:facet>
+				</p:dataTable>
+			</div>
+			<!-- <div class="opcionesTabla" style="text-align: left;">
+				<p:commandButton value="Exportar"
+					action="exportar/productos.jsp" icon="ui-icon-disk"
+					target="_blank" ajax="false" />
+			<div style="clear: both;"></div>
+			</div> -->
+		</h:form>
+		
+		<p:dialog header="Subir Comprobante de Pago"
+			widgetVar="dlgSubirComprobante" modal="true" width="700"
+			position="top">
+
+			<p:growl life="3000" showDetail="true" id="msjSubirComprobante"
+				autoUpdate="true" />
+
+			<h1>Subir Comprobante de Pago</h1>
+			<h:form id="wSubirComprobante">
+				<p:accordionPanel id="pSubirComprobante">
+					<p:tab title="Ruta de Archivo">
+						<div class="filas">
+							<div class="mitad">
+								<div class="completo">
+									<div class="tercio">
+										<h:outputLabel for="fupCompDigital" value="Subir comprobante:" />
+									</div>
+									<div class="dostercios">
+										<div class="file">
+											<p:fileUpload id="fupCompDigital" fileUploadListener="#{compraMB.subirComprobante}" label="Elegir"
+												mode="advanced" dragDropSupport="false" fileLimit="1" fileLimitMessage="Solo se permite subir un archivo" 
+												update=":msjSubirComprobante,:wLisShipping" invalidSizeMessage="Tamaño de archivo excedido" 
+												invalidFileMessage="Formato de archivo incorrecto" cancelLabel="Cancelar" uploadLabel="Subir" 
+	           									sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+										</div>
+										<div class="tooltip">
+											<h:graphicImage id="imgCompDigital"
+												url="../../recursos/imagenes/help.png"></h:graphicImage>
+											<p:tooltip for="imgCompDigital" value="Comprobante escaneado" />
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="boton">
+							<p:commandButton value="Cerrar" icon="ui-icon-close"
+								onclick="PF('dlgSubirComprobante').hide()" />
+						</div>
+					</p:tab>
+				</p:accordionPanel>
+
+			</h:form>
+		</p:dialog>
+
+		<p:confirmDialog
+			message="¿Está usted seguro que desea registrar la compra?"
+			width="300" showEffect="explode" hideEffect="explode"
+			header="Mensaje de Confirmación" severity="alert"
+			widgetVar="confirmationRegistrarCompra" modal="true"
+			id="confirmRegistrarCompra">
+			<h:form>
+				<p:commandButton value="Si" ajax="false"
+					actionListener="#{compraMB.registrarCompra}"
+					update=":msjLisShipping,:wLisShipping"
+					oncomplete="PF('confirmationRegistrarCompra').hide()" />
+				<p:commandButton value="No"
+					onclick="PF('confirmationRegistrarCompra').hide()" type="button" />
+			</h:form>
+		</p:confirmDialog>
+
+
+
+	</ui:define>
+
+</ui:composition>

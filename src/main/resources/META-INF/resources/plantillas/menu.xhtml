@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<ui:composition>
+	<p:menubar>
+		<p:submenu label="Consultas">
+			<p:menuitem value="Consultar Stock"
+				url="/presentacion/gestion/consultas/consultarStock.xhtml" />
+			<p:menuitem value="Consultar Movimientos"
+				url="/presentacion/movimientos/consultas/consultarMovimientos.xhtml" />
+			<p:menuitem value="Consultar entrega de solicitudes"
+				url="/presentacion/movimientos/consultas/consultarEntrega.xhtml" />
+		</p:submenu>
+		<p:submenu label="Gestión">
+			<p:menuitem value="Compras"
+				url="/paginas/gestion/compras.xhtml" />
+			<p:menuitem value="Etiquetas"
+				url="/paginas/gestion/etiquetas.xhtml" />
+				
+			<p:menuitem value="Gestionar Diferencias"
+				url="/presentacion/movimientos/gestion/gestionarDiferencias.xhtml" />
+			<p:menuitem value="Gestionar Movimientos"
+				url="/presentacion/movimientos/gestion/gestionarMovimientos.xhtml" />
+		</p:submenu>
+		<p:submenu label="Reportes">
+			<p:menuitem value="Diferencias por operador log&#237;stico"
+				url="/presentacion/diferencias/reportes/reporteDifProveedor.xhtml" />
+			<p:menuitem value="Transporte por tipo de agrupaci&#243;n"
+				url="/presentacion/diferencias/reportes/transporteAgrupacion.xhtml" />
+		</p:submenu>
+		<p:submenu label="Administrar">
+			<p:menuitem value="Proveedores"
+				url="/paginas/administracion/proveedores.xhtml"/>
+			<p:menuitem value="Etiqueta Productos"
+				url="/paginas/administracion/etiquetaProductos.xhtml" />
+			<p:menuitem value="Clientes"
+				url="/paginas/administracion/clientes.xhtml" />
+			<p:menuitem value="Parametros Generales"
+				url="/paginas/administracion/parametrosGenerales.xhtml" />
+		</p:submenu>
+		<p:submenu label="Utiles">
+			<p:menuitem value="Encriptador"
+				url="/paginas/utiles/encriptador.xhtml" />
+		</p:submenu>
+	</p:menubar>
+</ui:composition>
+</html>
+
+

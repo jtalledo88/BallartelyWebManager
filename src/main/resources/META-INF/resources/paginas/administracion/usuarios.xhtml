@@ -1,0 +1,270 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="../../plantillas/defecto.xhtml">
+	<ui:define name="titulo">Datos Usuario</ui:define>
+	<ui:define name="contenido">
+
+		<script type="text/javascript">
+		<!--
+			-->
+		</script>
+
+
+		<h1>Datos Usuario</h1>
+		<h:form id="wLisUser">
+			<!-- <p:panel header="Criterios de b&#250;squeda" toggleable="true"> -->
+
+			<p:growl life="3000" showDetail="true" id="msjLisUser"
+				autoUpdate="true" />
+
+			<p:accordionPanel>
+				<p:tab title="Datos a actulizar">
+					<div class="filas">
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtIdUsuario"
+										value="ID Usuario:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtIdUsuario" disabled="true"
+											value="#{usuarioMB.usuario.userId}"/>
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgIdUsuario"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgIdUsuario"
+											value="ID del usuario" />
+									</div>
+								</div>
+								<p:message for="txtIdUsuario" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtNomUsuario" value="Nombres y apellidos:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtNomUsuario"
+											value="#{usuarioMB.usuario.userCompleteNames}"/>
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgNomUsuario"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgNomUsuario"
+											value="Nombres y apellidos del usuario"/>
+									</div>
+								</div>
+								<p:message for="txtNomUsuario" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtFecMod" value="Fecha de modificación:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtFecMod" disabled="true" 
+											value="#{usuarioMB.usuario.userModificationDate}">
+										<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"/>
+										</p:inputText>
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgFecMod"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgFecMod"
+											value="Fecha de modificación del usuario" />
+									</div>
+								</div>
+								<p:message for="imgFecMod" />
+							</div>
+						</div>
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtUsuario"
+										value="Usuario:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtUsuario" disabled="true"
+											value="#{usuarioMB.usuario.userName}"/>
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgUsuario"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgUsuario"
+											value="Usuario" />
+									</div>
+								</div>
+								<p:message for="txtIdUsuario" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtFecCre" value="Fecha de creación:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtFecCre" disabled="true"
+											value="#{usuarioMB.usuario.userCreationDate}">
+											<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"/>
+										</p:inputText>
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgFecCre"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgFecCre"
+											value="Fecha de creación del usuario" />
+									</div>
+								</div>
+								<p:message for="imgFecCre" />
+							</div>
+						</div>
+					</div>
+					<div class="boton">
+						<p:commandButton value="Buscar" icon="ui-icon-disk"
+							onclick="PF('confirmationEditarUsuario').show()"/>
+					</div>
+					<div style="clear: both;"></div>
+					<!-- </p:panel> -->
+				</p:tab>
+			</p:accordionPanel>
+			<p:separator />
+
+			<div class="opcionesTabla" style="text-align: left;">
+				<p:commandButton value="Ver Cuenta"
+					icon="ui-icon-plus"
+					actionListener="#{usuarioMB.openVerCuenta}"
+					oncomplete="PF('dlgVerCuenta').show()"
+					update=":iddlgVerCuenta" />
+				<div style="clear: both;"></div>
+			</div>
+		</h:form>
+
+		<!-- ******************************************* PRODUCTOS ************************************************ -->
+
+		<p:dialog header="Ver Cuenta" widgetVar="dlgVerCuenta"
+			modal="true" width="930" position="top" id="iddlgVerCuenta">
+
+			<div class="scrollTabla">
+				<h:form>
+					<p:dataTable paginator="true" paginatorPosition="top" rows="10"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+						style="width: 100%; margin-bottom:20px;" var="cuenta"
+						value="#{usuarioMB.lstCuentaPrincipal}" id="tblCuenta"
+						emptyMessage="No se encontraron registros">
+						<f:facet name="{Exporters}">
+							<h:commandLink>
+								<p:graphicImage url="../../recursos/imagenes/excel.png"
+									width="24" />
+								<p:dataExporter type="xls" target="tblCuenta"
+									fileName="Cuentas" />
+							</h:commandLink>
+	
+							<h:commandLink>
+								<p:graphicImage url="../../recursos/imagenes/pdf.png" width="24" />
+								<p:dataExporter type="pdf" target="tblCuenta"
+									fileName="Cuentas" />
+							</h:commandLink>
+	
+							<h:commandLink>
+								<p:graphicImage url="../../recursos/imagenes/csv.png" width="24" />
+								<p:dataExporter type="csv" target="tblCuenta"
+									fileName="Cuentas" />
+							</h:commandLink>
+	
+							<h:commandLink>
+								<p:graphicImage url="../../recursos/imagenes/xml.png" width="24" />
+								<p:dataExporter type="xml" target="tblCuenta"
+									fileName="Cuentas" />
+							</h:commandLink>
+						</f:facet>
+	
+						<p:column styleClass="oficina">
+							<f:facet name="header">
+								<h:outputText value="Item" />
+							</f:facet>
+							<h:outputText value="#{cuenta.accountId}" />
+						</p:column>
+						<p:column styleClass="oficina" exportable="false">
+							<f:facet name="header">
+								<h:outputText value="Ver Movimientos" title="Ver Movimientos" />
+							</f:facet>
+							<p:commandLink value="Ver Movimientos"
+								onclick="PF('dlgVerMovimientos').show()"
+								action="#{usuarioMB.openVerMovimientos}"
+								update=":wViewMov:tblMovimientos">
+								<f:param name="itemAccount" value="#{proveedor.accountId}"
+									id="itemProveedor" />
+							</p:commandLink>
+						</p:column>
+						
+						<p:column styleClass="fecha">
+							<f:facet name="header">
+								<h:outputText value="Fecha Registro" />
+							</f:facet>
+							<h:outputText value="#{cuenta.accountCreationDate}">
+								<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+							</h:outputText>
+						</p:column>
+						<p:column styleClass="fecha">
+							<f:facet name="header">
+								<h:outputText value="Fecha de Act." />
+							</f:facet>
+							<h:outputText value="#{cuenta.accountModificationDate}">
+								<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+							</h:outputText>
+						</p:column>
+						<f:facet name="footer">  
+	          			Saldo de Cuenta (S/.): <h:outputText
+								value="#{usuarioMB.saldoCuentaTotal}" >
+								<f:convertNumber currencySymbol="S/." maxFractionDigits="2"
+								maxIntegerDigits="10" groupingUsed="true"/>
+								</h:outputText>
+						</f:facet>
+					</p:dataTable>
+					<div style="clear: both;"></div>
+				</h:form>
+			</div>
+		</p:dialog>
+
+		<!-- ******************************************** EDITAR PRODUCTO ****************************************** -->
+
+		<p:dialog header="Editar Proveedor"
+			widgetVar="dlgVerMovimientos" modal="true" width="930" position="top">
+
+			<p:growl life="3000" showDetail="true" id="msjEditarProveedor"
+				autoUpdate="true" />
+
+			<h1>Editar Proveedor</h1>
+			<!-- TODO -->
+			<h:form id="wViewMov">
+			<p:dataTable id="tblMovimientos">
+			</p:dataTable>
+			</h:form>
+		</p:dialog>
+
+
+		<p:confirmDialog message="¿Está seguro de editar los datos?"
+			width="300" showEffect="explode" hideEffect="explode"
+			header="Mensaje de Confirmación" severity="alert"
+			widgetVar="confirmationEditarUsuario" modal="true">
+			<h:form>
+				<p:commandButton value="Si" ajax="true"
+					actionListener="#{usuarioMB.editarUsuario}"
+					update="wLisUser:msjLisUser"
+					oncomplete="PF('confirmationEditarUsuario').hide()" />
+				<p:commandButton value="No"
+					onclick="PF('confirmationEditarUsuario').hide()" type="button" />
+			</h:form>
+		</p:confirmDialog>
+
+
+	</ui:define>
+
+</ui:composition>

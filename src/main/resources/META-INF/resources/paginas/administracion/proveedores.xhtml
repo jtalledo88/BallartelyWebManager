@@ -1,0 +1,552 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="../../plantillas/defecto.xhtml">
+	<ui:define name="titulo">Administrar Proveedores</ui:define>
+	<ui:define name="contenido">
+
+		<script type="text/javascript">
+		<!--
+			-->
+		</script>
+
+
+		<h1>Administrar Proveedores</h1>
+		<h:form id="wLisProvider">
+			<!-- <p:panel header="Criterios de b&#250;squeda" toggleable="true"> -->
+
+			<p:growl life="3000" showDetail="true" id="msjLisProvider"
+				autoUpdate="true" />
+
+			<p:accordionPanel>
+				<p:tab title="Criterios de b&#250;squeda">
+					<div class="filas">
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtRazSocProveedor"
+										value="Razón Social" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:autoComplete id="txtRazSocProveedor" maxResults="10"
+											value="#{proveedorMB.objProveedorSearch.providerSocialReason}"
+											completeMethod="#{proveedorMB.completeRazSoc}"
+											autocomplete="false" ajax="false" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgRazSocProveedor"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgRazSocProveedor"
+											value="Razón Social del proveedor" />
+									</div>
+								</div>
+								<p:message for="txtRazSocProveedor" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="cboEstado" value="Estado:" />
+								</div>
+								<div class="dostercios">
+									<div class="combo">
+										<p:selectOneMenu id="cboEstado"
+											value="#{proveedorMB.objProveedorSearch.providerStatus}">
+											<f:selectItem itemLabel="-- Todos --" itemValue=""/>
+											<f:selectItem itemLabel="Activo" itemValue="1" />
+											<f:selectItem itemLabel="Inactivo" itemValue="0" />
+										</p:selectOneMenu>
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgEstado"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgEstado" value="Estado del proveedor" />
+									</div>
+								</div>
+								<p:message for="cboEstado" />
+							</div>
+						</div>
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtRuc" value="RUC:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:autoComplete id="txtRuc" maxResults="10"
+											value="#{proveedorMB.objProveedorSearch.providerRuc}"
+											completeMethod="#{proveedorMB.completeRuc}"
+											autocomplete="false" ajax="false" />
+
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgRuc"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgRuc"
+											value="RUC del proveedor" />
+									</div>
+								</div>
+								<p:message for="txtRuc" />
+							</div>
+						</div>
+					</div>
+					<div class="boton">
+						<p:commandButton value="Buscar" icon="ui-icon-search"
+							actionListener="#{proveedorMB.buscarProveedores}"
+							update=":wLisProvider:tblProveedores" />
+					</div>
+					<div style="clear: both;"></div>
+					<!-- </p:panel> -->
+				</p:tab>
+			</p:accordionPanel>
+			<h2>Resultados</h2>
+			<p:separator />
+
+			<div class="opcionesTabla" style="text-align: left;">
+				<p:commandButton value="Agregar Proveedor"
+					icon="ui-icon-plus"
+					actionListener="#{proveedorMB.openAgregarProveedor}"
+					oncomplete="PF('dlgAgregarProveedor').show()"
+					update=":iddlgAgregarProveedor" />
+				<div style="clear: both;"></div>
+			</div>
+
+			<div class="scrollTabla">
+				<p:dataTable paginator="true" paginatorPosition="top" rows="10"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+					style="width: 100%; margin-bottom:20px;" var="proveedor"
+					value="#{proveedorMB.lstProveedoresMain}" id="tblProveedores"
+					emptyMessage="No se encontraron registros">
+					<f:facet name="{Exporters}">
+						<h:commandLink>
+							<p:graphicImage url="../../recursos/imagenes/excel.png"
+								width="24" />
+							<p:dataExporter type="xls" target="tblProveedores"
+								fileName="Proveedors" />
+						</h:commandLink>
+
+						<h:commandLink>
+							<p:graphicImage url="../../recursos/imagenes/pdf.png" width="24" />
+							<p:dataExporter type="pdf" target="tblProveedores"
+								fileName="Proveedors" />
+						</h:commandLink>
+
+						<h:commandLink>
+							<p:graphicImage url="../../recursos/imagenes/csv.png" width="24" />
+							<p:dataExporter type="csv" target="tblProveedores"
+								fileName="Proveedors" />
+						</h:commandLink>
+
+						<h:commandLink>
+							<p:graphicImage url="../../recursos/imagenes/xml.png" width="24" />
+							<p:dataExporter type="xml" target="tblProveedores"
+								fileName="Proveedors" />
+						</h:commandLink>
+					</f:facet>
+
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Item" />
+						</f:facet>
+						<h:outputText value="#{proveedor.providerId}" />
+					</p:column>
+					<p:column styleClass="oficina" exportable="false">
+						<f:facet name="header">
+							<h:outputText value="Editar" title="Editar" />
+						</f:facet>
+						<p:commandLink value="Editar"
+							onclick="PF('dlgEditarProveedor').show()"
+							action="#{proveedorMB.openEditarProveedor}"
+							update=":wEditProv:pEditProv">
+							<f:param name="itemProveedor" value="#{proveedor.providerId}"
+								id="itemProveedor" />
+						</p:commandLink>
+					</p:column>
+
+					<p:column styleClass="eliminar" exportable="false">
+						<f:facet name="header">
+							<h:outputText value="Eliminar" />
+						</f:facet>
+						<p:commandLink value="Eliminar"
+							action="#{proveedorMB.visibleConfirmElimProveedor}"
+							update="@form :confirmEliminarProveedor">
+							<f:setPropertyActionListener value="#{proveedor}"
+								target="#{proveedorMB.objProveedorMain}" />
+							<h:outputText value="#{proveedor.providerId}" />
+						</p:commandLink>
+					</p:column>
+					
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="RUC" />
+						</f:facet>
+						<h:outputText value="#{proveedor.providerRuc}" />
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Razón Social" />
+						</f:facet>
+						<h:outputText value="#{proveedor.providerSocialReason}" />
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Dirección" />
+						</f:facet>
+						<h:outputText value="#{proveedor.providerAddress}" />
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Número Telefono" />
+						</f:facet>
+						<h:outputText value="#{proveedor.providerPhoneNumber}" />
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Estado" />
+						</f:facet>
+						<h:outputText value="#{proveedor.providerStatus}" converter="#{statusConverter}" />
+					</p:column>
+					<p:column styleClass="fecha">
+						<f:facet name="header">
+							<h:outputText value="Fecha Registro" />
+						</f:facet>
+						<h:outputText value="#{proveedor.providerCreationDate}">
+							<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+						</h:outputText>
+					</p:column>
+					<p:column styleClass="fecha">
+						<f:facet name="header">
+							<h:outputText value="Fecha de Act." />
+						</f:facet>
+						<h:outputText value="#{proveedor.providerModificationDate}">
+							<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+						</h:outputText>
+					</p:column>
+					<f:facet name="footer">  
+          			Total registros: <h:outputText
+							value="#{proveedorMB.canRegTablaPrincipal}" />
+					</f:facet>
+				</p:dataTable>
+			</div>
+			<!-- <div class="opcionesTabla" style="text-align: left;">
+				<p:commandButton value="Exportar"
+					action="exportar/productos.jsp" icon="ui-icon-disk"
+					target="_blank" ajax="false" />
+			<div style="clear: both;"></div>
+			</div> -->
+		</h:form>
+
+		<!-- ******************************************* PRODUCTOS ************************************************ -->
+
+		<p:dialog header="Agregar Proveedor" widgetVar="dlgAgregarProveedor"
+			modal="true" width="930" position="top" id="iddlgAgregarProveedor">
+
+			<p:growl life="3000" showDetail="true" id="msjAgregarProveedor"
+				autoUpdate="true" />
+
+			<h1>Agregar Proveedor</h1>
+			<h:form id="wAgregarProv">
+				<p:panel header="Datos del Proveedor" toggleable="false"
+					id="pAgregarProv">
+					<div class="filas">
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtRazSocProveedorNuevo"
+										value="Razón Social:" />
+									<h:outputLabel value="*" style="Color:red" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtRazSocProveedorNuevo"
+											value="#{proveedorMB.objProveedorMain.providerSocialReason}" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgRazSocProveedorNuevo"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgRazSocProveedorNuevo"
+											value="Razón Social del proveedor" />
+									</div>
+								</div>
+								<p:message for="txtRazSocProveedorNuevo" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtNumTelefonoNuevo"
+										value="Número de Teléfono:" />
+									<h:outputLabel value="*" style="Color:red" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtNumTelefonoNuevo"
+											value="#{proveedorMB.objProveedorMain.providerPhoneNumber}" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgNumTelefonoNuevo"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgNumTelefonoNuevo"
+											value="Número de teléfono del proveedor" />
+									</div>
+								</div>
+								<p:message for="txtNumTelefonoNuevo" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="cboEstado" value="Estado:" />
+									<h:outputLabel value="*" style="Color:red" />
+								</div>
+								<div class="dostercios">
+									<div class="combo">
+										<p:selectOneMenu id="cboEstado"
+											value="#{proveedorMB.objProveedorMain.providerStatus}">
+											<f:selectItem itemLabel="-- Seleccione --" itemValue="" />
+											<f:selectItem itemLabel="Activo" itemValue="1" />
+											<f:selectItem itemLabel="Inactivo" itemValue="0" />
+										</p:selectOneMenu>
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgEstado"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgEstado" value="Estado del proveedor" />
+									</div>
+								</div>
+								<p:message for="cboEstado" />
+							</div>
+						</div>
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtRucNuevo" value="RUC:" />
+									<h:outputLabel value="*" style="Color:red" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtRucNuevo"
+											value="#{proveedorMB.objProveedorMain.providerRuc}" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgRuc"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgRuc"
+											value="RUC del proveedor" />
+									</div>
+								</div>
+								<p:message for="txtRucNuevo" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtDireccionNuevo" value="Dirección:" />
+									<h:outputLabel value="*" style="Color:red" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtDireccionNuevo"
+											value="#{proveedorMB.objProveedorMain.providerAddress}" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgDireccion"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgDireccion"
+											value="Dirección del proveedor" />
+									</div>
+								</div>
+								<p:message for="txtDireccionNuevo" />
+							</div>
+						</div>
+
+					</div>
+					<div class="boton">
+						<p:commandButton value="Agregar" icon="ui-icon-disk"
+							onclick="PF('confirmationAgregarProveedor').show()" />
+					</div>
+					<div style="clear: both;"></div>
+				</p:panel>
+
+				<div style="clear: both;"></div>
+			</h:form>
+		</p:dialog>
+
+		<!-- ******************************************** EDITAR PRODUCTO ****************************************** -->
+
+		<p:dialog header="Editar Proveedor"
+			widgetVar="dlgEditarProveedor" modal="true" width="930" position="top">
+
+			<p:growl life="3000" showDetail="true" id="msjEditarProveedor"
+				autoUpdate="true" />
+
+			<h1>Editar Proveedor</h1>
+			<h:form id="wEditProv">
+				<p:accordionPanel id="pEditProv">
+					<p:tab title="Datos del Proveedor">
+						<div class="filas">
+							<div class="mitad">
+								<div class="completo">
+									<div class="tercio">
+										<h:outputLabel for="txtRazSocProveedorEditar" value="Razón Social:" />
+										<h:outputLabel value="*" style="Color:red" />
+									</div>
+									<div class="dostercios">
+										<div class="input">
+											<p:inputText id="txtRazSocProveedorEditar"
+												value="#{proveedorMB.objProveedorMain.providerSocialReason}" />
+										</div>
+										<div class="tooltip">
+											<h:graphicImage id="imgRazSocProveedorEditar"
+												url="../../recursos/imagenes/help.png"></h:graphicImage>
+											<p:tooltip for="imgRazSocProveedorEditar"
+												value="Razón Social del proveedor" />
+										</div>
+									</div>
+									<p:message for="txtRazSocProveedorEditar" />
+								</div>
+								<div class="completo">
+									<div class="tercio">
+										<h:outputLabel for="txtNumTelefonoEditar"
+											value="Número de Teléfono:" />
+										<h:outputLabel value="*" style="Color:red" />
+									</div>
+									<div class="dostercios">
+										<div class="input">
+											<p:inputText id="txtNumTelefonoEditar"
+												value="#{proveedorMB.objProveedorMain.providerPhoneNumber}" />
+										</div>
+										<div class="tooltip">
+											<h:graphicImage id="imgNumTelefonoEditar"
+												url="../../recursos/imagenes/help.png"></h:graphicImage>
+											<p:tooltip for="imgNumTelefonoEditar"
+												value="Número de teléfono del proveedor" />
+										</div>
+									</div>
+									<p:message for="txtNumTelefonoEditar" />
+								</div>
+								<div class="completo">
+									<div class="tercio">
+										<h:outputLabel for="cboEstadoEditar" value="Estado:" />
+										<h:outputLabel value="*" style="Color:red" />
+									</div>
+									<div class="dostercios">
+										<div class="combo">
+											<p:selectOneMenu id="cboEstadoEditar"
+												value="#{proveedorMB.objProveedorMain.providerStatus}">
+												<f:selectItem itemLabel="-- Seleccione --" itemValue="" />
+												<f:selectItem itemLabel="Activo" itemValue="1" />
+												<f:selectItem itemLabel="Inactivo" itemValue="0" />
+											</p:selectOneMenu>
+										</div>
+										<div class="tooltip">
+											<h:graphicImage id="imgEstadoEditar"
+												url="../../recursos/imagenes/help.png"></h:graphicImage>
+											<p:tooltip for="imgEstadoEditar"
+												value="Estado del proveedor" />
+										</div>
+									</div>
+									<p:message for="cboEstadoEditar" />
+								</div>	
+							</div>
+							<div class="mitad">
+								<div class="completo">
+									<div class="tercio">
+										<h:outputLabel for="txtRucEditar" value="RUC:" />
+										<h:outputLabel value="*" style="Color:red" />
+									</div>
+									<div class="dostercios">
+										<div class="input">
+											<p:inputText id="txtRucEditar"
+												value="#{proveedorMB.objProveedorMain.providerRuc}" />
+										</div>
+										<div class="tooltip">
+											<h:graphicImage id="imgRucEditar"
+												url="../../recursos/imagenes/help.png"></h:graphicImage>
+											<p:tooltip for="imgRucEditar"
+												value="RUC del proveedor" />
+										</div>
+									</div>
+									<p:message for="txtRucEditar" />
+								</div>
+								<div class="completo">
+									<div class="tercio">
+										<h:outputLabel for="txtDireccionEditar" value="Dirección:" />
+										<h:outputLabel value="*" style="Color:red" />
+									</div>
+									<div class="dostercios">
+										<div class="input">
+											<p:inputText id="txtDireccionEditar"
+												value="#{proveedorMB.objProveedorMain.providerAddress}" />
+										</div>
+										<div class="tooltip">
+											<h:graphicImage id="imgDireccion"
+												url="../../recursos/imagenes/help.png"></h:graphicImage>
+											<p:tooltip for="imgDireccion"
+												value="Dirección del proveedor" />
+										</div>
+									</div>
+									<p:message for="txtDireccionEditar" />
+								</div>
+							</div>
+						</div>
+						<div class="boton">
+							<p:commandButton value="Guardar" icon="ui-icon-disk"
+								onclick="PF('confirmationEditarProveedor').show()" />
+						</div>
+					</p:tab>
+				</p:accordionPanel>
+
+			</h:form>
+		</p:dialog>
+
+
+		<p:confirmDialog message="¿Está seguro de agregar el registro?"
+			width="300" showEffect="explode" hideEffect="explode"
+			header="Mensaje de Confirmación" severity="alert"
+			widgetVar="confirmationAgregarProveedor" modal="true">
+			<h:form>
+				<p:commandButton value="Si"
+					actionListener="#{proveedorMB.agregarProveedor}"
+					update=":msjAgregarProveedor,:wLisProvider:tblProveedores"
+					oncomplete="PF('confirmationAgregarProveedor').hide()" />
+				<p:commandButton value="No"
+					onclick="PF('confirmationAgregarProveedor').hide()" type="button" />
+			</h:form>
+		</p:confirmDialog>
+
+
+		<p:confirmDialog message="¿Está seguro de editar los datos?"
+			width="300" showEffect="explode" hideEffect="explode"
+			header="Mensaje de Confirmación" severity="alert"
+			widgetVar="confirmationEditarProveedor" modal="true">
+			<h:form>
+				<p:commandButton value="Si" ajax="true"
+					actionListener="#{proveedorMB.editarProveedor}"
+					update=":msjEditarProveedor,:wLisProvider:tblProveedores"
+					oncomplete="PF('confirmationEditarProveedor').hide()" />
+				<p:commandButton value="No"
+					onclick="PF('confirmationEditarProveedor').hide()" type="button" />
+			</h:form>
+		</p:confirmDialog>
+
+
+		<p:confirmDialog
+			message="¿Está usted seguro que desea eliminar el registro?"
+			width="300" showEffect="explode" hideEffect="explode"
+			header="Mensaje de Confirmación" severity="alert"
+			widgetVar="confirmationEliminarProveedor" modal="true"
+			id="confirmEliminarProveedor"
+			visible="#{proveedorMB.flagConfirmEliProvider}">
+			<h:form>
+				<p:commandButton value="Si" ajax="false"
+					actionListener="#{proveedorMB.eliminarProveedor}"
+					update="msjLisProvider,:wLisProvider:tblProveedores"
+					oncomplete="PF('confirmationEliminarProveedor').hide()" />
+				<p:commandButton value="No"
+					onclick="PF('confirmationEliminarProveedor').hide()" type="button" />
+			</h:form>
+		</p:confirmDialog>
+
+
+
+	</ui:define>
+
+</ui:composition>

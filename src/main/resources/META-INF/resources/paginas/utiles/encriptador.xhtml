@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="../../plantillas/defecto.xhtml">
+	<ui:define name="titulo">Encriptador</ui:define>
+	<ui:define name="contenido">
+	
+		<script type="text/javascript">
+			<!--
+
+			
+			-->
+		</script>
+	
+	
+		<h1>Encritador</h1>
+		<h:form id="wLisEncrypt">
+			<!-- <p:panel header="Criterios de b&#250;squeda" toggleable="true"> -->
+			
+			<p:growl life="3000" showDetail="true" id="msjLisEncrypt" autoUpdate="true"/>
+			
+			<p:accordionPanel>
+				<p:tab title="Criterios de Proceso">
+					<div class="filas">
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtValor" value="Valor:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtValor" value="#{encriptadorMB.processValue}" />
+										
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgValor"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgValor" value="Valor a procesar" />
+									</div>
+								</div>
+								<p:message for="txtValor" />
+							</div>
+						</div>
+					</div>
+					<div class="boton">
+						<p:commandButton value="Procesar" icon="ui-icon-plus" actionListener="#{encriptadorMB.process}" 
+						oncomplete="PF('dlgVerResultado').show()" update=":iddlgVerResultado"/>
+					</div>
+					<div style="clear: both;"></div>
+					<!-- </p:panel> -->
+				</p:tab>
+			</p:accordionPanel>
+			
+		</h:form>
+
+		<!-- ******************************************* PRODUCTOS ************************************************ -->
+
+		<p:dialog header="Ver Resultado" widgetVar="dlgVerResultado"
+			modal="true" width="930" position="top" id="iddlgVerResultado">
+			
+			<p:growl life="3000" showDetail="true" id="msjVerResultado" autoUpdate="true"/>
+			
+			<h1>Ver Resultado</h1>
+			<h:form id="wVerResultado">
+				<p:panel header="Datos del parametro" toggleable="false" id="pAgregarParamGe">
+					<div class="opcionesTabla" style="text-align: center;">
+						<p:inputTextarea id="txtResultado" value="#{encriptadorMB.processResult}" readonly="true"
+						style="width: 100%;"/>
+						<div style="clear: both;"></div>
+					</div>
+					<div class="boton">
+						<p:commandButton value="Cerrar" icon="ui-icon-disk" onclick="PF('dlgVerResultado').hide()"/>
+					</div>
+					<div style="clear: both;"></div>
+				</p:panel>
+
+				<div style="clear: both;"></div>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+
+</ui:composition>

@@ -39,14 +39,6 @@ public class BatchCompras {
 	@Autowired
 	private DataSource dataSource;
 	
-//	@ConfigurationProperties(prefix = "spring.datasource")
-//	@Bean
-//	public DataSource dataSource() {
-//		return DataSourceBuilder
-//				.create()
-//				.build();
-//	}
-	
 	@Bean
 	public JdbcCursorItemReader<String> reader(){
 		JdbcCursorItemReader<String> reader = new JdbcCursorItemReader<>();

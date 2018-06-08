@@ -1,0 +1,645 @@
+@charset "ISO-8859-1";
+body {
+	font: 62.5% "Trebuchet MS", sans-serif;
+	font-size: 11px;
+	margin: 0;
+	padding: 0;
+	background: #F9F9F9;
+}
+
+h1 {
+	font-size: 2em;
+	font-weight: bold;
+	color: #333;
+	display: block;
+	padding: 0.67em 0px 0.67em 0px;
+}
+
+h2 {
+	font-size: 1.5em;
+	font-weight: bold;
+	color: #333;
+	display: block;
+	text-align: center;
+	padding-top: 10px;
+}
+
+#loginContent {
+	width: 400px;
+	margin-left: 5px;
+	margin-top: 5px;
+	padding-bottom: 5px;
+	text-align: center;
+	border: thin;
+	border-style: solid;
+	border-color: gray;
+}
+
+.paneLogin {
+	width: 100%;
+	margin-bottom: 5px;
+}
+
+#titleLogin {
+	width: 100%;
+	height: 40px;
+	background-color: #00529B;
+}
+.upperText {
+	text-transform: uppercase;
+}
+
+
+.titulo {
+	font-size: 17px;
+	font-style: inherit;
+}
+
+.grillaStock {
+	font-size: 10px;
+}
+
+.dostercios .input input.guiaSerie {
+	width: 40px;
+}
+
+.dostercios .input input.guiaNumero {
+	width: 70px;
+	margin-left: 0px;
+}
+
+#logo {
+	width: 300px;
+	height: 80px;
+	float: left;
+	display: block;
+	margin: 0 0 0 8px;
+}
+
+.ui-confirm-dialog {
+	top: 50px !important;
+}
+
+.ui-dialog {
+	top: 0px !important;
+}
+
+#banner {
+	float: right;
+	width: 260px;
+	height: 80px;
+	display: block;
+	background: url(#{resource['/recursos/imagenes/banner.png']}) no-repeat;
+	margin: 0 8px 0 0;
+}
+
+#usuario {
+	line-height: 18px;
+	text-align: right;
+	margin: 0 10px 0 0;
+}
+
+#container {
+	background: url(#{resource['/recursos/imagenes/madre_bg_n.gif']}) repeat-y
+		scroll left top white;
+	border: 0 none;
+	color: #333;
+	display: block;
+	margin: 0 auto;
+	padding: 0;
+	width: 970px;
+	border-image: initial;
+}
+
+#container {
+	
+}
+
+#contenido {
+	height: auto;
+	overflow: hidden;
+	padding: 0 15px 15px 15px;
+}
+
+#footer {
+	Color: #fff;
+	Font-Size: 9px;
+	text-align: left;
+	padding: 15px 0 0 20px;
+	height: 30px;
+	width: 932px;
+	display: block;
+	background-color: #00529B;
+	margin: 0 0 0 9px;
+}
+
+#menu {
+	padding: 0 7px 15px 7px;
+}
+
+.ui-menu {
+	background: #00529B;
+	/*background: #00529B
+		url("/showcase-labs/javax.faces.resource/images/ui-bg_highlight-hard_80_c4c4c4_1x100.png.jsf?ln=primefaces-aristo")
+		top repeat-x;
+	background: #00529B linear-gradient(top, rgba(255, 255, 255, 0.8),
+		rgba(255, 255, 255, 0) );
+	background: #00529B
+		-webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255,
+		0.8) ), to(rgba(255, 255, 255, 0) ) );
+	background: #00529B -moz-linear-gradient(top, rgba(255, 255, 255, 0.8),
+		rgba(255, 255, 255, 0) );*/
+}
+
+.necesario {
+	color: red;
+}
+
+.ui-datatable {
+	padding-bottom: 10px;
+}
+
+.ui-menuitem-link .ui-menuitem-text {
+	color: #f1f1f1;
+}
+
+a.ui-state-hover span.ui-menuitem-text {
+	color: #0070A3;
+}
+
+.ui-menu-child  .ui-menuitem-text {
+	color: #362B36;
+}
+/*
+.ui-datatable th,.ui-datatable tfoot td {
+	padding: 10px 0px 10px 0px;
+}
+*/
+table.anchoGrilla {
+	width: 100% !important;
+}
+
+.clear {
+	clear: both;
+}
+
+.completo {
+	width: 100%;
+	/*float: left;*/
+	/*text-align:left;*/
+	display: inline-block;
+	padding-bottom: 5px;
+}
+
+/*.ui-selectoneradio*/
+.ui-selectoneradio td {
+	border-width: 0px;
+}
+
+.cuarto {
+	width: 24%;
+	text-align: left;
+	float: left;
+	display: block;
+}
+
+.mitad {
+	width: 49%;
+	text-align: left;
+	float: left;
+	display: block;
+}
+
+.tercio {
+	width: 32%;
+	text-align: left;
+	float: left;
+	display: inline-block;
+}
+
+.tercio .tercio {
+	width: 32%;
+}
+
+.dostercios {
+	width: 68%;
+	text-align: left;
+	float: left;
+	display: inline-block;
+}
+
+.tercio .dostercios {
+	width: 64%;
+}
+
+.dostercios input,select {
+	padding-left: 2px;
+}
+
+form .filas {
+	width: 84%;
+	float: left;
+}
+
+form .boton {
+	width: 15%;
+	float: left;
+}
+
+.opcionesTabla {
+	width: 100%;
+	text-align: right;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+.opcionesTabla button {
+	padding-left: 5px;
+}
+
+.ui-widget-content {
+	border: 1px solid #DDD;
+}
+
+.selectOneMenu { /*width: 160%;*/
+	width: 93% !important;
+}
+
+.ui-dialog .selectOneMenu {
+	width: 70% !important;
+}
+
+.ui-dialog .ui-selectonemenu-panel .ui-selectonemenu-list-item {
+	/*width: 60%;*/
+	
+}
+
+.ui-dialog form {
+	padding-right: 10px;
+}
+
+.scrollTabla {
+	width: 100%;
+	overflow: auto;
+	min-height: 250px;
+}
+
+.dostercios {
+	display: inline-block;
+}
+
+.dostercios .combo {
+	float: left;
+	width: 70%;
+	display: inline-block;
+}
+
+.dostercios  b.necesario {
+	height: 100%;
+	padding: 3px 0 3px 0;
+}
+
+.dostercios .input {
+	float: left;
+	width: 70%;
+}
+
+.dostercios .input input {
+	width: 90%;
+}
+
+.dostercios .file {
+	width: 70%;
+	float: left;
+}
+
+.dostercios b.necesario { /*float: left;
+width: 3%;*/
+	padding: 3px 0 3px 0;
+}
+
+.dostercios .fileUpload { /*width: 300px;*/
+	
+}
+
+.dostercios .fileUploadArchivo {
+	width: 500px;
+}
+
+.dostercios .tooltip {
+	float: left;
+	width: 28%;
+	margin-left: 3px !important;
+}
+
+.dostercios .input input.secCodigo {
+	width: 20px;
+}
+
+.dostercios .input input.secSerie {
+	width: 60px;
+	margin-left: 0px;
+}
+
+.dostercios .tooltip img {
+	padding: 3px 0 3px 0;
+}
+
+.archivo .ui-dt-c {
+	width: 100px;
+}
+
+.item .ui-dt-c {
+	width: 50px;
+	text-align: center;
+}
+
+.codigo .ui-dt-c {
+	width: 120px;
+	text-align: center;
+	margin: 0 auto;
+}
+
+.descripcion .ui-dt-c {
+	width: 210px;
+}
+
+.nombreTabla  .ui-dt-c {
+	width: 150px;
+}
+
+.fecha .ui-dt-c {
+	width: 130px;
+	text-align: center;
+}
+
+.producto .ui-dt-c {
+	width: 100px;
+}
+
+.departamento .ui-dt-c {
+	width: 150px;
+}
+
+.proveedor .ui-dt-c {
+	width: 100px;
+}
+
+.companya .ui-dt-c {
+	width: 150px;
+}
+
+.premio .ui-dt-c {
+	width: 120px;
+}
+
+.feria .ui-dt-c {
+	width: 50px;
+}
+
+.cantidad .ui-dt-c {
+	width: 100px;
+	text-align: center;
+}
+
+.solicitud .ui-dt-c {
+	width: 120px;
+	text-align: center;
+}
+
+.intentos .ui-dt-c {
+	width: 120px;
+	text-align: center;
+}
+
+.gestor .ui-dt-c {
+	width: 100px;
+}
+
+.operador .ui-dt-c {
+	width: 100px;
+}
+
+.guia .ui-dt-c {
+	width: 100px;
+}
+
+.trasp .ui-dt-c {
+	width: 100px;
+}
+
+.tipoMovimiento .ui-dt-c {
+	width: 120px;
+}
+
+.tipoSolicitud .ui-dt-c {
+	width: 120px;
+}
+
+.tipoStock .ui-dt-c {
+	width: 100px;
+}
+
+.tipoEntrega  .ui-dt-c {
+	width: 100px;
+}
+
+.motivo .ui-dt-c {
+	width: 100px;
+}
+
+.bandera .ui-dt-c {
+	width: 100px;
+}
+
+.solicitante .ui-dt-c {
+	width: 150px;
+}
+
+.premio .ui-dt-c {
+	width: 100px;
+}
+
+.feria .ui-dt-c {
+	width: 100px;
+}
+
+.checkbox .ui-dt-c {
+	width: 20px;
+	text-align: center;
+}
+
+.distibuidor .ui-dt-c {
+	width: 150px;
+}
+
+.estado .ui-dt-c {
+	width: 100px;
+	text-align: center;
+	margin: 0 auto;
+}
+
+.fechaHora .ui-dt-c {
+	width: 185px;
+	text-align: center;
+	margin: 0 auto;
+}
+
+.receptor .ui-dt-c {
+	width: 150px;
+}
+
+.oficina .ui-dt-c {
+	width: 100px;
+	text-align: center;
+}
+
+.tipo .ui-dt-c {
+	width: 120px;
+	text-align: center;
+}
+
+.verificar .ui-dt-c {
+	width: 250px;
+}
+
+.observaciones .ui-dt-c {
+	width: 270px;
+}
+
+.observaciones {
+	text-align: center;
+	margin: 0 auto;
+	width: 210px;
+}
+
+.observacion {
+	width: 200px;
+	height: 60px;
+}
+
+.editar  .ui-dt-c {
+	width: 100px;
+	text-align: center;
+	margin: 0 auto;
+}
+
+.eliminar  .ui-dt-c {
+	width: 120px;
+	text-align: center;
+	margin: 0 auto;
+}
+
+.usuario  .ui-dt-c {
+	width: 120px;
+	text-align: center;
+	margin: 0 auto;
+}
+
+.cargo  .ui-dt-c {
+	width: 100px;
+}
+
+.referencia .ui-dt-c {
+	width: 150px;
+}
+
+.hora .ui-dt-c {
+	width: 100px;
+	text-align: center;
+}
+
+.penalidad .ui-dt-c {
+	width: 100px;
+}
+
+.inspeccion .ui-dt-c {
+	width: 150px;
+	text-align: center;
+}
+
+.rango .ui-dt-c {
+	width: 100px;
+	text-align: center;
+}
+
+.almacen .ui-dt-c {
+	width: 180px;
+	text-align: center;
+}
+
+.tipoNoConforme .ui-dt-c {
+	width: 100px;
+	text-align: center;
+	margin: 0 auto;
+}
+
+.opciones .ui-dt-c {
+	width: 50px;
+	text-align: center;
+	margin: 0 auto;
+}
+
+.campanya .ui-dt-c {
+	width: 120px;
+}
+
+.entregado .ui-dt-c {
+	width: 100px;
+	text-align: center;
+}
+
+.direccion  .ui-dt-c {
+	width: 150px;
+	text-align: center;
+}
+
+.ui-datatable-scrollable-footer-box {
+	width: 100%;
+	margin: 0 auto;
+}
+
+.ui-datatable-scrollable .ui-datatable-scrollable-footer-box {
+	padding-right: 0px;
+}
+
+.ui-dialog {
+	z-index: !important;
+}
+
+#dlgVerKardexPart {
+	z-index: 10000 !important;
+}
+
+.ui-dialog .ui-widget {
+	z-index: 10000 !important;
+}
+
+.boton .ui-button {
+	margin-bottom: 5px;
+}
+
+.ui-widget {
+	font-size: 1.0em;
+}
+/*
+.ui-inputfield {
+padding: 0px !important;
+}
+*/
+.ui-datatable-data-empty .ui-dt-c {
+	width: 100% !important
+}
+
+/*
+.ui-dt-c{
+  width: 100%!important
+}*/
+
+.calendarEvents {
+	height: 55%;
+	overflow: auto;
+}
+.classRed {
+	background-color: red;
+}

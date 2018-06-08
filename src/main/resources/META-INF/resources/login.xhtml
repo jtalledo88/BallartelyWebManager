@@ -1,0 +1,32 @@
+	<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:p="http://primefaces.org/ui">
+	<h:head>
+		<script name="jquery/jquery.js" library="primefaces"></script>
+		<link rel="stylesheet" href="recursos/css/estilos.css"></link>
+		<title>Inicio de Sesión</title>
+	</h:head>
+	<h:body>
+		<h:form prependId="false">
+		<p:growl life="3000" showDetail="true" id="messages" autoUpdate="true"/>
+		<div style="width: 100%;">
+			<div id="loginContent">
+			<div id="titleLogin">
+				<h2><p:outputLabel style="color: #fff;" value="Iniciar Sesión"></p:outputLabel></h2>
+			</div>
+			<p:panelGrid columns="2" styleClass="paneLogin">
+				<p:outputLabel value="Login failed!" styleClass="red"
+        			rendered="${!empty param['error']}" />
+				<p:outputLabel value="Usuario:"></p:outputLabel>
+				<p:inputText id="username" ></p:inputText>
+				<p:outputLabel value="Contraseña:"></p:outputLabel>
+				<p:password id="password"></p:password>					
+			</p:panelGrid>
+			<p:commandButton value="Ingresar"  ajax="false" update="messages"></p:commandButton>
+		</div>
+		</div>
+	</h:form>
+	</h:body>
+	</html>
