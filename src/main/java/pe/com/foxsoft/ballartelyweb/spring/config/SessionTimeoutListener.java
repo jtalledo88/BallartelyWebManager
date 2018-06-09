@@ -1,10 +1,12 @@
-package pe.com.foxsoft.ballartelyweb.spring.util;
+package pe.com.foxsoft.ballartelyweb.spring.config;
 
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 import javax.servlet.http.HttpServletRequest;
+
+import pe.com.foxsoft.ballartelyweb.spring.util.Constantes;
 
 public class SessionTimeoutListener implements PhaseListener {
 	
