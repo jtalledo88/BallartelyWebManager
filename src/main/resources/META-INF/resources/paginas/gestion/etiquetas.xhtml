@@ -151,9 +151,9 @@
 					</p:column>
 			    </p:dataTable>
 			    <p:contextMenu for="tblLabels">
-			        <p:menuitem value="Editar cantidad beneficiada" update="iddlgEditarCantidadBeneficiada" 
+			        <p:menuitem value="Editar cantidad beneficiada" update="iddlgEditarCantidadBeneficiada,msjLisLabel" 
 			        	icon="ui-icon-edit" actionListener="#{gestionEtiquetaMB.openActualizarCantidadBeneficiada}"
-			        	oncomplete="PF('dlgEditarCantidadBeneficiada').show()"/>
+			        	oncomplete="if (!args.validationFailed) {PF('dlgEditarCantidadBeneficiada').show()}"/>
 			    </p:contextMenu>
 			</div>
 			<div class="opcionesTabla" style="text-align: left;">

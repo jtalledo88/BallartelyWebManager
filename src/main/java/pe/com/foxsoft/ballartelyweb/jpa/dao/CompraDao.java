@@ -141,10 +141,17 @@ public class CompraDao{
 	
 	public String grabarCompraDetalleLabel(EntityManager em, List<ShippingDetailLabel> lstEtiquetasMain) throws BallartelyException{
 		try {
+			TypedQuery<ShippingDetailLabel> queryDeleteShippingDetailLabel = em.createQuery(
+					"delete from ShippingDetailLabel s join fetch s.shippingDetail sd where sd.shippingDetailId = :shippingDetailId "
+					+ "and s.shippingDetailLabelType <> : shippingDetailLabelType", ShippingDetailLabel.class);
+			queryDeleteShippingDetailLabel.setParameter("shippingDetailId", lstEtiquetasMain.get(0).getShippingDetail().getShippingDetailId());
+			queryDeleteShippingDetailLabel.setParameter("shippingDetailLabelType", Constantes.DETAIL_LABEL_TYPE_ORIGIN);
+			queryDeleteShippingDetailLabel.executeUpdate();
 			for(ShippingDetailLabel detailLabel: lstEtiquetasMain) {
-				if(!Constantes.DETAIL_LABEL_TYPE_ORIGIN.equals(detailLabel.getShippingDetailLabelType()) &&
-						detailLabel.getShippingDetailLabelCreationDate() == null) {
-					JPAUtil.removeEntity(em, detailLabel);
+				if(detailLabel.getShippingDetailLabelCreationDate() == null) {
+					JPAUtil.persistEntity(em, detailLabel);
+				}else {
+					JPAUtil.mergeEntity(em, detailLabel);
 				}
 			}
 			

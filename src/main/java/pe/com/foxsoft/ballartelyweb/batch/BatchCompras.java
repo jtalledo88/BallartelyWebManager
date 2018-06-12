@@ -1,6 +1,5 @@
 package pe.com.foxsoft.ballartelyweb.batch;
 
-import javax.persistence.EntityTransaction;
 import javax.sql.DataSource;
 
 import org.springframework.batch.core.Job;
@@ -16,9 +15,11 @@ import org.springframework.batch.item.database.JpaPagingItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import pe.com.foxsoft.ballartelyweb.batch.processor.ComprasItemProcessor;
 import pe.com.foxsoft.ballartelyweb.jpa.data.Provider;
@@ -56,8 +57,6 @@ public class BatchCompras {
 	public ItemWriter<Provider> writter() {
 		JpaItemWriter<Provider> writter = new JpaItemWriter<>();
 		writter.setEntityManagerFactory(entityManagerFactory().getNativeEntityManagerFactory());
-		//TODO EntityTransaction entityTransaction = entityManagerFactory().getObject().createEntityManager().getTransaction();
-//		entityTransaction.begin();
 		return writter;
 	}
 	
@@ -65,6 +64,7 @@ public class BatchCompras {
 	public Step step1() {
 		return stepBuilderFactory
 				.get("step1")
+				.transactionManager(jpaTransactionManager())
 				.<ShippingHead, Provider> chunk(10)
 				.reader(reader())
 				.processor(processor())
@@ -96,6 +96,11 @@ public class BatchCompras {
 	public JpaVendorAdapter jpaVendorAdapter() {
 		HibernateJpaVendorAdapter jpaVendorAdapter = new HibernateJpaVendorAdapter();
 		return jpaVendorAdapter;
+	}
+	
+	@Bean
+	public PlatformTransactionManager jpaTransactionManager() {
+	       return new JpaTransactionManager(entityManagerFactory().getNativeEntityManagerFactory());
 	}
 
 	public JobBuilderFactory getJobBuilderFactory() {

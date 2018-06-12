@@ -80,9 +80,9 @@ public class CompraService {
 		compraDetalleLabelRepository.delete(shippingDetailLabel);
 	}
 
-	@Transactional(readOnly=false, rollbackFor=BallartelyException.class)
-	public List<ShippingDetailLabel> grabarCompraDetalleLabel(List<ShippingDetailLabel> lstEtiquetasMain) throws BallartelyException{
-		return compraDetalleLabelRepository.save(lstEtiquetasMain);
+	@Transactional(readOnly=false, rollbackFor=Throwable.class)
+	public String grabarCompraDetalleLabel(List<ShippingDetailLabel> lstEtiquetasMain) throws BallartelyException{
+		return compraDao.grabarCompraDetalleLabel(em, lstEtiquetasMain);
 	}
 
 	public CompraCabeceraRepository getCompraCabeceraRepository() {

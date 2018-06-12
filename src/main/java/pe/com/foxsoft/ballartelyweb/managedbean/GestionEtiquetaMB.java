@@ -57,6 +57,9 @@ public class GestionEtiquetaMB {
 		lstEtiquetasSeleccionMain = new DualListModel<>();
 		objCompraDetalleLabelEditar = new ShippingDetailLabel();
 		flagInhabilitaGestEtiq = true;
+		objCompraSeleccionada = null;
+		objCompraDetalleSeleccionada = null;
+		objCompraDetalleLabelSeleccionada = null;
 	}
 	
 	@PostConstruct
@@ -181,12 +184,13 @@ public class GestionEtiquetaMB {
 			Utilitarios.mensajeError("Campos Obligatorios", "Solo puede ingresar una cantidad totalizada no mayor a " + cantBenefitDetail + ".");
 			FacesContext.getCurrentInstance().validationFailed();
 		}
+		
+		
 	}
 	public void grabarEtiquetasDetalle() {
 		String sMensaje = null;
-		try {
-			List<ShippingDetailLabel> lstEtiquetasNuevo = this.compraService.grabarCompraDetalleLabel(lstEtiquetasMain);
-			sMensaje = String.format(Constantes.MESSAGE_PERSIST_LIST_SUCCESS, lstEtiquetasNuevo.size(), lstEtiquetasMain.size());
+		try { 
+			sMensaje = this.compraService.grabarCompraDetalleLabel(lstEtiquetasMain);
 			Utilitarios.mensaje("", sMensaje);
 			setLstEtiquetasMain(new ArrayList<>());
 			cargaTablaEtiquetas();
