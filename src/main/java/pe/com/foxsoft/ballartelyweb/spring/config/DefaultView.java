@@ -1,4 +1,4 @@
-package pe.com.foxsoft.ballartelyweb.spring.util;
+package pe.com.foxsoft.ballartelyweb.spring.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;

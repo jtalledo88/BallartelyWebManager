@@ -1,4 +1,4 @@
-package pe.com.foxsoft.ballartelyweb.spring.util;
+package pe.com.foxsoft.ballartelyweb.spring.config;
 
 import javax.sql.DataSource;
 
