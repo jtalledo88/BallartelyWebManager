@@ -47,6 +47,12 @@ public class Provider implements Serializable {
 
 	@Column(name="provider_social_reason")
 	private String providerSocialReason;
+	
+	@Column(name="provider_driver_license")
+	private String providerDriverLicense;
+	
+	@Column(name="provider_car_number")
+	private String providerCarNumber;
 
 	@Column(name="provider_status")
 	private String providerStatus;
@@ -57,7 +63,7 @@ public class Provider implements Serializable {
 
 	//bi-directional many-to-one association to ShippingHead
 	@OneToMany(mappedBy="provider", fetch=FetchType.LAZY)
-	private List<ShippingHead> shippingHeads;
+	private List<GuideHead> shippingHeads;
 
 	public Provider() {
 	}
@@ -134,6 +140,22 @@ public class Provider implements Serializable {
 		this.movements = movements;
 	}
 
+	public String getProviderDriverLicense() {
+		return providerDriverLicense;
+	}
+
+	public void setProviderDriverLicense(String providerDriverLicense) {
+		this.providerDriverLicense = providerDriverLicense;
+	}
+
+	public String getProviderCarNumber() {
+		return providerCarNumber;
+	}
+
+	public void setProviderCarNumber(String providerCarNumber) {
+		this.providerCarNumber = providerCarNumber;
+	}
+
 	public Movement addMovement(Movement movement) {
 		getMovements().add(movement);
 		movement.setProvider(this);
@@ -148,22 +170,22 @@ public class Provider implements Serializable {
 		return movement;
 	}
 
-	public List<ShippingHead> getShippingHeads() {
+	public List<GuideHead> getShippingHeads() {
 		return this.shippingHeads;
 	}
 
-	public void setShippingHeads(List<ShippingHead> shippingHeads) {
+	public void setShippingHeads(List<GuideHead> shippingHeads) {
 		this.shippingHeads = shippingHeads;
 	}
 
-	public ShippingHead addShippingHead(ShippingHead shippingHead) {
+	public GuideHead addShippingHead(GuideHead shippingHead) {
 		getShippingHeads().add(shippingHead);
 		shippingHead.setProvider(this);
 
 		return shippingHead;
 	}
 
-	public ShippingHead removeShippingHead(ShippingHead shippingHead) {
+	public GuideHead removeShippingHead(GuideHead shippingHead) {
 		getShippingHeads().remove(shippingHead);
 		shippingHead.setProvider(null);
 

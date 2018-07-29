@@ -23,10 +23,10 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import pe.com.foxsoft.ballartelyweb.batch.processor.ComprasItemProcessor;
 import pe.com.foxsoft.ballartelyweb.jpa.data.Provider;
-import pe.com.foxsoft.ballartelyweb.jpa.data.ShippingHead;
+import pe.com.foxsoft.ballartelyweb.jpa.data.GuideHead;
 
-@Configuration
-@EnableBatchProcessing
+//@Configuration
+//@EnableBatchProcessing
 public class BatchCompras {
 	
 	private static final String SQL_READER = "SELECT sh FROM ShippingHead sh";
@@ -41,8 +41,8 @@ public class BatchCompras {
 	private DataSource dataSource;
 	
 	@Bean
-	public ItemReader<ShippingHead> reader(){
-		JpaPagingItemReader<ShippingHead> reader = new JpaPagingItemReader<>();
+	public ItemReader<GuideHead> reader(){
+		JpaPagingItemReader<GuideHead> reader = new JpaPagingItemReader<>();
 		reader.setEntityManagerFactory(entityManagerFactory().getObject());
 		reader.setQueryString(SQL_READER);
 		return reader;
@@ -65,7 +65,7 @@ public class BatchCompras {
 		return stepBuilderFactory
 				.get("step1")
 				.transactionManager(jpaTransactionManager())
-				.<ShippingHead, Provider> chunk(10)
+				.<GuideHead, Provider> chunk(10)
 				.reader(reader())
 				.processor(processor())
 				.writer(writter())

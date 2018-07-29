@@ -15,9 +15,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import pe.com.foxsoft.ballartelyweb.jpa.data.ProductLabel;
-import pe.com.foxsoft.ballartelyweb.jpa.data.ShippingDetail;
+import pe.com.foxsoft.ballartelyweb.jpa.data.GuideDetail;
 import pe.com.foxsoft.ballartelyweb.jpa.data.ShippingDetailLabel;
-import pe.com.foxsoft.ballartelyweb.jpa.data.ShippingHead;
+import pe.com.foxsoft.ballartelyweb.jpa.data.GuideHead;
 import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
 import pe.com.foxsoft.ballartelyweb.spring.service.CompraService;
 import pe.com.foxsoft.ballartelyweb.spring.service.EtiquetaProductoService;
@@ -36,15 +36,15 @@ public class GestionEtiquetaMB {
 	private EtiquetaProductoService etiquetaProductoService;
 	
 	
-	private List<ShippingHead> lstComprasHeadMain;
-	private List<ShippingDetail> lstComprasDetailMain;
+	private List<GuideHead> lstComprasHeadMain;
+	private List<GuideDetail> lstComprasDetailMain;
 	private List<ShippingDetailLabel> lstEtiquetasMain;
 	private DualListModel<ShippingDetailLabel> lstEtiquetasSeleccionMain;
 	private List<ShippingDetailLabel> lstEtiquetasAgregar;
 	private List<ShippingDetailLabel> lstEtiquetasEliminar;
 	
-	private ShippingHead objCompraSeleccionada;
-	private ShippingDetail objCompraDetalleSeleccionada;
+	private GuideHead objCompraSeleccionada;
+	private GuideDetail objCompraDetalleSeleccionada;
 	private ShippingDetailLabel objCompraDetalleLabelSeleccionada;
 	private ShippingDetailLabel objCompraDetalleLabelEditar;
 
@@ -71,7 +71,7 @@ public class GestionEtiquetaMB {
 		String sMensaje = null;
 		try {
 			if(objCompraSeleccionada != null) {
-				this.lstComprasDetailMain = this.compraService.getListaComprasDetalle(objCompraSeleccionada.getShippingId()); 
+				this.lstComprasDetailMain = this.compraService.getListaComprasDetalle(objCompraSeleccionada.getId()); 
 			}
 		} catch (BallartelyException e) {
 			sMensaje = "Error en cargaTablaDetalle";
@@ -84,7 +84,7 @@ public class GestionEtiquetaMB {
 		String sMensaje = null;
 		try {
 			if(objCompraDetalleSeleccionada != null) {
-				this.lstEtiquetasMain = this.compraService.getListaComprasDetalleLabel(objCompraDetalleSeleccionada.getShippingDetailId());
+				this.lstEtiquetasMain = this.compraService.getListaComprasDetalleLabel(objCompraDetalleSeleccionada.getId());
 				this.flagInhabilitaGestEtiq = false;
 			}
 		} catch (BallartelyException e) {
@@ -101,16 +101,16 @@ public class GestionEtiquetaMB {
 				List<ShippingDetailLabel> lstEtiquetasInicio = new ArrayList<>();
 				List<ShippingDetailLabel> lstEtiquetasFinal = new ArrayList<>();
 				for(ShippingDetailLabel detailLabel: lstEtiquetasMain) {
-					if(!Constantes.DETAIL_LABEL_TYPE_ORIGIN.equals(detailLabel.getShippingDetailLabelType())) {
-						lstEtiquetasFinal.add(detailLabel);
-					}
+//					if(!Constantes.DETAIL_LABEL_TYPE_ORIGIN.equals(detailLabel.getShippingDetailLabelType())) {
+//						lstEtiquetasFinal.add(detailLabel);
+//					}
 				}
 				List<ProductLabel> lstEtiquetasProducto  = this.etiquetaProductoService.getListaEtiquetaProductos();
 				for(ProductLabel productLabel: lstEtiquetasProducto) {
 					ShippingDetailLabel detailLabel = new ShippingDetailLabel();
 					detailLabel.setProductLabel(productLabel);
 					detailLabel.setShippingDetail(objCompraDetalleSeleccionada);
-					detailLabel.setShippingDetailLabelType(Constantes.DETAIL_LABEL_TYPE_ADDITIONAL);
+					
 					lstEtiquetasInicio.add(detailLabel);
 				}
 				for(ShippingDetailLabel sdl: lstEtiquetasMain) {
@@ -174,7 +174,7 @@ public class GestionEtiquetaMB {
 	}
 	
 	public void actualizarCantidadBeneficiada() {
-		int cantBenefitDetail = objCompraDetalleSeleccionada.getShippingQuantityBenefit();
+		int cantBenefitDetail = objCompraDetalleSeleccionada.getBoxesQuantity();
 		int cantBenefitDetailLabel = 0;
 		for(ShippingDetailLabel detailLabel: lstEtiquetasMain) {
 			cantBenefitDetailLabel += detailLabel.getShippingDetailLabelQuantityBenefit();
@@ -213,28 +213,28 @@ public class GestionEtiquetaMB {
 		
 	}
 
-	public List<ShippingHead> getLstComprasHeadMain() {
+	public List<GuideHead> getLstComprasHeadMain() {
 		obtenerComprasHead();
 		return lstComprasHeadMain;
 	}
 
-	public void setLstComprasHeadMain(List<ShippingHead> lstComprasHeadMain) {
+	public void setLstComprasHeadMain(List<GuideHead> lstComprasHeadMain) {
 		this.lstComprasHeadMain = lstComprasHeadMain;
 	}
 
-	public ShippingHead getObjCompraSeleccionada() {
+	public GuideHead getObjCompraSeleccionada() {
 		return objCompraSeleccionada;
 	}
 
-	public void setObjCompraSeleccionada(ShippingHead objCompraSeleccionada) {
+	public void setObjCompraSeleccionada(GuideHead objCompraSeleccionada) {
 		this.objCompraSeleccionada = objCompraSeleccionada;
 	}
 	
-	public ShippingDetail getObjCompraDetalleSeleccionada() {
+	public GuideDetail getObjCompraDetalleSeleccionada() {
 		return objCompraDetalleSeleccionada;
 	}
 
-	public void setObjCompraDetalleSeleccionada(ShippingDetail objCompraDetalleSeleccionada) {
+	public void setObjCompraDetalleSeleccionada(GuideDetail objCompraDetalleSeleccionada) {
 		this.objCompraDetalleSeleccionada = objCompraDetalleSeleccionada;
 	}
 
@@ -254,11 +254,11 @@ public class GestionEtiquetaMB {
 		this.objCompraDetalleLabelEditar = objCompraDetalleLabelEditar;
 	}
 
-	public List<ShippingDetail> getLstComprasDetailMain() {
+	public List<GuideDetail> getLstComprasDetailMain() {
 		return lstComprasDetailMain;
 	}
 
-	public void setLstComprasDetailMain(List<ShippingDetail> lstComprasDetailMain) {
+	public void setLstComprasDetailMain(List<GuideDetail> lstComprasDetailMain) {
 		this.lstComprasDetailMain = lstComprasDetailMain;
 	}
 

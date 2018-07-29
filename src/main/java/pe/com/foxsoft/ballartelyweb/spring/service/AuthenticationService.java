@@ -18,28 +18,29 @@ import pe.com.foxsoft.ballartelyweb.spring.util.Constantes;
 public class AuthenticationService implements UserDetailsService {
 
 	@Autowired
-	private UsuarioService usuarioService;
+	private EmpresaService usuarioService;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		UserDetails userDetails = null;
 		try {
-			pe.com.foxsoft.ballartelyweb.jpa.data.User userInfo = usuarioService.getUser(username);
+			pe.com.foxsoft.ballartelyweb.jpa.data.Enterprise enterpriseInfo = usuarioService.getEnterprise(username);
 
 			GrantedAuthority authority = new SimpleGrantedAuthority(Constantes.ROLE_DEFAULT);
-			userDetails = (UserDetails) new User(userInfo.getUserName(), userInfo.getUserPassword(),
+			userDetails = (UserDetails) new User(enterpriseInfo.getLogin(), enterpriseInfo.getPassword(),
 					Arrays.asList(authority));
 		} catch (BallartelyException e) {
 			e.printStackTrace();
+			throw new UsernameNotFoundException(e.getMessage(), e);
 		}
 		return userDetails;
 	}
 
-	public UsuarioService getUsuarioService() {
+	public EmpresaService getUsuarioService() {
 		return usuarioService;
 	}
 
-	public void setUsuarioService(UsuarioService usuarioService) {
+	public void setUsuarioService(EmpresaService usuarioService) {
 		this.usuarioService = usuarioService;
 	}
 

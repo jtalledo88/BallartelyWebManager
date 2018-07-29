@@ -1,0 +1,284 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="../../plantillas/defecto.xhtml">
+	<ui:define name="titulo">Datos Empresa</ui:define>
+	<ui:define name="contenido">
+
+		<script type="text/javascript">
+		<!--
+			-->
+		</script>
+
+
+		<h1>Datos Empresa</h1>
+		<h:form id="wLisEmp">
+			<!-- <p:panel header="Criterios de b&#250;squeda" toggleable="true"> -->
+
+			<p:growl life="3000" showDetail="true" id="msjLisEmp"
+				autoUpdate="true" />
+
+			<p:accordionPanel>
+				<p:tab title="Datos a actualizar">
+					<div class="filas">
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtIdEmpresa"
+										value="ID Empresa:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtIdEmpresa" disabled="true"
+											value="#{empresaMB.empresa.id}"/>
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgIdEmpresa"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgIdEmpresa"
+											value="ID de la empresa" />
+									</div>
+								</div>
+								<p:message for="txtIdEmpresa" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtRazonSocial" value="Razón Social:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtRazonSocial"
+											value="#{empresaMB.empresa.socialReason}"/>
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgRazonSocial"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgRazonSocial"
+											value="Razón social de la empresa"/>
+									</div>
+								</div>
+								<p:message for="txtRazonSocial" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtDireccion" value="Dirección:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtDireccion"
+											value="#{empresaMB.empresa.address}" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgDireccion"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgDireccion"
+											value="Dirección de la empresa" />
+									</div>
+								</div>
+								<p:message for="txtDireccion" />
+							</div>
+						</div>
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtRuc"
+										value="Ruc:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtRuc"
+											value="#{empresaMB.empresa.ruc}"/>
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgRuc"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgRuc"
+											value="Ruc" />
+									</div>
+								</div>
+								<p:message for="txtRuc" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtDni" value="Dni:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtDni"
+											value="#{empresaMB.empresa.dni}" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgDni"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgDni"
+											value="Dni del representante de la empresa" />
+									</div>
+								</div>
+								<p:message for="txtDni" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtDistrito" value="Distrito:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtDistrito"
+											value="#{empresaMB.empresa.district}" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgDistrito"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgDistrito"
+											value="Distrito de la empresa" />
+									</div>
+								</div>
+								<p:message for="txtDistrito" />
+							</div>
+						</div>
+					</div>
+					<div class="boton">
+						<p:commandButton value="Actualizar" icon="ui-icon-disk"
+							onclick="PF('confirmationEditarEmpresa').show()"/>
+					</div>
+					<div style="clear: both;"></div>
+					<!-- </p:panel> -->
+				</p:tab>
+			</p:accordionPanel>
+			<p:separator />
+
+			<div class="opcionesTabla" style="text-align: left;">
+				<p:commandButton value="Ver Cuenta"
+					icon="ui-icon-plus"
+					actionListener="#{empresaMB.openVerCuenta}"
+					oncomplete="PF('dlgVerCuenta').show()"
+					update=":iddlgVerCuenta" />
+				<div style="clear: both;"></div>
+			</div>
+		</h:form>
+
+		<!-- ******************************************* PRODUCTOS ************************************************ -->
+
+		<p:dialog header="Ver Cuenta" widgetVar="dlgVerCuenta"
+			modal="true" width="930" position="top" id="iddlgVerCuenta">
+
+			<div class="scrollTabla">
+				<h:form>
+					<p:dataTable paginator="true" paginatorPosition="top" rows="10"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+						style="width: 100%; margin-bottom:20px;" var="cuenta"
+						value="#{empresaMB.lstCuentaPrincipal}" id="tblCuenta"
+						emptyMessage="No se encontraron registros">
+						<f:facet name="{Exporters}">
+							<h:commandLink>
+								<p:graphicImage url="../../recursos/imagenes/excel.png"
+									width="24" />
+								<p:dataExporter type="xls" target="tblCuenta"
+									fileName="Cuentas" />
+							</h:commandLink>
+	
+							<h:commandLink>
+								<p:graphicImage url="../../recursos/imagenes/pdf.png" width="24" />
+								<p:dataExporter type="pdf" target="tblCuenta"
+									fileName="Cuentas" />
+							</h:commandLink>
+	
+							<h:commandLink>
+								<p:graphicImage url="../../recursos/imagenes/csv.png" width="24" />
+								<p:dataExporter type="csv" target="tblCuenta"
+									fileName="Cuentas" />
+							</h:commandLink>
+	
+							<h:commandLink>
+								<p:graphicImage url="../../recursos/imagenes/xml.png" width="24" />
+								<p:dataExporter type="xml" target="tblCuenta"
+									fileName="Cuentas" />
+							</h:commandLink>
+						</f:facet>
+	
+						<p:column styleClass="oficina">
+							<f:facet name="header">
+								<h:outputText value="Item" />
+							</f:facet>
+							<h:outputText value="#{cuenta.accountId}" />
+						</p:column>
+						<p:column styleClass="oficina" exportable="false">
+							<f:facet name="header">
+								<h:outputText value="Ver Movimientos" title="Ver Movimientos" />
+							</f:facet>
+							<p:commandLink value="Ver Movimientos"
+								onclick="PF('dlgVerMovimientos').show()"
+								action="#{empresaMB.openVerMovimientos}"
+								update=":wViewMov:tblMovimientos">
+								<f:param name="itemAccount" value="#{proveedor.accountId}"
+									id="itemProveedor" />
+							</p:commandLink>
+						</p:column>
+						
+						<p:column styleClass="fecha">
+							<f:facet name="header">
+								<h:outputText value="Fecha Registro" />
+							</f:facet>
+							<h:outputText value="#{cuenta.accountCreationDate}">
+								<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+							</h:outputText>
+						</p:column>
+						<p:column styleClass="fecha">
+							<f:facet name="header">
+								<h:outputText value="Fecha de Act." />
+							</f:facet>
+							<h:outputText value="#{cuenta.accountModificationDate}">
+								<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+							</h:outputText>
+						</p:column>
+						<f:facet name="footer">  
+	          			Saldo de Cuenta (S/.): <h:outputText
+								value="#{empresaMB.saldoCuentaTotal}" >
+								<f:convertNumber currencySymbol="S/." maxFractionDigits="2"
+								maxIntegerDigits="10" groupingUsed="true"/>
+								</h:outputText>
+						</f:facet>
+					</p:dataTable>
+					<div style="clear: both;"></div>
+				</h:form>
+			</div>
+		</p:dialog>
+
+		<!-- ******************************************** EDITAR PRODUCTO ****************************************** -->
+
+		<p:dialog header="Editar Proveedor"
+			widgetVar="dlgVerMovimientos" modal="true" width="930" position="top">
+
+			<p:growl life="3000" showDetail="true" id="msjEditarProveedor"
+				autoUpdate="true" />
+
+			<h1>Editar Proveedor</h1>
+			<!-- TODO -->
+			<h:form id="wViewMov">
+			<p:dataTable id="tblMovimientos">
+			</p:dataTable>
+			</h:form>
+		</p:dialog>
+
+
+		<p:confirmDialog message="¿Está seguro de editar los datos?"
+			width="300" showEffect="explode" hideEffect="explode"
+			header="Mensaje de Confirmación" severity="alert"
+			widgetVar="confirmationEditarEmpresa" modal="true">
+			<h:form>
+				<p:commandButton value="Si" ajax="true"
+					actionListener="#{empresaMB.editarEmpresa}"
+					update="wLisEmp:msjLisEmp"
+					oncomplete="PF('confirmationEditarEmpresa').hide()" />
+				<p:commandButton value="No"
+					onclick="PF('confirmationEditarEmpresa').hide()" type="button" />
+			</h:form>
+		</p:confirmDialog>
+
+
+	</ui:define>
+
+</ui:composition>

@@ -12,9 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import pe.com.foxsoft.ballartelyweb.jpa.dao.CompraDao;
 import pe.com.foxsoft.ballartelyweb.jpa.data.Movement;
-import pe.com.foxsoft.ballartelyweb.jpa.data.ShippingDetail;
+import pe.com.foxsoft.ballartelyweb.jpa.data.GuideDetail;
 import pe.com.foxsoft.ballartelyweb.jpa.data.ShippingDetailLabel;
-import pe.com.foxsoft.ballartelyweb.jpa.data.ShippingHead;
+import pe.com.foxsoft.ballartelyweb.jpa.data.GuideHead;
 import pe.com.foxsoft.ballartelyweb.jpa.repository.CompraCabeceraRepository;
 import pe.com.foxsoft.ballartelyweb.jpa.repository.CompraDetalleLabelRepository;
 import pe.com.foxsoft.ballartelyweb.jpa.repository.CompraDetalleRepository;
@@ -55,15 +55,15 @@ public class CompraService {
 	}
 
 	@Transactional(readOnly=false, rollbackFor=BallartelyException.class)
-	public String insertarCompra(ShippingHead shippinghead, List<ShippingDetail> lstShippingDetails, Movement movement) throws BallartelyException {
+	public String insertarCompra(GuideHead shippinghead, List<GuideDetail> lstShippingDetails, Movement movement) throws BallartelyException {
 		return compraDao.insertShippingDataBase(em, shippinghead, lstShippingDetails, movement);
 	}
 	
-	public List<ShippingHead> getListaComprasCabecera() throws BallartelyException {
+	public List<GuideHead> getListaComprasCabecera() throws BallartelyException {
 		return compraCabeceraRepository.findAll(new Sort(Sort.Direction.DESC, "shippingCreationDate"));
 	}
 	
-	public List<ShippingDetail> getListaComprasDetalle(int ShippingHeadId) throws BallartelyException {
+	public List<GuideDetail> getListaComprasDetalle(int ShippingHeadId) throws BallartelyException {
 		return compraDao.getShippingsDetailsDataBase(em, ShippingHeadId);
 	}
 		

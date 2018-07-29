@@ -12,9 +12,9 @@ import org.springframework.stereotype.Repository;
 
 import pe.com.foxsoft.ballartelyweb.jpa.data.Movement;
 import pe.com.foxsoft.ballartelyweb.jpa.data.ProductStock;
-import pe.com.foxsoft.ballartelyweb.jpa.data.ShippingDetail;
+import pe.com.foxsoft.ballartelyweb.jpa.data.GuideDetail;
 import pe.com.foxsoft.ballartelyweb.jpa.data.ShippingDetailLabel;
-import pe.com.foxsoft.ballartelyweb.jpa.data.ShippingHead;
+import pe.com.foxsoft.ballartelyweb.jpa.data.GuideHead;
 import pe.com.foxsoft.ballartelyweb.jpa.repository.CompraCabeceraRepository;
 import pe.com.foxsoft.ballartelyweb.jpa.util.JPAUtil;
 import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
@@ -34,42 +34,43 @@ public class CompraDao{
 	 * @return Confirmation message
 	 * @throws BallartelyException
 	 */
-	public String insertShippingDataBase(EntityManager em, ShippingHead shippinghead, List<ShippingDetail> lstShippingDetails, Movement movement) throws BallartelyException {
+	public String insertShippingDataBase(EntityManager em, GuideHead shippinghead, List<GuideDetail> lstShippingDetails, Movement movement) throws BallartelyException {
 		try {
 			/** Listamos los registros de compra anteriores **/
-			List<ShippingHead> lstShippingExisting = compraRepository.findAll(new Sort(Sort.Direction.DESC, "shippingCreationDate"));
+			List<GuideHead> lstShippingExisting = compraRepository.findAll(new Sort(Sort.Direction.DESC, "shippingCreationDate"));
 			/** Actualizamos el estado de los registros previos a un estado Frio**/
 			for(int i=0; i<lstShippingExisting.size(); i++) {
-				ShippingHead head = lstShippingExisting.get(i);
-				head.setShippingStatus(Constantes.STATUS_PRODUCT_COLD + (i+1));
+				GuideHead head = lstShippingExisting.get(i);
+				head.setGuideStatus(Constantes.STATUS_PRODUCT_COLD + (i+1));
 				compraRepository.save(head);
 			}
 			/** Grabamos la cabecera a BD **/
 			compraRepository.save(shippinghead);
 			/** Obtenemos el id de la cabecera generado en BD **/
-			int shippingId = getShippingIdDataBase(em, shippinghead.getPaymentDocumentNumber());
+			int shippingId = getShippingIdDataBase(em, shippinghead.getGuideNumber());
 			
 			/** Registramos el detalle de la compra en BD y actualizamos el STOCK del producto registrado **/
-			for(ShippingDetail detail: lstShippingDetails) {
-				if(detail.getShippingQuantityBenefit() == 0) {
-					continue;
-				}
-				detail.setShippingDetailId(0);
-				shippinghead.setShippingId(shippingId);
-				detail.setShippingHead(shippinghead);
-				JPAUtil.persistEntity(em, detail);
-				ProductStock productStock = JPAUtil.findEntity(em, ProductStock.class, detail.getProductLabel().getProductLabelId());
-				productStock.setProductStockCant(productStock.getProductStockCant() + detail.getShippingQuantityBenefit());
-				JPAUtil.mergeEntity(em, productStock);
+			// TODO
+			for(GuideDetail detail: lstShippingDetails) {
+//				if(detail.getShippingQuantityBenefit() == 0) {
+//					continue;
+//				}
+//				detail.setShippingDetailId(0);
+//				shippinghead.setShippingId(shippingId);
+//				detail.setShippingHead(shippinghead);
+//				JPAUtil.persistEntity(em, detail);
+//				ProductStock productStock = JPAUtil.findEntity(em, ProductStock.class, detail.getProductLabel().getProductLabelId());
+//				productStock.setProductStockCant(productStock.getProductStockCant() + detail.getShippingQuantityBenefit());
+//				JPAUtil.mergeEntity(em, productStock);
 			}
 			/** Obtenemos los detalles de la compra previamente registrados **/
-			List<ShippingDetail> lstShippingDetailLabel = getShippingsDetailsDataBase(em, shippingId);
+			List<GuideDetail> lstShippingDetailLabel = getShippingsDetailsDataBase(em, shippingId);
 			/** Registramos la etiqueta de producto original en BD**/
-			for(ShippingDetail detail: lstShippingDetailLabel) {
+			for(GuideDetail detail: lstShippingDetailLabel) {
 				ShippingDetailLabel detailLabel = new ShippingDetailLabel();
 				detailLabel.setShippingDetail(detail);
-				detailLabel.setProductLabel(detail.getProductLabel());
-				detailLabel.setShippingDetailLabelType(Constantes.DETAIL_LABEL_TYPE_ORIGIN);
+//				detailLabel.setProductLabel(detail.getProductLabel());
+//				detailLabel.setShippingDetailLabelType(Constantes.DETAIL_LABEL_TYPE_ORIGIN);
 				JPAUtil.persistEntity(em, detailLabel);
 			}
 			
@@ -107,10 +108,10 @@ public class CompraDao{
 	 * @return
 	 * @throws BallartelyException
 	 */
-	public List<ShippingDetail> getShippingsDetailsDataBase(EntityManager em, int shippingHeadId) throws BallartelyException{
+	public List<GuideDetail> getShippingsDetailsDataBase(EntityManager em, int shippingHeadId) throws BallartelyException{
 		try {
-			TypedQuery<ShippingDetail> queryShippingDetail = em.createQuery(
-					"select s from ShippingDetail s join fetch s.shippingHead sh where sh.shippingId = :shippingId", ShippingDetail.class);
+			TypedQuery<GuideDetail> queryShippingDetail = em.createQuery(
+					"select s from ShippingDetail s join fetch s.shippingHead sh where sh.shippingId = :shippingId", GuideDetail.class);
 			queryShippingDetail.setParameter("shippingId", shippingHeadId);
 			return queryShippingDetail.getResultList();
 		} catch (NoResultException nre) {
@@ -144,8 +145,8 @@ public class CompraDao{
 			TypedQuery<ShippingDetailLabel> queryDeleteShippingDetailLabel = em.createQuery(
 					"delete from ShippingDetailLabel s join fetch s.shippingDetail sd where sd.shippingDetailId = :shippingDetailId "
 					+ "and s.shippingDetailLabelType <> : shippingDetailLabelType", ShippingDetailLabel.class);
-			queryDeleteShippingDetailLabel.setParameter("shippingDetailId", lstEtiquetasMain.get(0).getShippingDetail().getShippingDetailId());
-			queryDeleteShippingDetailLabel.setParameter("shippingDetailLabelType", Constantes.DETAIL_LABEL_TYPE_ORIGIN);
+//			queryDeleteShippingDetailLabel.setParameter("shippingDetailId", lstEtiquetasMain.get(0).getShippingDetail().getShippingDetailId());
+//			queryDeleteShippingDetailLabel.setParameter("shippingDetailLabelType", Constantes.DETAIL_LABEL_TYPE_ORIGIN);
 			queryDeleteShippingDetailLabel.executeUpdate();
 			for(ShippingDetailLabel detailLabel: lstEtiquetasMain) {
 				if(detailLabel.getShippingDetailLabelCreationDate() == null) {

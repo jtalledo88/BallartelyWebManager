@@ -96,19 +96,28 @@ public class Utilitarios {
 	}
 
 	public static void putObjectInSession(String value, Object var) {
-		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+		FacesContext faces = FacesContext.getCurrentInstance();
+		if(faces == null)
+			return;
+		ExternalContext context = faces.getExternalContext();
 		HttpSession session = (HttpSession) context.getSession(true);
 		session.setAttribute(value, var);
 	}
 
 	public static Object getObjectInSession(String value) {
-		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+		FacesContext faces = FacesContext.getCurrentInstance();
+		if(faces == null)
+			return null;
+		ExternalContext context = faces.getExternalContext();
 		HttpSession sessionhttp = (HttpSession) context.getSession(true);
 		return sessionhttp.getAttribute(value);
 	}
 
 	public static void removeObjectInSession(String value) {
-		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+		FacesContext faces = FacesContext.getCurrentInstance();
+		if(faces == null)
+			return;
+		ExternalContext context = faces.getExternalContext();
 		HttpSession session = (HttpSession) context.getSession(false);
 		session.removeAttribute(value);
 		session.invalidate();
@@ -172,4 +181,5 @@ public class Utilitarios {
 			}
 		}
 	}
+	
 }

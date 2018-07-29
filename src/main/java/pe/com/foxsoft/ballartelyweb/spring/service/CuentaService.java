@@ -22,6 +22,7 @@ public class CuentaService {
 	@Autowired
 	private CuentaRepository cuentaRepository;
 	
+	@Autowired
 	private CuentaDao cuentaDao;
 	
 	public EntityManager getEm() {

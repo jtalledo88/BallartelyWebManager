@@ -49,7 +49,7 @@ public class ShippingDetailLabel implements Serializable {
 	//bi-directional many-to-one association to ShippingDetail
 	@ManyToOne
 	@JoinColumn(name="shipping_detail_id")
-	private ShippingDetail shippingDetail;
+	private GuideDetail shippingDetail;
 
 	public ShippingDetailLabel() {
 	}
@@ -102,11 +102,11 @@ public class ShippingDetailLabel implements Serializable {
 		this.productLabel = productLabel;
 	}
 
-	public ShippingDetail getShippingDetail() {
+	public GuideDetail getShippingDetail() {
 		return this.shippingDetail;
 	}
 
-	public void setShippingDetail(ShippingDetail shippingDetail) {
+	public void setShippingDetail(GuideDetail shippingDetail) {
 		this.shippingDetail = shippingDetail;
 	}
 

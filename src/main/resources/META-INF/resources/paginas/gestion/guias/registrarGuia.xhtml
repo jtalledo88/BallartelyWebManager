@@ -1,0 +1,636 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="../../../plantillas/defecto.xhtml">
+	<ui:define name="titulo">Registrar Guías</ui:define>
+	<ui:define name="contenido">
+
+		<script type="text/javascript">
+		<!--
+			-->
+		</script>
+
+
+		<h1>Registrar Guías</h1>
+		<h:form id="wLisGuide">
+			<!-- <p:panel header="Criterios de b&#250;squeda" toggleable="true"> -->
+
+			<p:growl life="3000" showDetail="true" id="msjLisGuide"
+				autoUpdate="true" />
+
+			<p:accordionPanel>
+				<p:tab title="Datos de Guía" id="pDatosGuia">
+					<div class="filas">
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtNumeroGuia" value="Nro Guía:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtNumeroGuia" value="#{registroGuiaMB.objGuideHeadMain.guideNumber}" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgNumeroGuia"
+											url="../../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgNumeroGuia"
+											value="Número de Guía" />
+									</div>
+								</div>
+								<p:message for="txtNumeroGuia" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtPuntoPartida" value="Punto de Partida:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputTextarea id="txtPuntoPartida" cols="24" rows="3" readonly="true"
+											value="#{registroGuiaMB.objGuideHeadMain.startPoint}" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgPuntoPartida"
+											url="../../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgPuntoPartida" value="Punto de Partida de la mercadería" />
+									</div>
+								</div>
+								<p:message for="txtPuntoPartida" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtNumeroFactura" value="Nro. Factura:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtNumeroFactura"
+											value="#{registroGuiaMB.objGuideHeadMain.invoiceNumber}" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgNumerofactura"
+											url="../../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgNumerofactura"
+											value="Número de Factura" />
+									</div>
+								</div>
+								<p:message for="txtNumeroFactura" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtObservaciones" value="Observaciones:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputTextarea id="txtObservaciones" cols="24" rows="3"
+											value="#{registroGuiaMB.objGuideHeadMain.observations}" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgObservaciones"
+											url="../../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgObservaciones"
+											value="Observaciones" />
+									</div>
+								</div>
+								<p:message for="txtObservaciones" />
+							</div>
+						</div>
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="cldFecha" value="Fecha:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:calendar id="cldFecha" pattern="dd/MM/yyyy" mask="true" maskAutoClear="true"
+											value="#{registroGuiaMB.objGuideHeadMain.emissionDate}" />
+
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgFecha"
+											url="../../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgFecha"
+											value="Fecha de Guía" />
+									</div>
+								</div>
+								<p:message for="cldFecha" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtPuntoLlegada" value="Punto de Llegada:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputTextarea id="txtPuntoLlegada" cols="24" rows="3" readonly="true"
+											value="#{registroGuiaMB.objGuideHeadMain.endPoint}" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgPuntoLlegada"
+											url="../../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgPuntoLlegada" value="Punto de Llegada de la mercadería" />
+									</div>
+								</div>
+								<p:message for="txtPuntoLlegada" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="cboMotivo" value="Motivo:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:selectOneMenu id="cboMotivo"
+											value="#{registroGuiaMB.objGuideHeadMain.reason}" >
+											<f:selectItem itemValue="Venta" itemLabel="1. Venta"/>
+											<f:selectItem itemValue="Devolucion" itemLabel="2. Devolución"/>
+											<f:selectItem itemValue="Translado" itemLabel="3. Translado"/>
+										</p:selectOneMenu>
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgMotivo"
+											url="../../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgMotivo"
+											value="Observaciones" />
+									</div>
+								</div>
+								<p:message for="cboMotivo" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="imgFileCargado1" value="Imagen Cargada:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:graphicImage id="imgFileCargado1" url="../../../recursos/imagenes/luz_1.png" 
+											rendered="#{registroGuiaMB.isGuide != null}"/>
+										<p:graphicImage id="imgFileCargado2" url="../../../recursos/imagenes/luz_3.png" 
+											rendered="#{registroGuiaMB.isGuide == null}"/>
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgFileCargadoToolTip"
+											url="../../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgFileCargadoToolTip"
+											value="Indica que la guía escaneada esta cargada" />
+									</div>
+								</div>
+								<p:message for="imgFileCargado1" />
+							</div>
+							
+						</div>
+					</div>
+					<div style="clear: both;"></div>
+					<!-- </p:panel> -->
+				</p:tab>
+			</p:accordionPanel>
+			<p:accordionPanel>
+				<p:tab title="Datos de Empresa">
+					<div class="filas">
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtIdEmpresa" value="ID:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtIdEmpresa" readonly="true" value="#{registroGuiaMB.objGuideHeadMain.enterprise.id}" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgIdEmpresa"
+											url="../../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgIdEmpresa"
+											value="ID de Empresa" />
+									</div>
+								</div>
+								<p:message for="txtRazonSocialEmpresa" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtNumeroRuc" value="Nro. Ruc:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtNumeroRuc" readonly="true"
+											value="#{registroGuiaMB.objGuideHeadMain.enterprise.ruc}" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgNumeroRuc"
+											url="../../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgNumeroRuc"
+											value="Número de Ruc" />
+									</div>
+								</div>
+								<p:message for="txtNumeroRuc" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtDireccion" value="Dirección:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtDireccion" readonly="true" 
+											value="#{registroGuiaMB.objGuideHeadMain.enterprise.address}" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgDireccion"
+											url="../../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgDireccion"
+											value="Dirección de la empresa" />
+									</div>
+								</div>
+								<p:message for="txtDireccion" />
+							</div>
+						</div>
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio">
+								
+									<h:outputLabel for="txtRazonSocialEmpresa" value="Razón Social:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtRazonSocialEmpresa" readonly="true" 
+											value="#{registroGuiaMB.objGuideHeadMain.enterprise.socialReason}" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgRazonSocialEmpresa"
+											url="../../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgRazonSocialEmpresa" value="Razón social de la empresa" />
+									</div>
+								</div>
+								<p:message for="txtRazonSocialEmpresa" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtDni" value="Dni:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtDni" readonly="true"
+											value="#{registroGuiaMB.objGuideHeadMain.enterprise.dni}" />
+
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgDni"
+											url="../../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgDni"
+											value="DNI" />
+									</div>
+								</div>
+								<p:message for="txtDni" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtDistrito" value="Distrito:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtDistrito" readonly="true" 
+											value="#{registroGuiaMB.objGuideHeadMain.enterprise.district}" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgDistrito"
+											url="../../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgDistrito" value="Distrito" />
+									</div>
+								</div>
+								<p:message for="txtDistrito" />
+							</div>
+						</div>
+					</div>
+					<div style="clear: both;"></div>
+					<!-- </p:panel> -->
+				</p:tab>
+			</p:accordionPanel>
+			<p:accordionPanel>
+				<p:tab title="Datos de Proveedor">
+					<div class="filas">
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtRazonSocialProveedor" value="Razón social:" />
+								</div>
+								<div class="dostercios">
+									<div class="combo" style="display: flex;">
+										<p:autoComplete id="txtRazonSocialProveedor" value="#{registroGuiaMB.objGuideHeadMain.provider}" style="width: 180px;"
+											completeMethod="#{registroGuiaMB.completeProvider}" var="provider" itemLabel="#{provider.providerSocialReason}" 
+											itemValue="#{provider}" converter="#{providerConverter}" forceSelection="true" dropdown="true" dropdownMode="blank">
+											<p:ajax event="itemSelect" listener="#{registroGuiaMB.cargaPuntoPartida}" process="@form" update="wLisGuide"/>
+											<p:ajax event="change" listener="#{registroGuiaMB.cargaPuntoPartida}" process="@form" update="wLisGuide"/>
+										</p:autoComplete>
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgRazonSocialProveedor"
+											url="../../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgRazonSocialProveedor"
+											value="Razón social del proveedor" />
+									</div>
+								</div>
+								<p:message for="txtRazonSocialProveedor" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtNumeroPlaca" value="Nro. Placa:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtNumeroPlaca" readonly="true"
+											value="#{registroGuiaMB.objGuideHeadMain.provider.providerCarNumber}" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgNumeroPlaca"
+											url="../../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgNumeroPlaca"
+											value="Número de Placa" />
+									</div>
+								</div>
+								<p:message for="txtNumeroPlaca" />
+							</div>
+						</div>
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio">
+								
+									<h:outputLabel for="txtRucProveedor" value="RUC:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtRucProveedor"  readonly="true"
+											value="#{registroGuiaMB.objGuideHeadMain.provider.providerRuc}" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgRucProveedor"
+											url="../../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgRucProveedor" value="Ruc del proveedor" />
+									</div>
+								</div>
+								<p:message for="txtRucProveedor" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtLicencia" value="Nro. Licencia:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtLicencia" readonly="true"
+											value="#{registroGuiaMB.objGuideHeadMain.provider.providerDriverLicense}" />
+
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgLicencia"
+											url="../../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgLicencia"
+											value="DNI" />
+									</div>
+								</div>
+								<p:message for="txtLicencia" />
+							</div>
+						</div>
+					</div>
+					<div style="clear: both;"></div>
+					<!-- </p:panel> -->
+				</p:tab>
+			</p:accordionPanel>
+			<p:separator />
+
+			<div class="scrollTabla">
+				<p:remoteCommand name="onRowEdit"  update="wLisGuide" />
+				<p:dataTable style="width: 100%;" var="itemGuia" value="#{registroGuiaMB.lstItemsGuideMain}" 
+					id="tblItemGuia" editable="true" widgetVar="tblItemGuia"
+					emptyMessage="Agregar Items a la Guía">
+					
+					<p:ajax event="rowEdit" listener="#{registroGuiaMB.editarItem}" oncomplete="if (!args.validationFailed) {onRowEdit()}" update="wLisGuide:msjLisGuide" />
+					<p:ajax event="rowEditCancel" listener="#{registroGuiaMB.eliminarItem}" oncomplete="onRowEdit()" />
+					
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Nro Jabas" />
+						</f:facet>
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{itemGuia.boxesQuantity}"/>
+							</f:facet>
+							<f:facet name="input">
+		                  		<p:inputNumber value="#{itemGuia.boxesQuantity}" decimalPlaces="0" 
+		                  			maxlength="10" minValue="0" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>	
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Nro Pollos" />
+						</f:facet>
+						<p:cellEditor>
+		                	<f:facet name="output">
+		                		<h:outputText value="#{itemGuia.productQuantity}"/>
+		                	</f:facet>
+		                  	<f:facet name="input">
+		                  		<p:inputNumber value="#{itemGuia.productQuantity}" decimalPlaces="0" 
+	                  				maxlength="10" minValue="0" />
+							</f:facet>
+		              	</p:cellEditor>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Peso bruto" />
+						</f:facet>
+						<p:cellEditor>
+		                	<f:facet name="output">
+		                		<h:outputText value="#{itemGuia.initialWeight}" >
+		                			<f:convertNumber maxFractionDigits="2" minFractionDigits="2" maxIntegerDigits="8" />
+		                		</h:outputText>
+		                	</f:facet>
+		                  	<f:facet name="input">
+		                  		<p:inputNumber value="#{itemGuia.initialWeight}" maxlength="10" minValue="0" />
+							</f:facet>
+		              	</p:cellEditor>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Tara" />
+						</f:facet>
+						<p:cellEditor>
+		                	<f:facet name="output">
+		                		<h:outputText value="#{itemGuia.taraWeight}">
+		                			<f:convertNumber maxFractionDigits="2" minFractionDigits="2" maxIntegerDigits="8" />
+		                		</h:outputText>
+		                	</f:facet>
+		                  	<f:facet name="input">
+		                  		<p:inputNumber value="#{itemGuia.taraWeight}" minValue="0" maxlength="10"/>
+							</f:facet>
+		              	</p:cellEditor>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Peso neto" />
+						</f:facet>
+						<p:cellEditor>
+		                	<f:facet name="output">
+		                		<h:outputText value="#{itemGuia.netWeight}">
+		                			 <f:convertNumber maxFractionDigits="2" minFractionDigits="2" maxIntegerDigits="8" />
+		                		</h:outputText>
+		                	</f:facet>
+		                  	<f:facet name="input">
+		                  		<p:inputNumber value="#{itemGuia.netWeight}" readonly="true" />
+							</f:facet>
+		              	</p:cellEditor>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Promedio" />
+						</f:facet>
+						<p:cellEditor>
+		                	<f:facet name="output">
+		                		<h:outputText value="#{itemGuia.average}">
+		                			<f:convertNumber maxFractionDigits="2" minFractionDigits="2" maxIntegerDigits="8" />
+		                		</h:outputText>
+		                	</f:facet>
+		                  	<f:facet name="input">
+		                  		<p:inputNumber value="#{itemGuia.average}" minValue="0" maxlength="10"/>
+							</f:facet>
+		              	</p:cellEditor>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Nro pollos muertos" />
+						</f:facet>
+						<p:cellEditor>
+		                	<f:facet name="output">
+		                		<h:outputText value="#{itemGuia.deadQuantity}"/>
+		                	</f:facet>
+		                  	<f:facet name="input">
+		                  		<p:inputNumber value="#{itemGuia.deadQuantity}" decimalPlaces="0" 
+	                  				maxlength="10" minValue="0" />
+							</f:facet>
+		              	</p:cellEditor>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Peso pollos muertos" />
+						</f:facet>
+						<p:cellEditor>
+		                	<f:facet name="output">
+		                		<h:outputText value="#{itemGuia.deadWeight}">
+		                			<f:convertNumber maxFractionDigits="2" minFractionDigits="2" maxIntegerDigits="8" />
+		                		</h:outputText>
+		                	</f:facet>
+		                  	<f:facet name="input">
+		                  		<p:inputNumber value="#{itemGuia.deadWeight}" minValue="0" maxlength="10"/>
+							</f:facet>
+		              	</p:cellEditor>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Precio x KG" />
+						</f:facet>
+						<p:cellEditor>
+		                	<f:facet name="output">
+		                		<h:outputText value="#{itemGuia.unitCost}">
+		                			<f:convertNumber maxFractionDigits="2" minFractionDigits="2" maxIntegerDigits="8" />
+		                		</h:outputText>
+		                	</f:facet>
+		                  	<f:facet name="input">
+		                  		<p:inputNumber value="#{itemGuia.unitCost}" minValue="0" maxlength="10"/>
+							</f:facet>
+		              	</p:cellEditor>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Producto" />
+						</f:facet>
+						<p:cellEditor>
+							<f:facet name="output">
+								<h:outputText value="#{itemGuia.productDescription}"/>
+							</f:facet>
+							<f:facet name="input">
+		                  		<p:inputText value="#{itemGuia.productDescription}" />
+							</f:facet>
+						</p:cellEditor>
+					</p:column>
+					<p:column style="width:32px">
+			           <p:rowEditor />
+			       </p:column>
+				</p:dataTable>
+			</div>
+			<p:separator />
+
+			<div class="opcionesTabla" style="text-align: left;">
+				<p:commandButton value="Subir Comprobante"
+					icon="ui-icon-plus"
+					onclick="PF('dlgSubirComprobante').show()"
+					update="wSubirComprobante:pSubirComprobante"/>
+				
+				<p:commandButton value="Registrar Guía"
+					icon="ui-icon-disk"
+					onclick="PF('confirmationRegistrarGuia').show()"
+					update="wLisGuide:msjLisGuide"/>
+
+				<div style="clear: both;"></div>
+			</div>
+		</h:form>
+		
+		<p:dialog header="Subir Comprobante de Pago"
+			widgetVar="dlgSubirComprobante" modal="true" width="700"
+			position="top">
+
+			<p:growl life="3000" showDetail="true" id="msjSubirComprobante"
+				autoUpdate="true" />
+
+			<h1>Subir Comprobante de Pago</h1>
+			<h:form id="wSubirComprobante">
+				<p:accordionPanel id="pSubirComprobante">
+					<p:tab title="Ruta de Archivo">
+						<div class="filas">
+							<div class="mitad">
+								<div class="completo">
+									<div class="tercio">
+										<h:outputLabel for="fupCompDigital" value="Subir comprobante:" />
+									</div>
+									<div class="dostercios">
+										<div class="file">
+											<p:fileUpload id="fupCompDigital" fileUploadListener="#{registroGuiaMB.subirComprobante}" label="Elegir"
+												mode="advanced" dragDropSupport="false" fileLimit="1" fileLimitMessage="Solo se permite subir un archivo" 
+												update=":msjSubirComprobante,:wLisGuide" invalidSizeMessage="Tamaño de archivo excedido" 
+												invalidFileMessage="Formato de archivo incorrecto" cancelLabel="Cancelar" uploadLabel="Subir" 
+	           									sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+										</div>
+										<div class="tooltip">
+											<h:graphicImage id="imgCompDigital"
+												url="../../../recursos/imagenes/help.png"></h:graphicImage>
+											<p:tooltip for="imgCompDigital" value="Comprobante escaneado" />
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="boton">
+							<p:commandButton value="Cerrar" icon="ui-icon-close"
+								onclick="PF('dlgSubirComprobante').hide()" />
+						</div>
+					</p:tab>
+				</p:accordionPanel>
+
+			</h:form>
+		</p:dialog>
+
+		<p:confirmDialog
+			message="¿Está usted seguro que desea registrar la guía?"
+			width="300" showEffect="explode" hideEffect="explode"
+			header="Mensaje de Confirmación" severity="alert"
+			widgetVar="confirmationRegistrarGuia" modal="true"
+			id="confirmRegistrarGuia">
+			<h:form>
+				<p:commandButton value="Si" ajax="false"
+					actionListener="#{registroGuiaMB.registrarGuia}"
+					update=":msjLisGuide,:wLisGuide"
+					oncomplete="PF('confirmationRegistrarGuia').hide()" />
+				<p:commandButton value="No"
+					onclick="PF('confirmationRegistrarGuia').hide()" type="button" />
+			</h:form>
+		</p:confirmDialog>
+
+
+
+	</ui:define>
+
+</ui:composition>

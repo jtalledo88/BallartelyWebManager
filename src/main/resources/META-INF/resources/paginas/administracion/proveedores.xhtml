@@ -295,6 +295,26 @@
 							</div>
 							<div class="completo">
 								<div class="tercio">
+									<h:outputLabel for="txtNumLicenciaNuevo"
+										value="Número de Licencia:" />
+									<h:outputLabel value="*" style="Color:red" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtNumLicenciaNuevo"
+											value="#{proveedorMB.objProveedorMain.providerDriverLicense}" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgNumLicenciaNuevo"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgNumLicenciaNuevo"
+											value="Número de licencia de transportista" />
+									</div>
+								</div>
+								<p:message for="txtNumLicenciaNuevo" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
 									<h:outputLabel for="cboEstado" value="Estado:" />
 									<h:outputLabel value="*" style="Color:red" />
 								</div>
@@ -354,6 +374,25 @@
 									</div>
 								</div>
 								<p:message for="txtDireccionNuevo" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtNumPlacaNuevo" value="Número placa:" />
+									<h:outputLabel value="*" style="Color:red" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtNumPlacaNuevo"
+											value="#{proveedorMB.objProveedorMain.providerCarNumber}" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgNumPlacaNuevo"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgNumPlacaNuevo"
+											value="Número de placa de transporte" />
+									</div>
+								</div>
+								<p:message for="txtNumPlacaNuevo" />
 							</div>
 						</div>
 
@@ -424,6 +463,26 @@
 								</div>
 								<div class="completo">
 									<div class="tercio">
+										<h:outputLabel for="txtNumLicenciaEditar"
+											value="Número de Licencia:" />
+										<h:outputLabel value="*" style="Color:red" />
+									</div>
+									<div class="dostercios">
+										<div class="input">
+											<p:inputText id="txtNumLicenciaEditar"
+												value="#{proveedorMB.objProveedorMain.providerDriverLicense}" />
+										</div>
+										<div class="tooltip">
+											<h:graphicImage id="imgNumLicenciaEditar"
+												url="../../recursos/imagenes/help.png"></h:graphicImage>
+											<p:tooltip for="imgNumLicenciaEditar"
+												value="Número de licencia de transportista" />
+										</div>
+									</div>
+									<p:message for="txtNumLicenciaEditar" />
+								</div>
+								<div class="completo">
+									<div class="tercio">
 										<h:outputLabel for="cboEstadoEditar" value="Estado:" />
 										<h:outputLabel value="*" style="Color:red" />
 									</div>
@@ -477,13 +536,32 @@
 												value="#{proveedorMB.objProveedorMain.providerAddress}" />
 										</div>
 										<div class="tooltip">
-											<h:graphicImage id="imgDireccion"
+											<h:graphicImage id="imgDireccionEditar"
 												url="../../recursos/imagenes/help.png"></h:graphicImage>
-											<p:tooltip for="imgDireccion"
+											<p:tooltip for="imgDireccionEditar"
 												value="Dirección del proveedor" />
 										</div>
 									</div>
 									<p:message for="txtDireccionEditar" />
+								</div>
+								<div class="completo">
+									<div class="tercio">
+										<h:outputLabel for="txtNumPlacaEditar" value="Número placa:" />
+										<h:outputLabel value="*" style="Color:red" />
+									</div>
+									<div class="dostercios">
+										<div class="input">
+											<p:inputText id="txtNumPlacaEditar"
+												value="#{proveedorMB.objProveedorMain.providerCarNumber}" />
+										</div>
+										<div class="tooltip">
+											<h:graphicImage id="imgNumPlacaEditar"
+												url="../../recursos/imagenes/help.png"></h:graphicImage>
+											<p:tooltip for="imgNumPlacaEditar"
+												value="Número de placa de transporte" />
+										</div>
+									</div>
+									<p:message for="txtNumPlacaEditar" />
 								</div>
 							</div>
 						</div>

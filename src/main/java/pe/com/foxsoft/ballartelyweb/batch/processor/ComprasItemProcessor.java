@@ -6,13 +6,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.ItemProcessor;
 
 import pe.com.foxsoft.ballartelyweb.jpa.data.Provider;
-import pe.com.foxsoft.ballartelyweb.jpa.data.ShippingHead;
+import pe.com.foxsoft.ballartelyweb.jpa.data.GuideHead;
 
-public class ComprasItemProcessor implements ItemProcessor<ShippingHead, Provider>{
+public class ComprasItemProcessor implements ItemProcessor<GuideHead, Provider>{
 
 	private static final Logger logger = LoggerFactory.getLogger(ComprasItemProcessor.class);
 	@Override
-	public Provider process(ShippingHead input) throws Exception {
+	public Provider process(GuideHead input) throws Exception {
 		logger.debug("Objeto compra: " + ReflectionToStringBuilder.reflectionToString(input));
 		return null;
 	}

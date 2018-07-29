@@ -13,12 +13,10 @@ public class Constantes {
 	public static final String ACCOUNT_TYPE_P = "P";
 	public static final String STATUS_ACTIVE = "1";
 	public static final String STATUS_INACTIVE = "0";
-	public static final String MOVEMENT_OBSERVATION_SHIPPING = "Registro de compra.";
-	public static final String MOVEMENT_TYPE_SHIPPING = "COMPRA";
-	public static final String STATUS_PRODUCT_COLD = "FR";
-	public static final String STATUS_PRODUCT_FRESH = "FCO";
-	public static final String DETAIL_LABEL_TYPE_ORIGIN = "O";
-	public static final String DETAIL_LABEL_TYPE_ADDITIONAL = "A";
+	public static final String MOVEMENT_OBSERVATION_GUIDE = "Registro de Guia.";
+	public static final String MOVEMENT_TYPE_GUIDE = "GUIA";
+	public static final String STATUS_PRODUCT_COLD = "C";
+	public static final String STATUS_PRODUCT_FRESH = "F";
 	public static final String ROLE_DEFAULT = "ADMIN";
 
 }

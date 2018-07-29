@@ -28,10 +28,6 @@ public class StatusConverter implements Converter{
 			statusDesc = "Frio " + String.valueOf(value).substring(String.valueOf(value).length() - 1);
 		}else if((String.valueOf(value).startsWith(Constantes.STATUS_PRODUCT_FRESH))){
 			statusDesc = "Fresco";
-		}else if(Constantes.DETAIL_LABEL_TYPE_ORIGIN.equals(String.valueOf(value))){
-			statusDesc = "Original";
-		}else if(Constantes.DETAIL_LABEL_TYPE_ADDITIONAL.equals(String.valueOf(value))){
-			statusDesc = "Adicional";
 		}
 		
 		return statusDesc;
