@@ -78,7 +78,7 @@ public class GuideDetail implements Serializable {
 
 	//bi-directional many-to-one association to ShippingHead
 	@ManyToOne
-	@JoinColumn(name="guideDetails")
+	@JoinColumn(name="guide_head_id")
 	private GuideHead guideHead;
 	
 	public GuideDetail() {

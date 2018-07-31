@@ -57,6 +57,9 @@ public class GuideHead implements Serializable {
 	@Column(name = "end_point")
 	private String endPoint;
 	
+	@Column(name = "guide_benefied")
+	private String guideBenefied;
+	
 	//bi-directional many-to-one association to Enterprise
 	@ManyToOne
 	@JoinColumn(name="enterprise_id")
@@ -187,6 +190,14 @@ public class GuideHead implements Serializable {
 
 	public void setGuideStatus(String guideStatus) {
 		this.guideStatus = guideStatus;
+	}
+
+	public String getGuideBenefied() {
+		return guideBenefied;
+	}
+
+	public void setGuideBenefied(String guideBenefied) {
+		this.guideBenefied = guideBenefied;
 	}
 
 	public String getReason() {

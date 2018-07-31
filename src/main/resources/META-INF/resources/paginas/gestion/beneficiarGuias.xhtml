@@ -1,0 +1,280 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="../../plantillas/defecto.xhtml">
+	<ui:define name="titulo">Etiquetas</ui:define>
+	<ui:define name="contenido">
+
+		<script type="text/javascript">
+		<!--
+			-->
+		</script>
+
+
+		<h1>Etiquetas</h1>
+		
+		<h:form id="wLisLabels">
+			<p:growl life="3000" showDetail="true" id="msjLisLabel"
+				autoUpdate="true" />
+			<div class="scrollTabla" style="min-height: 150px;">
+				<h3 style="text-decoration: underline;">Listado de Compras</h3>
+				<p:dataTable paginator="true" paginatorPosition="top" rows="5"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+					id="tblCompra" var="compra" value="#{beneficiarGuiaMB.lstComprasHeadMain}" rowKey="#{compra.id}"
+                 selection="#{beneficiarGuiaMB.objCompraSeleccionada}" selectionMode="single" style="width: 100%; margin-bottom:20px;"
+                 emptyMessage="No existen registros">
+                 	<p:ajax event="rowSelect" listener="#{beneficiarGuiaMB.cargaTablaDetalle}" update="wLisLabels:tblCompraDetalle"/>
+			    	<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Item" />
+						</f:facet>
+							<h:outputText value="#{compra.id}"/>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Proveedor" />
+						</f:facet>
+							<h:outputText value="#{compra.provider.providerSocialReason}"/>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Nro. Comprobante" />
+						</f:facet>
+							<h:outputText value="#{compra.guideNumber}"/>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Estado" />
+						</f:facet>
+							<h:outputText value="#{compra.guideStatus}" converter="#{statusConverter}"/>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Fec. Creación" />
+						</f:facet>
+							<h:outputText value="#{compra.guideCreationDate}">
+								<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+							</h:outputText>
+					</p:column>
+			    </p:dataTable> 
+			</div>
+			<div class="scrollTabla" style="min-height: 150px;">
+				<h3 style="text-decoration: underline;">Listado de Detalles de la Compra</h3>
+				<p:dataTable paginator="true" paginatorPosition="top" rows="5"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" 
+					id="tblCompraDetalle" var="compraDetalle" value="#{beneficiarGuiaMB.lstComprasDetailMain}" rowKey="#{compraDetalle.shippingDetailId}"
+                 	selection="#{beneficiarGuiaMB.objCompraDetalleSeleccionada}" selectionMode="single" style="width: 100%;"
+                 	emptyMessage="No existen registros">
+                 	<p:ajax event="rowSelect" listener="#{beneficiarGuiaMB.cargaTablaEtiquetas}" update="wLisLabels:tblLabels,wLisLabels:btnGestEtiq"/>
+			    	<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Item Compra" />
+						</f:facet>
+							<h:outputText value="#{compraDetalle.shippingHead.shippingId}"/>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Item" />
+						</f:facet>
+							<h:outputText value="#{compraDetalle.shippingDetailId}"/>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Producto" />
+						</f:facet>
+							<h:outputText value="#{compraDetalle.productLabel.productLabelDescription}"/>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Cantidad Beneficiada" />
+						</f:facet>
+							<h:outputText value="#{compraDetalle.shippingQuantityBenefit}"/>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Fec. Creación" />
+						</f:facet>
+							<h:outputText value="#{compraDetalle.shippingCreationDate}">
+								<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+							</h:outputText>
+					</p:column>
+			    </p:dataTable> 
+			</div>
+			<div class="scrollTabla" style="min-height: 150px;">
+				<h3 style="text-decoration: underline;">Listado de Etiquetas Adicionales</h3>
+				<p:dataTable paginator="true" paginatorPosition="top" rows="5"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" 
+					id="tblLabels" var="labels" value="#{beneficiarGuiaMB.lstEtiquetasMain}" rowKey="#{labels.shippingDetailLabelId}"
+                 	selection="#{beneficiarGuiaMB.objCompraDetalleLabelSeleccionada}" selectionMode="single" style="width: 100%;"
+                 	emptyMessage="No se encontraron registros">
+			    	<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Item Detalle" />
+						</f:facet>
+							<h:outputText value="#{labels.shippingDetail.shippingDetailId}"/>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Item" />
+						</f:facet>
+							<h:outputText value="#{labels.shippingDetailLabelId}"/>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Etiqueta" />
+						</f:facet>
+							<h:outputText value="#{labels.productLabel.productLabelDescription}"/>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Tipo" />
+						</f:facet>
+							<h:outputText value="#{labels.shippingDetailLabelType}" converter="#{statusConverter}"/>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Cantidad Beneficiada" />
+						</f:facet>
+							<h:outputText value="#{labels.shippingDetailLabelQuantityBenefit}"/>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Fec. Creación" />
+						</f:facet>
+							<h:outputText value="#{labels.shippingDetailLabelCreationDate}">
+								<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+							</h:outputText>
+					</p:column>
+			    </p:dataTable>
+			    <p:contextMenu for="tblLabels">
+			        <p:menuitem value="Editar cantidad beneficiada" update="iddlgEditarCantidadBeneficiada,msjLisLabel" 
+			        	icon="ui-icon-edit" actionListener="#{beneficiarGuiaMB.openActualizarCantidadBeneficiada}"
+			        	oncomplete="if (!args.validationFailed) {PF('dlgEditarCantidadBeneficiada').show()}"/>
+			    </p:contextMenu>
+			</div>
+			<div class="opcionesTabla" style="text-align: left;">
+				<p:commandButton id="btnGestEtiq" 
+					value="Gestionar Etiquetas"
+					icon="ui-icon-plus"
+					actionListener="#{beneficiarGuiaMB.openGestionarEtiquetas}"
+					oncomplete="PF('dlgGestionarEtiquetas').show()"
+					update=":iddlgdlgGestionarEtiquetas" 
+					disabled="#{beneficiarGuiaMB.flagInhabilitaGestEtiq}"/>
+				<div style="clear: both;"></div>
+			</div>
+		</h:form>
+		<p:dialog header="Gestionar Etiquetas" widgetVar="dlgGestionarEtiquetas"
+			modal="true" width="500" position="top" id="iddlgdlgGestionarEtiquetas">
+
+			<p:growl life="3000" showDetail="true" id="msjGestionEtiquetas"
+				autoUpdate="true" />
+
+			<h1>Gestionar Etiquetas</h1>
+			<h:form id="wLabelManagement">
+				<p:panel header="Etiquetas" toggleable="false"
+					id="pGestionEtiquetas">
+					<p:pickList id="pklEtiquetas" value="#{beneficiarGuiaMB.lstEtiquetasSeleccionMain}" 
+						var="etiquetas" itemLabel="#{etiquetas.productLabel.productLabelDescription}" itemValue="#{etiquetas}" 
+							converter="#{shippingDetailLabelConverter}">
+						<p:ajax event="transfer" listener="#{beneficiarGuiaMB.onTransfer}" />
+					</p:pickList>
+					<div class="opcionesTabla" style="text-align: left;">
+						<p:commandButton value="Grabar" icon="ui-icon-disk"
+							actionListener="#{beneficiarGuiaMB.agregarEtiquetasDetalle}"
+							update=":wLisLabels:tblLabels"
+							oncomplete="PF('dlgGestionarEtiquetas').hide()" />
+						<p:commandButton value="Cerrar" icon="ui-icon-close"
+							onclick="PF('dlgGestionarEtiquetas').hide()" />
+					</div>
+					<div style="clear: both;"></div>
+				</p:panel>
+
+				<div style="clear: both;"></div>
+			</h:form>
+		</p:dialog>
+		<p:dialog header="Editar Cantidad Beneficiada"
+			widgetVar="dlgEditarCantidadBeneficiada" modal="true" width="700"
+			position="top" id="iddlgEditarCantidadBeneficiada">
+
+			<p:growl life="3000" showDetail="true" id="msjEditarCantidadBeneficiada"
+				autoUpdate="true" />
+
+			<h1>Editar Cantidad Beneficiada</h1>
+			<h:form id="wEditCantBen">
+				<p:accordionPanel id="pEditCanBen">
+					<p:tab title="Datos del Item">
+						<div class="filas">
+							<div class="mitad">
+								<div class="completo">
+									<div class="tercio">
+										<h:outputLabel for="txtItemEtiqDet"
+											value="Item:" />
+									</div>
+									<div class="dostercios">
+										<div class="input">
+											<p:inputText id="txtItemEtiqDet" 
+												value="#{beneficiarGuiaMB.objCompraDetalleLabelEditar.shippingDetailLabelId}"
+												disabled="true"/>
+										</div>
+										<div class="tooltip">
+											<h:graphicImage id="imgItemEtiqLabel"
+												url="../../recursos/imagenes/help.png"></h:graphicImage>
+											<p:tooltip for="imgItemEtiqLabel" value="Item de etiqueta detalle" />
+										</div>
+									</div>
+									<p:message for="txtItemEtiqDet" />
+								</div>
+							</div>
+							<div class="mitad">
+								<div class="completo">
+									<div class="tercio">
+										<h:outputLabel for="txtCantBenefit"
+											value="Canditad beneficiada:" />
+										<h:outputLabel value="*" style="Color:red" />
+									</div>
+									<div class="dostercios">
+										<div class="input">
+											<p:inputNumber id="txtCantBenefit" decimalPlaces="0" minValue="0"
+												value="#{beneficiarGuiaMB.objCompraDetalleLabelEditar.shippingDetailLabelQuantityBenefit}" />
+										</div>
+										<div class="tooltip">
+											<h:graphicImage id="imgCantBenefit"
+												url="../../recursos/imagenes/help.png"></h:graphicImage>
+											<p:tooltip for="imgCantBenefit"
+												value="Cantidad beneficiada" />
+										</div>
+									</div>
+									<p:message for="txtCantBenefit" />
+								</div>
+							</div>
+						</div>
+						<div class="boton">
+							<p:commandButton value="Guardar" icon="ui-icon-disk"
+								actionListener="#{beneficiarGuiaMB.actualizarCantidadBeneficiada}"
+								update=":msjEditarCantidadBeneficiada,:wLisLabels:tblLabels"
+								oncomplete="if (!args.validationFailed) {PF('dlgEditarCantidadBeneficiada').hide()}"  />
+						</div>
+					</p:tab>
+				</p:accordionPanel>
+
+			</h:form>
+		</p:dialog>
+		<p:confirmDialog message="¿Está seguro de guardar los cambios?"
+			width="300" showEffect="explode" hideEffect="explode"
+			header="Mensaje de Confirmación" severity="alert"
+			widgetVar="confirmationGestionarEtiquetas" modal="true">
+			<h:form>
+				<p:commandButton value="Si"
+					actionListener="#{beneficiarGuiaMB.agregarEtiquetasDetalle}"
+					update=":wLisLabels:msjLisLabel"/>
+				<p:commandButton value="No"
+					onclick="PF('confirmationGestionarEtiquetas').hide()" type="button" />
+			</h:form>
+		</p:confirmDialog>
+	</ui:define>
+
+</ui:composition>

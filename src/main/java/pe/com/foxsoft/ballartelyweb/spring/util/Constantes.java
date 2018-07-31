@@ -13,6 +13,8 @@ public class Constantes {
 	public static final String ACCOUNT_TYPE_P = "P";
 	public static final String STATUS_ACTIVE = "1";
 	public static final String STATUS_INACTIVE = "0";
+	public static final String BENEFIED_YES = "Y";
+	public static final String BENEFIED_NO = "N";
 	public static final String MOVEMENT_OBSERVATION_GUIDE = "Registro de Guia.";
 	public static final String MOVEMENT_TYPE_GUIDE = "GUIA";
 	public static final String STATUS_PRODUCT_COLD = "C";

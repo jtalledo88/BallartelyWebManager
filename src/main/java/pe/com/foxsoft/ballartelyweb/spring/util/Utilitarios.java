@@ -18,6 +18,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import pe.com.foxsoft.ballartelyweb.spring.domain.TipoParametro;
 import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
@@ -85,14 +86,14 @@ public class Utilitarios {
 		ct.addMessage(null, new FacesMessage(titulo, mensaje));
 	}
 
-	public static void mensajeInfo(String titutlo, String mensaje) {
+	public static void mensajeInfo(String titulo, String mensaje) {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
-		facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Informaci�n", mensaje));
+		facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, titulo, mensaje));
 	}
 
 	public static void mensajeError(String titutlo, String mensaje) {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
-		facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Atenci�n", mensaje));
+		facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, titutlo, mensaje));
 	}
 
 	public static void putObjectInSession(String value, Object var) {
@@ -180,6 +181,47 @@ public class Utilitarios {
 				
 			}
 		}
+	}
+	
+	public static InputStream obtenerArchivo(String directorio, String archivo) throws BallartelyException {
+		InputStream in = null;
+		try {
+			File parent = new File(directorio);
+			File file = new File(parent, archivo);
+			in = FileUtils.openInputStream(file);
+			return in;
+		} catch (IOException e) {
+			throw new BallartelyException(BallartelyException.GENERAL_ERROR, e.getMessage());
+		}
+	}
+
+	public static String obtenerExtension(String fileName) {
+		String[] vals = StringUtils.split(fileName, ".");
+		return vals[vals.length - 1];
+	}
+
+	public static String vacioComoNulo(String value) {
+		return StringUtils.trimToNull(value);
+	}
+
+	public static String obtenerTipoArchivo(String fileName) {
+		String ext = obtenerExtension(fileName);
+		String tipo = null;
+		switch(ext) {
+		case "jpg":
+			tipo = "image/jpg";
+			break;
+		case "jpeg":
+			tipo = "image/jpeg";
+			break;
+		case "png":
+			tipo = "image/png";
+			break;
+		case "gif":
+			tipo = "image/gif";
+			break;
+		}
+		return tipo;
 	}
 	
 }

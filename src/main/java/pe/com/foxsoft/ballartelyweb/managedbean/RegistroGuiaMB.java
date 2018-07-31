@@ -24,7 +24,7 @@ import pe.com.foxsoft.ballartelyweb.jpa.data.GuideHead;
 import pe.com.foxsoft.ballartelyweb.jpa.data.Movement;
 import pe.com.foxsoft.ballartelyweb.jpa.data.Provider;
 import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
-import pe.com.foxsoft.ballartelyweb.spring.service.CompraService;
+import pe.com.foxsoft.ballartelyweb.spring.service.GuiaService;
 import pe.com.foxsoft.ballartelyweb.spring.service.CuentaService;
 import pe.com.foxsoft.ballartelyweb.spring.service.EmpresaService;
 import pe.com.foxsoft.ballartelyweb.spring.service.EtiquetaProductoService;
@@ -40,7 +40,7 @@ public class RegistroGuiaMB {
 	protected final Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Autowired
-	private CompraService compraService;
+	private GuiaService guiaService;
 	
 	@Autowired
 	private CuentaService cuentaService;
@@ -139,6 +139,7 @@ public class RegistroGuiaMB {
 			
 			
 			objGuideHeadMain.setGuideStatus(Constantes.STATUS_PRODUCT_FRESH);
+			objGuideHeadMain.setGuideBenefied(Constantes.BENEFIED_NO);
 			
 			Movement movement = new Movement();
 			movement.setAccount(cuentaService.obtenerCuentaPrincipal());
@@ -150,8 +151,10 @@ public class RegistroGuiaMB {
 			movement.setPaymentDocumentnumber(objGuideHeadMain.getGuideNumber());
 			movement.setProvider(objGuideHeadMain.getProvider());
 			
-			sMensaje = compraService.insertarCompra(objGuideHeadMain, lstItemsGuideMain, movement);
+			sMensaje = guiaService.insertarGuia(objGuideHeadMain, lstItemsGuideMain, movement);
 			GeneralParameter generalParameterUpload = this.parametroGeneralService.obtenerParametroGeneral(propiedades.getUniqueCodeUpload());
+			String guideFile = Constantes.MOVEMENT_TYPE_GUIDE + "_" + objGuideHeadMain.getGuideNumber() + "." + objGuideHeadMain.getGuideFile();
+			objGuideHeadMain.setGuideFile(guideFile);
 			Utilitarios.guardarArchivo(generalParameterUpload.getParamValue(), objGuideHeadMain.getGuideFile(), isGuide);
 			reiniciarFormulario();
 			Utilitarios.mensaje("", sMensaje);
@@ -232,7 +235,7 @@ public class RegistroGuiaMB {
 	public void subirComprobante(FileUploadEvent event) {
 		String sMensaje = null;
         try {
-        	objGuideHeadMain.setGuideFile(event.getFile().getFileName());
+        	objGuideHeadMain.setGuideFile(Utilitarios.obtenerExtension(event.getFile().getFileName()));
 			this.isGuide = event.getFile().getInputstream();
 			Utilitarios.mensaje("", "Archivo " + event.getFile().getFileName() + " subido con exito.");
 		} catch (IOException e) {
@@ -244,8 +247,10 @@ public class RegistroGuiaMB {
 	
 	private void reiniciarFormulario() {
 		this.objGuideHeadMain = new GuideHead();
+		this.objGuideHeadMain.setProvider(new Provider());
 		this.isGuide = null;
 		this.lstItemsGuideMain = new ArrayList<>();
+		agregarItemGuia();
 	}
 	
 	private void obtenerProveedores() {
@@ -258,12 +263,12 @@ public class RegistroGuiaMB {
 		}
 	}
 	
-	public CompraService getCompraService() {
-		return compraService;
+	public GuiaService getGuiaService() {
+		return guiaService;
 	}
 
-	public void setCompraService(CompraService compraService) {
-		this.compraService = compraService;
+	public void setGuiaService(GuiaService guiaService) {
+		this.guiaService = guiaService;
 	}
 
 	public CuentaService getCuentaService() {

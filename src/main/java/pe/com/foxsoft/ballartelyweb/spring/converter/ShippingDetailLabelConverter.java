@@ -9,14 +9,14 @@ import javax.inject.Named;
 import pe.com.foxsoft.ballartelyweb.jpa.data.ProductLabel;
 import pe.com.foxsoft.ballartelyweb.jpa.data.ShippingDetailLabel;
 import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
-import pe.com.foxsoft.ballartelyweb.spring.service.CompraService;
+import pe.com.foxsoft.ballartelyweb.spring.service.GuiaService;
 import pe.com.foxsoft.ballartelyweb.spring.service.EtiquetaProductoService;
 
 @Named
 public class ShippingDetailLabelConverter implements Converter{
 
 	@Inject
-	private CompraService compraService;
+	private GuiaService compraService;
 	
 	@Inject
 	private EtiquetaProductoService etiquetaProductoService;
@@ -55,11 +55,11 @@ public class ShippingDetailLabelConverter implements Converter{
 		return String.valueOf(detailLabel.getShippingDetailLabelId() + "," + detailLabel.getProductLabel().getProductLabelId());
 	}
 
-	public CompraService getCompraService() {
+	public GuiaService getCompraService() {
 		return compraService;
 	}
 
-	public void setCompraService(CompraService compraService) {
+	public void setCompraService(GuiaService compraService) {
 		this.compraService = compraService;
 	}
 	

@@ -1,0 +1,435 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="../../../plantillas/defecto.xhtml">
+	<ui:define name="titulo">Consultar Guías</ui:define>
+	<ui:define name="contenido">
+
+		<script type="text/javascript">
+		<!--
+			-->
+		</script>
+
+
+		<h1>Consultar Guías</h1>
+		<h:form id="wLisGuide">
+			<!-- <p:panel header="Criterios de b&#250;squeda" toggleable="true"> -->
+
+			<p:growl life="3000" showDetail="true" id="msjLisGuide"
+				autoUpdate="true" />
+
+			<p:accordionPanel>
+				<p:tab title="Criterios de b&#250;squeda">
+					<div class="filas">
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtNumeroGuia"
+										value="Número Guía" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtNumeroGuia"
+											value="#{consultaGuiaMB.objGuideHeadMain.guideNumber}"/>
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgNumeroGuia"
+											url="../../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgNumeroGuia"
+											value="Número de Guía" />
+									</div>
+								</div>
+								<p:message for="txtNumeroGuia" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="cldFechaEmisionInicio" value="Fecha Emisión (Desde):" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:calendar id="cldFechaEmisionInicio" pattern="dd/MM/yyyy" mask="true" maskAutoClear="true"
+											value="#{consultaGuiaMB.emissionDateStartSearch}">
+											<p:ajax event="dateSelect" update="cldFechaEmisionFin"/>
+											</p:calendar>
+
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgFechaEmisionInicio"
+											url="../../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgFechaEmisionInicio"
+											value="Fecha de Guía" />
+									</div>
+								</div>
+								<p:message for="cldFechaEmisionInicio" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="cldFechaRegistroInicio" value="Fecha Registro (Desde):" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:calendar id="cldFechaRegistroInicio" pattern="dd/MM/yyyy" mask="true" maskAutoClear="true"
+											value="#{consultaGuiaMB.creationDateStartSearch}" >
+											<p:ajax event="dateSelect" update="cldFechaRegistroFin"/>
+										</p:calendar>
+
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgFechaRegistroInicio"
+											url="../../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgFechaRegistroInicio"
+											value="Fecha de Registro" />
+									</div>
+								</div>
+								<p:message for="cldFechaRegistroInicio" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="cboEstado" value="Estado:" />
+								</div>
+								<div class="dostercios">
+									<div class="combo">
+										<p:selectOneMenu id="cboEstado"
+											value="#{consultaGuiaMB.objGuideHeadMain.guideStatus}">
+											<f:selectItem itemLabel="-- Todos --" itemValue=""/>
+											<f:selectItem itemLabel="Fresco" itemValue="F" />
+											<f:selectItem itemLabel="Frio" itemValue="C" />
+										</p:selectOneMenu>
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgEstado"
+											url="../../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgEstado" value="Estado de la guía" />
+									</div>
+								</div>
+								<p:message for="cboEstado" />
+							</div>
+						</div>
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="cboBeneficiado" value="Beneficiado:" />
+								</div>
+								<div class="dostercios">
+									<div class="combo">
+										<p:selectOneMenu id="cboBeneficiado"
+											value="#{consultaGuiaMB.objGuideHeadMain.guideBenefied}">
+											<f:selectItem itemLabel="-- Todos --" itemValue=""/>
+											<f:selectItem itemLabel="SI" itemValue="Y" />
+											<f:selectItem itemLabel="NO" itemValue="N" />
+										</p:selectOneMenu>
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgBeneficiado"
+											url="../../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgBeneficiado" value="Es guía beneficiada?" />
+									</div>
+								</div>
+								<p:message for="cboBeneficiado" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="cldFechaEmisionFin" value="Fecha Emisión (Hasta):" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:calendar id="cldFechaEmisionFin" pattern="dd/MM/yyyy" mask="true" maskAutoClear="true"
+											mindate="#{consultaGuiaMB.emissionDateStartSearch}"
+											value="#{consultaGuiaMB.emissionDateEndSearch}" />
+
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgFechaEmisionFin"
+											url="../../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgFechaEmisionFin"
+											value="Fecha de Guía" />
+									</div>
+								</div>
+								<p:message for="cldFechaEmisionFin" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="cldFechaRegistroFin" value="Fecha Registro (Hasta):" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:calendar id="cldFechaRegistroFin" pattern="dd/MM/yyyy" mask="true" maskAutoClear="true"
+											mindate="#{consultaGuiaMB.creationDateStartSearch}"
+											value="#{consultaGuiaMB.creationDateEndSearch}" />
+
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgFechaRegistroFin"
+											url="../../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgFechaRegistroFin"
+											value="Fecha de Registro" />
+									</div>
+								</div>
+								<p:message for="cldFechaRegistroFin" />
+							</div>
+						</div>
+					</div>
+					<div class="boton">
+						<p:commandButton value="Buscar" icon="ui-icon-search"
+							actionListener="#{consultaGuiaMB.buscarGuias}"
+							update=":wLisGuide:tblGuias, :wLisGuide:msjLisGuide" />
+					</div>
+					<div style="clear: both;"></div>
+					<!-- </p:panel> -->
+				</p:tab>
+			</p:accordionPanel>
+			<h2>Resultados</h2>
+			<p:separator />
+
+			<div class="scrollTabla">
+				<p:dataTable paginator="true" paginatorPosition="top" rows="10"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+					style="width: 100%; margin-bottom:20px;" var="guia"
+					value="#{consultaGuiaMB.lstGuideHeadMain}" id="tblGuias"
+					emptyMessage="No se encontraron registros">
+					<f:facet name="{Exporters}">
+						<h:commandLink>
+							<p:graphicImage url="../../../recursos/imagenes/excel.png"
+								width="24" />
+							<p:dataExporter type="xls" target="tblGuias"
+								fileName="Guides" />
+						</h:commandLink>
+
+						<h:commandLink>
+							<p:graphicImage url="../../../recursos/imagenes/pdf.png" width="24" />
+							<p:dataExporter type="pdf" target="tblGuias"
+								fileName="Guides" />
+						</h:commandLink>
+
+						<h:commandLink>
+							<p:graphicImage url="../../../recursos/imagenes/csv.png" width="24" />
+							<p:dataExporter type="csv" target="tblGuias"
+								fileName="Guides" />
+						</h:commandLink>
+
+						<h:commandLink>
+							<p:graphicImage url="../../../recursos/imagenes/xml.png" width="24" />
+							<p:dataExporter type="xml" target="tblGuias"
+								fileName="Guides" />
+						</h:commandLink>
+					</f:facet>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Item" />
+						</f:facet>
+						<h:outputText value="#{guia.id}" />
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Guía" />
+						</f:facet>
+						<h:outputText value="#{guia.guideNumber}" />
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Estado" />
+						</f:facet>
+						<h:outputText value="#{guia.guideStatus}" converter="#{statusConverter}" />
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Beneficiado" />
+						</f:facet>
+						<h:outputText value="#{guia.guideBenefied}" converter="#{statusConverter}" />
+					</p:column>
+					<p:column styleClass="fecha">
+						<f:facet name="header">
+							<h:outputText value="Fecha Emisión" />
+						</f:facet>
+						<h:outputText value="#{guia.emissionDate}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+					<p:column styleClass="fecha">
+						<f:facet name="header">
+							<h:outputText value="Fecha Registro" />
+						</f:facet>
+						<h:outputText value="#{guia.guideCreationDate}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+					<p:column styleClass="oficina" exportable="false">
+						<f:facet name="header">
+							<h:outputText value="Ver Archivo" />
+						</f:facet>
+						<p:commandLink style="float: right; padding-right:48%;"
+							onclick="PF('dlgVerImagen').show()"
+							action="#{consultaGuiaMB.openVerImagen}"
+							update=":wVerImagen:pVerImagen">
+							<f:param name="itemGuiaArchivo" value="#{guia.id}"
+								id="itemGuiaArchivo" />
+							<p:graphicImage  url="../../../recursos/imagenes/icon-verimagen.png" width="15" height="15" />
+						</p:commandLink>
+					</p:column>
+					<p:column styleClass="oficina" exportable="false">
+						<f:facet name="header">
+							<h:outputText value="Ver Detalle" />
+						</f:facet>
+						<p:commandLink style="float: right; padding-right:48%;"
+							onclick="PF('dlgVerDetalleGuia').show()"
+							action="#{consultaGuiaMB.openVerDetalle}"
+							update=":wVerDetGuia:pVerDetalleGuia">
+							<f:param name="itemGuiaDetalle" value="#{guia.id}"
+								id="itemGuiaDetalle" />
+							<p:graphicImage  url="../../../recursos/imagenes/icon_lupa.png" width="15" height="15" />
+						</p:commandLink>
+					</p:column>
+					<p:column styleClass="eliminar" exportable="false">
+						<f:facet name="header">
+							<h:outputText value="Beneficiar" />
+						</f:facet>
+						<p:commandLink style="float: right; padding-right:48%;" rendered="#{guia.guideBenefied == 'N'}"
+							action="/paginas/gestion/beneficiarGuias.xhtml?faces-redirect=true" ajax="false">
+							<f:setPropertyActionListener value="#{guia}"
+								target="#{beneficiarGuiaMB.objGuideHeadMain}" />
+							<p:graphicImage url="../../../recursos/imagenes/icon_beneficiar.png" width="15" height="15" />
+						</p:commandLink>
+						<p:graphicImage style="float: right; padding-right:48%;" url="../../../recursos/imagenes/icon-ok.png" 
+							width="15" height="15" rendered="#{guia.guideBenefied == 'Y'}"/>
+					</p:column>
+					
+					
+					<f:facet name="footer">  
+          			Total registros: <h:outputText
+							value="#{consultaGuiaMB.canRegTablaPrincipal}" />
+					</f:facet>
+				</p:dataTable>
+			</div>
+		</h:form>
+
+		<!-- ******************************************* PRODUCTOS ************************************************ -->
+
+		<p:dialog header="Ver Imagen" widgetVar="dlgVerImagen"
+			modal="true" width="930" position="top" id="iddlgVerImagen">
+
+			<p:growl life="3000" showDetail="true" id="msjVerImagen"
+				autoUpdate="true" />
+
+			<h1>Imagen</h1>
+			<h:form id="wVerImagen">
+				<p:panel header="Ver Imagen" toggleable="false"
+					id="pVerImagen">
+
+					<p:graphicImage width="100%" height="100%" 
+						value="#{consultaGuiaMB.guideImageSelected}"/>
+				
+				</p:panel>
+				<div style="clear: both;"></div>
+				<div class="boton">
+					<p:commandButton value="Cerrar" icon="ui-icon-close"
+						onclick="PF('dlgVerImagen').hide()" />
+				</div>
+			</h:form>
+		</p:dialog>
+		<p:dialog header="Ver Detalle" widgetVar="dlgVerDetalleGuia"
+			modal="true" width="930" position="top" id="iddlgVerDetalleGuia">
+
+			<p:growl life="3000" showDetail="true" id="msjVerDetalleGuia"
+				autoUpdate="true" />
+
+			<h1>Detalle Guía</h1>
+			<h:form id="wVerDetGuia">
+				<p:panel header="Detalle Guía" toggleable="false"
+					id="pVerDetalleGuia">
+					<div class="scrollTabla">
+						<p:dataTable style="width: 100%;" var="itemGuia" value="#{consultaGuiaMB.lstItemsGuideMain}" 
+							id="tblItemGuia" widgetVar="tblItemGuia"
+							emptyMessage="Agregar Items a la Guía">
+							
+							<p:column styleClass="oficina">
+								<f:facet name="header">
+									<h:outputText value="Nro Jabas" />
+								</f:facet>
+								<h:outputText value="#{itemGuia.boxesQuantity}"/>	
+							</p:column>	
+							<p:column styleClass="oficina">
+								<f:facet name="header">
+									<h:outputText value="Nro Pollos" />
+								</f:facet>
+								<h:outputText value="#{itemGuia.productQuantity}"/>
+							</p:column>
+							<p:column styleClass="oficina">
+								<f:facet name="header">
+									<h:outputText value="Peso bruto" />
+								</f:facet>
+								<h:outputText value="#{itemGuia.initialWeight}" >
+				                	<f:convertNumber maxFractionDigits="2" minFractionDigits="2" maxIntegerDigits="8" />
+				                </h:outputText>
+							</p:column>
+							<p:column styleClass="oficina">
+								<f:facet name="header">
+									<h:outputText value="Tara" />
+								</f:facet>
+								<h:outputText value="#{itemGuia.taraWeight}">
+				                	<f:convertNumber maxFractionDigits="2" minFractionDigits="2" maxIntegerDigits="8" />
+				                </h:outputText>
+							</p:column>
+							<p:column styleClass="oficina">
+								<f:facet name="header">
+									<h:outputText value="Peso neto" />
+								</f:facet>
+								<h:outputText value="#{itemGuia.netWeight}">
+				                	<f:convertNumber maxFractionDigits="2" minFractionDigits="2" maxIntegerDigits="8" />
+				                </h:outputText>
+							</p:column>
+							<p:column styleClass="oficina">
+								<f:facet name="header">
+									<h:outputText value="Promedio" />
+								</f:facet>
+								<h:outputText value="#{itemGuia.average}">
+				                	<f:convertNumber maxFractionDigits="2" minFractionDigits="2" maxIntegerDigits="8" />
+				                </h:outputText>
+							</p:column>
+							<p:column styleClass="oficina">
+								<f:facet name="header">
+									<h:outputText value="Nro pollos muertos" />
+								</f:facet>
+				                <h:outputText value="#{itemGuia.deadQuantity}"/>
+							</p:column>
+							<p:column styleClass="oficina">
+								<f:facet name="header">
+									<h:outputText value="Peso pollos muertos" />
+								</f:facet>
+				                <h:outputText value="#{itemGuia.deadWeight}">
+				                	<f:convertNumber maxFractionDigits="2" minFractionDigits="2" maxIntegerDigits="8" />
+				                </h:outputText>
+							</p:column>
+							<p:column styleClass="oficina">
+								<f:facet name="header">
+									<h:outputText value="Precio x KG" />
+								</f:facet>
+								<h:outputText value="#{itemGuia.unitCost}">
+				                	<f:convertNumber maxFractionDigits="2" minFractionDigits="2" maxIntegerDigits="8" />
+				                </h:outputText>
+							</p:column>
+							<p:column styleClass="oficina">
+								<f:facet name="header">
+									<h:outputText value="Producto" />
+								</f:facet>
+								<h:outputText value="#{itemGuia.productDescription}"/>
+							</p:column>
+						</p:dataTable>
+					</div>
+					<div class="boton">
+						<p:commandButton value="Cerrar" icon="ui-icon-close"
+							onclick="PF('dlgVerDetalleGuia').hide()" />
+					</div>
+					<div style="clear: both;"></div>
+				</p:panel>
+
+				<div style="clear: both;"></div>
+			</h:form>
+		</p:dialog>
+
+	</ui:define>
+
+</ui:composition>
