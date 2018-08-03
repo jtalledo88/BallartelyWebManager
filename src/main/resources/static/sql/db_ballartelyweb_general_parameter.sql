@@ -25,7 +25,7 @@ DROP TABLE IF EXISTS `general_parameter`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `general_parameter` (
-  `param_id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `param_type` varchar(15) NOT NULL,
   `param_code` varchar(10) NOT NULL,
   `param_description` varchar(250) NOT NULL,
@@ -33,9 +33,9 @@ CREATE TABLE `general_parameter` (
   `param_creation_date` datetime DEFAULT CURRENT_TIMESTAMP,
   `param_modification_date` datetime DEFAULT CURRENT_TIMESTAMP,
   `param_status` char(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`param_id`),
+  PRIMARY KEY (`id`),
   UNIQUE KEY `param_code_UNIQUE` (`param_code`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -44,7 +44,7 @@ CREATE TABLE `general_parameter` (
 
 LOCK TABLES `general_parameter` WRITE;
 /*!40000 ALTER TABLE `general_parameter` DISABLE KEYS */;
-INSERT INTO `general_parameter` (`param_id`, `param_type`, `param_code`, `param_description`, `param_value`, `param_creation_date`, `param_modification_date`, `param_status`) VALUES (1,'STATUS','A','ESTADO ACTIVO','ACTIVO','2018-05-09 13:47:45',NULL,'1'),(2,'STATUS','I','ESTADO INACTIVO','INACTIVO','2018-05-09 13:48:00',NULL,'1'),(3,'DOCTYPE','DNI','DOCUMENTO NACIONAL DE IDENTIDAD','D.N.I','2018-05-09 13:48:39',NULL,'1'),(4,'DOCTYPE','RUC','REGISTRO ÚNICO CALIFICADO','R.U.C','2018-05-09 13:49:18',NULL,'1'),(5,'CLIENTTYPE','M','CLIENTE MOROSO','MOROSO','2018-05-09 13:49:52',NULL,'1'),(6,'CLIENTTYPE','N','CLIENTE NORMAL','NORMAL','2018-05-09 13:50:11',NULL,'1'),(7,'CLIENTTYPE','P','CLIENTE PREFERENCIAL','PREFERENCIAL','2018-05-09 13:50:26',NULL,'1'),(8,'GENERIC','IGV','Impuesto general a las ventas','0.18','2018-05-15 19:19:23',NULL,'1'),(9,'GENERIC','UPLOADDIR','Ruta de comprobantes de pago digitales','C:\\Users\\javie\\Documents\\Programacion\\Proyecto Ballartely\\comprobantes_digitales\\','2018-05-17 17:43:04','2018-05-17 19:35:35','1');
+INSERT INTO `general_parameter` (`id`, `param_type`, `param_code`, `param_description`, `param_value`, `param_creation_date`, `param_modification_date`, `param_status`) VALUES (1,'STATUS','A','ESTADO ACTIVO','ACTIVO','2018-05-09 13:47:45',NULL,'1'),(2,'STATUS','I','ESTADO INACTIVO','INACTIVO','2018-05-09 13:48:00',NULL,'1'),(3,'DOCTYPE','DNI','DOCUMENTO NACIONAL DE IDENTIDAD','D.N.I','2018-05-09 13:48:39',NULL,'1'),(4,'DOCTYPE','RUC','REGISTRO ÚNICO CALIFICADO','R.U.C','2018-05-09 13:49:18',NULL,'1'),(5,'CLIENTTYPE','M','CLIENTE MOROSO','MOROSO','2018-05-09 13:49:52',NULL,'1'),(6,'CLIENTTYPE','N','CLIENTE NORMAL','NORMAL','2018-05-09 13:50:11',NULL,'1'),(7,'CLIENTTYPE','P','CLIENTE PREFERENCIAL','PREFERENCIAL','2018-05-09 13:50:26',NULL,'1'),(8,'GENERIC','VPM','Porcentaje Merma','0.32','2018-05-15 19:19:23','2018-08-01 16:54:30','1'),(9,'GENERIC','UPLOADDIR','Ruta de comprobantes de pago digitales','C:\\Users\\javie\\Documents\\Programacion\\Proyecto Ballartely\\comprobantes_digitales\\','2018-05-17 17:43:04','2018-05-17 19:35:35','1'),(10,'GENERIC','VPD','Porcentaje Deshidratación','1.41','2018-08-02 17:39:08','2018-08-02 17:39:08','1'),(11,'EXPEND','GBN','COSTO BENEFICIO','0.00','2018-08-02 17:47:47','2018-08-02 17:47:47','1'),(12,'EXPEND','GDB','COSTO DESEMBARCO','0.00','2018-08-02 17:48:42','2018-08-02 17:48:42','1'),(13,'EXPEND','GFL','COSTO FLETE','0.00','2018-08-02 17:49:03','2018-08-02 17:49:03','1'),(14,'EXPEND','GHL','COSTO HIELO','0.00','2018-08-02 17:49:35','2018-08-02 17:49:35','1'),(15,'EXPEND','GVR','COSTO VARIOS (MENU, PASAJES, ETC)','0.00','2018-08-02 17:50:28','2018-08-02 17:50:28','1'),(16,'GENERIC','VCB','Valor de costo de beneficio','0.22','2018-08-02 18:01:37','2018-08-02 18:01:37','1');
 /*!40000 ALTER TABLE `general_parameter` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -57,4 +57,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-21 13:58:07
+-- Dump completed on 2018-08-03  1:00:38

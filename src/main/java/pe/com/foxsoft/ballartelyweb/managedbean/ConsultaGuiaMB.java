@@ -123,7 +123,7 @@ public class ConsultaGuiaMB {
 	}
 
 	public List<GuideHead> getLstGuideHeadMain() {
-		if ((this.lstGuideHeadMain.isEmpty()) && (this.validaListaBuscar)) {
+		if (this.validaListaBuscar) {
 			this.canRegTablaPrincipal = getListaPrincipalGuias();
 		}
 		return lstGuideHeadMain;

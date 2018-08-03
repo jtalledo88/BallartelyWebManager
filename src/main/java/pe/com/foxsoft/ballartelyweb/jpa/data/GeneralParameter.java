@@ -22,8 +22,8 @@ public class GeneralParameter implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="param_id")
-	private int paramId;
+	@Column(name="id")
+	private int id;
 
 	@Column(name="param_code")
 	private String paramCode;
@@ -53,12 +53,12 @@ public class GeneralParameter implements Serializable {
 	public GeneralParameter() {
 	}
 
-	public int getParamId() {
-		return this.paramId;
+	public int getId() {
+		return this.id;
 	}
 
-	public void setParamId(int paramId) {
-		this.paramId = paramId;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getParamCode() {

@@ -7,32 +7,16 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import pe.com.foxsoft.ballartelyweb.jpa.data.GuideCotization;
 import pe.com.foxsoft.ballartelyweb.jpa.data.GuideDetail;
 import pe.com.foxsoft.ballartelyweb.jpa.data.GuideHead;
-import pe.com.foxsoft.ballartelyweb.jpa.data.ShippingDetailLabel;
-import pe.com.foxsoft.ballartelyweb.jpa.repository.GuiaCabeceraRepository;
-import pe.com.foxsoft.ballartelyweb.jpa.repository.GuiaDetalleRepository;
-import pe.com.foxsoft.ballartelyweb.jpa.repository.MovimientoRepository;
-import pe.com.foxsoft.ballartelyweb.jpa.util.JPAUtil;
 import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
-import pe.com.foxsoft.ballartelyweb.spring.util.Constantes;
 import pe.com.foxsoft.ballartelyweb.spring.util.Utilitarios;
 
 @Repository
 public class GuiaDao{
-	
-	@Autowired
-	private GuiaCabeceraRepository guiaCabeceraRepository;
-	
-	@Autowired
-	private GuiaDetalleRepository guiaDetalleRepository;
-	
-	@Autowired 
-	private MovimientoRepository movimientoRepository;
-	
 	
 	/**
 	 * @param em
@@ -100,70 +84,19 @@ public class GuiaDao{
 			throw new BallartelyException(BallartelyException.GENERAL_ERROR, e.getMessage());
 		}
 	}
-	
-	/**
-	 * @param em
-	 * @param shippingDetailId
-	 * @return
-	 * @throws BallartelyException
-	 */
-	public List<ShippingDetailLabel> getShippingsDetailsLabelDataBase(EntityManager em, int shippingDetailId) throws BallartelyException{
+
+	public List<GuideCotization> getListaGuiaCotizacion(EntityManager em, int guideHeadId) throws BallartelyException{
 		try {
-			TypedQuery<ShippingDetailLabel> queryShippingDetailLabel = em.createQuery(
-					"select s from ShippingDetailLabel s join fetch s.shippingDetail sd where sd.shippingDetailId = :shippingDetailId", ShippingDetailLabel.class);
-			queryShippingDetailLabel.setParameter("shippingDetailId", shippingDetailId);
-			return queryShippingDetailLabel.getResultList();
+			TypedQuery<GuideCotization> queryGuideCotization = em.createQuery(
+					"select gc from GuideCotization gc join fetch gc.guideHead gh where gh.id = :guideHeadId", GuideCotization.class);
+			queryGuideCotization.setParameter("guideHeadId", guideHeadId);
+			
+			
+			return queryGuideCotization.getResultList();
 		} catch (NoResultException nre) {
 			throw new BallartelyException(BallartelyException.NO_RESULT_ERROR, nre.getMessage());
 		} catch (Exception e) {
 			throw new BallartelyException(BallartelyException.GENERAL_ERROR, e.getMessage());
 		}
 	}
-	
-	public String grabarCompraDetalleLabel(EntityManager em, List<ShippingDetailLabel> lstEtiquetasMain) throws BallartelyException{
-		try {
-			TypedQuery<ShippingDetailLabel> queryDeleteShippingDetailLabel = em.createQuery(
-					"delete from ShippingDetailLabel s join fetch s.shippingDetail sd where sd.shippingDetailId = :shippingDetailId "
-					+ "and s.shippingDetailLabelType <> : shippingDetailLabelType", ShippingDetailLabel.class);
-//			queryDeleteShippingDetailLabel.setParameter("shippingDetailId", lstEtiquetasMain.get(0).getShippingDetail().getShippingDetailId());
-//			queryDeleteShippingDetailLabel.setParameter("shippingDetailLabelType", Constantes.DETAIL_LABEL_TYPE_ORIGIN);
-			queryDeleteShippingDetailLabel.executeUpdate();
-			for(ShippingDetailLabel detailLabel: lstEtiquetasMain) {
-				if(detailLabel.getShippingDetailLabelCreationDate() == null) {
-					JPAUtil.persistEntity(em, detailLabel);
-				}else {
-					JPAUtil.mergeEntity(em, detailLabel);
-				}
-			}
-			
-			return Constantes.MESSAGE_PERSIST_SUCCESS;
-		} catch (Exception e) {
-			throw new BallartelyException(BallartelyException.GENERAL_ERROR, e.getMessage());
-		}
-	}
-
-	public GuiaCabeceraRepository getGuiaCabeceraRepository() {
-		return guiaCabeceraRepository;
-	}
-
-	public void setGuiaCabeceraRepository(GuiaCabeceraRepository guiaCabeceraRepository) {
-		this.guiaCabeceraRepository = guiaCabeceraRepository;
-	}
-
-	public GuiaDetalleRepository getGuiaDetalleRepository() {
-		return guiaDetalleRepository;
-	}
-
-	public void setGuiaDetalleRepository(GuiaDetalleRepository guiaDetalleRepository) {
-		this.guiaDetalleRepository = guiaDetalleRepository;
-	}
-
-	public MovimientoRepository getMovimientoRepository() {
-		return movimientoRepository;
-	}
-
-	public void setMovimientoRepository(MovimientoRepository movimientoRepository) {
-		this.movimientoRepository = movimientoRepository;
-	}
-
 }

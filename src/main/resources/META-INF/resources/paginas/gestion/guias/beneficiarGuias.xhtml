@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="../../../plantillas/defecto.xhtml">
+	<ui:define name="titulo">Beneficiar Guías</ui:define>
+	<ui:define name="contenido">
+
+		<script type="text/javascript">
+		<!--
+			-->
+		</script>
+
+
+		<h1>Beneficiar Guías</h1>
+		
+		<h:form id="wLisLabels">
+			<p:growl life="3000" showDetail="true" id="msjLisLabel"
+				autoUpdate="true" />
+			<div class="scrollTabla" style="min-height: 150px;">
+				<h3 style="text-decoration: underline;">Cabecera de Guía</h3>
+				<p:dataTable paginator="true" paginatorPosition="top" rows="5"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+					id="tblGuia" var="guia" value="#{beneficiarGuiaMB.lstGuideHeadMain}" style="width: 100%; margin-bottom:20px;"
+                 emptyMessage="No existen registros">
+			    	<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Item" />
+						</f:facet>
+							<h:outputText value="#{guia.id}"/>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Proveedor" />
+						</f:facet>
+							<h:outputText value="#{guia.provider.providerSocialReason}"/>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Nro. Comprobante" />
+						</f:facet>
+							<h:outputText value="#{guia.guideNumber}"/>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Estado" />
+						</f:facet>
+							<h:outputText value="#{guia.guideStatus}" converter="#{statusConverter}"/>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Fec. Creación" />
+						</f:facet>
+							<h:outputText value="#{guia.guideCreationDate}">
+								<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+							</h:outputText>
+					</p:column>
+					<f:facet name="footer">
+						<p:commandButton value="Seleccionar Guía" icon="ui-icon-search"
+							action="/paginas/consulta/guias/consultarGuias.xhtml?faces-redirect=true" ajax="false"/>
+					</f:facet>
+			    </p:dataTable> 
+			</div>
+			<div class="scrollTabla" style="min-height: 150px;">
+				<h3 style="text-decoration: underline;">Detalle de Guía</h3>
+				<p:dataTable paginator="true" paginatorPosition="top" rows="5"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" 
+					id="tblGuiaDetalle" var="guiaDetalle" value="#{beneficiarGuiaMB.lstGuideDetailMain}" style="width: 100%;"
+                 	emptyMessage="No existen registros">
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Item" />
+						</f:facet>
+							<h:outputText value="#{guiaDetalle.id}"/>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Descripción" />
+						</f:facet>
+							<h:outputText value="#{guiaDetalle.productDescription}"/>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Nro Jabas" />
+						</f:facet>
+							<h:outputText value="#{guiaDetalle.boxesQuantity}"/>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Cantidad Vivos" />
+						</f:facet>
+							<h:outputText value="#{guiaDetalle.productQuantity}"/>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Cantidad Muertos" />
+						</f:facet>
+							<h:outputText value="#{guiaDetalle.deadQuantity}"/>
+					</p:column>
+					<f:facet name="footer">
+						Cantidad Vivos: <h:outputText value="#{beneficiarGuiaMB.cantidadVivosDetalle}"/>
+					</f:facet>
+			    </p:dataTable> 
+			</div>
+			<div class="scrollTabla" style="min-height: 150px;">
+				<h3 style="text-decoration: underline;">Listado de Etiquetas</h3>
+				<p:remoteCommand name="onCellEdit"  update="tblLabels:lblCantBeneficiados" />
+				<p:dataTable paginator="true" paginatorPosition="top" rows="25"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" 
+					id="tblLabels" var="labels" value="#{beneficiarGuiaMB.lstEtiquetasStockMain}" editable="true" editMode="cell" 
+					style="width: 100%;"
+                 	emptyMessage="No se encontraron registros">
+                 	 <p:ajax event="cellEdit" listener="#{beneficiarGuiaMB.onEtiquetaCellEdit}" oncomplete="onCellEdit()" update="lblCantBeneficiados" />
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Item" />
+						</f:facet>
+							<h:outputText value="#{labels.productLabel.id}"/>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Código" />
+						</f:facet>
+							<h:outputText value="#{labels.productLabel.productLabelCode}"/>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Descripción" />
+						</f:facet>
+							<h:outputText value="#{labels.productLabel.productLabelDescription}"/>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Cantidad a Beneficiar" />
+						</f:facet>
+						<p:cellEditor rendered="#{labels.productLabel.productLabelCode != 'DX'}">
+			               <f:facet name="output">
+			               		<h:outputText value="#{labels.productStockCant}"/>
+			               	</f:facet>
+			               <f:facet name="input">
+			               		<p:inputNumber decimalPlaces="0" value="#{labels.productStockCant}" 
+			               			style="width:96%" />
+			               	</f:facet>
+			           </p:cellEditor>
+			           <h:outputText value="#{labels.productStockCant}" 
+			           		rendered="#{labels.productLabel.productLabelCode == 'DX'}"/>
+					</p:column>
+					<f:facet name="footer">
+						Total Beneficiados: <h:outputText id="lblCantBeneficiados" 
+							value="#{beneficiarGuiaMB.cantTotalBeneficiados}"/>
+					</f:facet>
+			    </p:dataTable>
+			</div>
+			<div class="opcionesTabla" style="text-align: left;">
+				<p:commandButton 
+					value="Grabar"
+					icon="ui-icon-save"
+					oncomplete="PF('confirmationBeneficiar').show()"
+					rendered="#{beneficiarGuiaMB.objGuideHeadMain != null}"/>
+				<div style="clear: both;"></div>
+			</div>
+		</h:form>
+		<p:confirmDialog message="¿Está seguro de guardar los cambios?"
+			width="300" showEffect="explode" hideEffect="explode"
+			header="Mensaje de Confirmación" severity="alert"
+			widgetVar="confirmationBeneficiar" modal="true">
+			<h:form>
+				<p:commandButton value="Si"
+					actionListener="#{beneficiarGuiaMB.beneficiarGuia}"
+					update=":wLisLabels"
+					oncomplete="PF('confirmationBeneficiar').hide()"/>
+				<p:commandButton value="No"
+					onclick="PF('confirmationBeneficiar').hide()" type="button" />
+			</h:form>
+		</p:confirmDialog>
+	</ui:define>
+
+</ui:composition>

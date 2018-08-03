@@ -151,7 +151,7 @@
 						<f:facet name="header">
 							<h:outputText value="Item" />
 						</f:facet>
-						<h:outputText value="#{etiquetaProducto.productLabelId}" />
+						<h:outputText value="#{etiquetaProducto.id}" />
 					</p:column>
 					<p:column styleClass="oficina" exportable="false">
 						<f:facet name="header">
@@ -162,7 +162,7 @@
 							action="#{etiquetaProductoMB.openEditarEtiquetaProducto}"
 							update=":wEditEtiqProd:pEditEtiqProd">
 							<f:param name="itemEtiquetaProducto"
-								value="#{etiquetaProducto.productLabelId}"
+								value="#{etiquetaProducto.id}"
 								id="itemEtiquetaProducto" />
 						</p:commandLink>
 					</p:column>

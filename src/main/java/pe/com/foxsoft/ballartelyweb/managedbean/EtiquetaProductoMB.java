@@ -89,15 +89,16 @@ public class EtiquetaProductoMB {
 			objEtiquetaProducto.setProductLabelDescription(this.objEtiquetaProductoMain.getProductLabelDescription());
 			objEtiquetaProducto.setProductLabelStatus(this.objEtiquetaProductoMain.getProductLabelStatus());
 			
-			sMensaje = this.etiquetaProductoService.agregarEtiquetaProducto(objEtiquetaProducto);
+			ProductLabel productLabelIns = this.etiquetaProductoService.agregarEtiquetaProducto(objEtiquetaProducto);
+			sMensaje = Utilitarios.reemplazarMensaje(Constantes.MESSAGE_PERSIST_SUCCESS, productLabelIns.getId());
 			Utilitarios.mensaje("", sMensaje);
 			setLstEtiquetaProductosMain(new ArrayList<ProductLabel>());
 			this.canRegTablaPrincipal = getListaPrincipalEtiquetaProductos();
 		
 		} catch (BallartelyException e) {
-			sMensaje = "Error en agregarEtiquetaProducto";
+			sMensaje = "Ocurrió un error en agregarEtiquetaProducto, intente nuevamente";
 			this.logger.error(e.getMessage());
-			throw new FacesException(sMensaje, e);
+			Utilitarios.mensajeError("Excepcion", sMensaje);
 		}
 	}
 
@@ -119,7 +120,7 @@ public class EtiquetaProductoMB {
 		} catch (BallartelyException e) {
 			String sMensaje = "Error en openEditarEtiquetaProducto";
 			this.logger.error(e.getMessage());
-			throw new FacesException(sMensaje, e);
+			Utilitarios.mensajeError("Excepcion", sMensaje);;
 		}
 	}
 
@@ -141,14 +142,14 @@ public class EtiquetaProductoMB {
 			} 
 			
 			ProductLabel objProductLabelAct = this.etiquetaProductoService.editarEtiquetaProducto(this.objEtiquetaProductoMain);
-			sMensaje = String.format(Constantes.MESSAGE_MERGE_SUCCESS, objProductLabelAct.getProductLabelId());
+			sMensaje = String.format(Constantes.MESSAGE_MERGE_SUCCESS, objProductLabelAct.getId());
 			Utilitarios.mensaje("", sMensaje);
 			this.canRegTablaPrincipal = getListaPrincipalEtiquetaProductos();
 			
 		} catch (BallartelyException e) {
-			sMensaje = "Error en editarEtiquetaProducto";
+			sMensaje = "Ocurrió un error en editarEtiquetaProducto, intentar nuevamente.";
 			this.logger.error(e.getMessage());
-			throw new FacesException(sMensaje, e);
+			Utilitarios.mensajeError("Excepcion", sMensaje);
 		}
 	}
 

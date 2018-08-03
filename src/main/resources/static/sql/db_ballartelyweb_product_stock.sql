@@ -25,11 +25,19 @@ DROP TABLE IF EXISTS `product_stock`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `product_stock` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `product_stock_cant` int(11) NOT NULL,
+  `product_stock_creation_date` datetime NOT NULL,
   `product_label_id` int(11) NOT NULL,
-  `product_stock_cant` int(11) DEFAULT '0',
-  `product_stock_modification_date` datetime DEFAULT NULL,
-  PRIMARY KEY (`product_label_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `guide_head_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_product_stock_guide_idx` (`guide_head_id`),
+  KEY `fk_product_stock_label_idx` (`product_label_id`),
+  CONSTRAINT `FKclqih74quojbkrwv5wj4umwl3` FOREIGN KEY (`guide_head_id`) REFERENCES `guide_head` (`id`),
+  CONSTRAINT `FKlk720a6joiimab0p7819ej9rk` FOREIGN KEY (`product_label_id`) REFERENCES `product_label` (`id`),
+  CONSTRAINT `fk_product_stock_guide` FOREIGN KEY (`guide_head_id`) REFERENCES `guide_head` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_product_stock_label` FOREIGN KEY (`product_label_id`) REFERENCES `product_label` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,7 +46,7 @@ CREATE TABLE `product_stock` (
 
 LOCK TABLES `product_stock` WRITE;
 /*!40000 ALTER TABLE `product_stock` DISABLE KEYS */;
-INSERT INTO `product_stock` (`product_label_id`, `product_stock_cant`, `product_stock_modification_date`) VALUES (1,62,'2018-05-21 13:27:49'),(2,33,'2018-05-18 10:05:04'),(3,NULL,NULL);
+INSERT INTO `product_stock` (`id`, `product_stock_cant`, `product_stock_creation_date`, `product_label_id`, `guide_head_id`) VALUES (1,1000,'2018-08-01 17:33:05',1,1),(2,1000,'2018-08-01 17:33:05',2,1),(3,500,'2018-08-01 17:33:05',3,1),(4,20,'2018-08-01 17:33:05',4,1),(5,0,'2018-08-01 17:33:05',5,1);
 /*!40000 ALTER TABLE `product_stock` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -51,4 +59,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-21 13:58:07
+-- Dump completed on 2018-08-03  1:00:38

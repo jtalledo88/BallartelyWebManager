@@ -96,7 +96,7 @@ public class ParametroGeneralMB {
 			objParametroGeneral.setParamStatus(this.objParametroGeneralMain.getParamStatus());
 			
 			objParametroGeneral = this.parametroGeneralService.agregarParametroGeneral(objParametroGeneral);
-			sMensaje = String.format(Constantes.MESSAGE_PERSIST_SUCCESS, objParametroGeneral.getParamId());
+			sMensaje = String.format(Constantes.MESSAGE_PERSIST_SUCCESS, objParametroGeneral.getId());
 			Utilitarios.mensaje("", sMensaje);
 			setLstParametrosGeneralesMain(new ArrayList<GeneralParameter>());
 			this.canRegTablaPrincipal = getListaPrincipalParametroGeneral();
@@ -157,7 +157,7 @@ public class ParametroGeneralMB {
 			}
 			
 			GeneralParameter objParametroGeneralAct = this.parametroGeneralService.editarParametroGeneral(this.objParametroGeneralMain);
-			sMensaje = String.format(Constantes.MESSAGE_MERGE_SUCCESS, objParametroGeneralAct.getParamId());
+			sMensaje = String.format(Constantes.MESSAGE_MERGE_SUCCESS, objParametroGeneralAct.getId());
 			Utilitarios.mensaje("", sMensaje);
 			this.canRegTablaPrincipal = getListaPrincipalParametroGeneral();
 			

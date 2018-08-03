@@ -30,8 +30,8 @@ public class ProductLabel implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="product_label_id")
-	private int productLabelId;
+	@Column(name="id")
+	private int id;
 
 	@Column(name="product_label_code")
 	private String productLabelCode;
@@ -55,12 +55,12 @@ public class ProductLabel implements Serializable {
 	public ProductLabel() {
 	}
 
-	public int getProductLabelId() {
-		return this.productLabelId;
+	public int getId() {
+		return this.id;
 	}
 
-	public void setProductLabelId(int productLabelId) {
-		this.productLabelId = productLabelId;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getProductLabelCode() {
@@ -106,7 +106,7 @@ public class ProductLabel implements Serializable {
 	@Override
     public int hashCode() {
         int hash = 0;
-        hash += productLabelId;
+        hash += id;
         return hash;
     }
 
@@ -116,7 +116,7 @@ public class ProductLabel implements Serializable {
             return false;
         }
         ProductLabel other = (ProductLabel) object;
-        if (this.productLabelId != other.productLabelId) {
+        if (this.id != other.id) {
             return false;
         }
         return true;

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.Normalizer;
 import java.util.ArrayList;
@@ -222,6 +223,30 @@ public class Utilitarios {
 			break;
 		}
 		return tipo;
+	}
+
+	public static String reemplazarMensaje(String mensaje, Object... val) {
+		return String.format(mensaje, val);
+	}
+
+	public static int getEntero(String value) {
+		if(value == null) 
+			return 0;
+		try {
+			return Integer.parseInt(value);
+		} catch (Exception e) {
+			return 0;
+		}
+	}
+	
+	public static BigDecimal getDecimal(String value) {
+		if(value == null) 
+			return BigDecimal.ZERO;
+		try {
+			return new BigDecimal(value);
+		} catch (Exception e) {
+			return BigDecimal.ZERO;
+		}
 	}
 	
 }

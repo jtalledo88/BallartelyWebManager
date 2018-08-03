@@ -47,8 +47,8 @@ public class EtiquetaProductoService {
 	}
 
 	@Transactional(readOnly=false, rollbackFor=Throwable.class)
-	public String agregarEtiquetaProducto(ProductLabel productLabel) throws BallartelyException {
-		return etiquetaProductoDao.persistProductLabelDataBase(em, productLabel);
+	public ProductLabel agregarEtiquetaProducto(ProductLabel productLabel) throws BallartelyException {
+		return etiquetaProductoRepository.save(productLabel);
 	}
 	
 	public ProductLabel obtenerEtiquetaProducto(int itemProductLabel) throws BallartelyException {

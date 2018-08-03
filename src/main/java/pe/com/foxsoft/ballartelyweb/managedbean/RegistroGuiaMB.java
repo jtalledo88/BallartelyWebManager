@@ -140,6 +140,7 @@ public class RegistroGuiaMB {
 			
 			objGuideHeadMain.setGuideStatus(Constantes.STATUS_PRODUCT_FRESH);
 			objGuideHeadMain.setGuideBenefied(Constantes.BENEFIED_NO);
+			objGuideHeadMain.setGuideCotized(Constantes.COTIZED_NO);
 			
 			Movement movement = new Movement();
 			movement.setAccount(cuentaService.obtenerCuentaPrincipal());

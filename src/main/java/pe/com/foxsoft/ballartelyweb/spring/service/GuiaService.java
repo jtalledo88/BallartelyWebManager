@@ -12,16 +12,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import pe.com.foxsoft.ballartelyweb.jpa.dao.GuiaDao;
-import pe.com.foxsoft.ballartelyweb.jpa.data.Movement;
+import pe.com.foxsoft.ballartelyweb.jpa.data.GuideCotization;
 import pe.com.foxsoft.ballartelyweb.jpa.data.GuideDetail;
-import pe.com.foxsoft.ballartelyweb.jpa.data.ShippingDetailLabel;
 import pe.com.foxsoft.ballartelyweb.jpa.data.GuideHead;
+import pe.com.foxsoft.ballartelyweb.jpa.data.Movement;
+import pe.com.foxsoft.ballartelyweb.jpa.data.ProductStock;
 import pe.com.foxsoft.ballartelyweb.jpa.repository.GuiaCabeceraRepository;
-import pe.com.foxsoft.ballartelyweb.jpa.repository.CompraDetalleLabelRepository;
+import pe.com.foxsoft.ballartelyweb.jpa.repository.GuiaCotizacionRepository;
 import pe.com.foxsoft.ballartelyweb.jpa.repository.GuiaDetalleRepository;
 import pe.com.foxsoft.ballartelyweb.jpa.repository.MovimientoRepository;
+import pe.com.foxsoft.ballartelyweb.jpa.repository.StockProductoRepository;
 import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
 import pe.com.foxsoft.ballartelyweb.spring.util.Constantes;
+import pe.com.foxsoft.ballartelyweb.spring.util.Utilitarios;
 
 @Service
 public class GuiaService {
@@ -34,11 +37,14 @@ public class GuiaService {
 	@Autowired
 	private GuiaDetalleRepository guiaDetalleRepository;
 	
-	@Autowired
-	private CompraDetalleLabelRepository compraDetalleLabelRepository;
-	
 	@Autowired 
 	private MovimientoRepository movimientoRepository;
+	
+	@Autowired
+	private StockProductoRepository stockProductoRepository;
+	
+	@Autowired
+	private GuiaCotizacionRepository guiaCotizacionRepository;
 	
 	@Autowired
 	private GuiaDao guiaDao;
@@ -64,11 +70,31 @@ public class GuiaService {
 		guiaDetalleRepository.save(lstGuideDetails);
 		/** Registramos el movimiento en BD**/
 		movimientoRepository.save(movement);
-		return String.format(Constantes.MESSAGE_PERSIST_SUCCESS, objGuiaCabecera.getId());
+		return Utilitarios.reemplazarMensaje(Constantes.MESSAGE_PERSIST_SUCCESS, objGuiaCabecera.getId());
 	}
 	
+	@Transactional(readOnly=false, rollbackFor=BallartelyException.class)
+	public String beneficiarGuia(GuideHead guideHead, List<ProductStock> lstLabelsStockGuide) throws BallartelyException{
+		guiaCabeceraRepository.save(guideHead);
+		List<ProductStock> lstResult = stockProductoRepository.save(lstLabelsStockGuide);
+		return Utilitarios.reemplazarMensaje(Constantes.MESSAGE_PERSIST_LIST_SUCCESS, lstResult.size(), lstLabelsStockGuide.size());
+	}
+	
+	@Transactional(readOnly=false, rollbackFor=BallartelyException.class)
+	public String cotizarGuia(GuideHead guideHead, GuideCotization objGuideCotization) throws BallartelyException{
+		guiaCabeceraRepository.save(guideHead);
+		GuideCotization guideCotization = guiaCotizacionRepository.save(objGuideCotization);
+		return Utilitarios.reemplazarMensaje(Constantes.MESSAGE_PERSIST_SUCCESS, guideCotization.getId());
+	}
+	
+	@Transactional(readOnly=true, rollbackFor=BallartelyException.class)
 	public List<GuideHead> getListaGuiasCabecera() throws BallartelyException {
 		return guiaCabeceraRepository.findAll(new Sort(Sort.Direction.DESC, "guideCreationDate"));
+	}
+	
+	@Transactional(readOnly=true, rollbackFor=BallartelyException.class)
+	public List<GuideCotization> getListaGuiaCotizacion(int guideHeadId) throws BallartelyException {
+		return guiaDao.getListaGuiaCotizacion(em, guideHeadId);
 	}
 	
 	public List<GuideHead> getListaGuiasCabecera(GuideHead objGuideSearch, Date emissionDateInit, Date emissionDateEnd, 
@@ -79,24 +105,6 @@ public class GuiaService {
 	
 	public List<GuideDetail> getListaGuiasDetalle(int guideHeadId) throws BallartelyException {
 		return guiaDao.getGuideDetailsDataBase(em, guideHeadId);
-	}
-		
-	public List<ShippingDetailLabel> getListaComprasDetalleLabel(int ShippingDetailId) throws BallartelyException {
-		return guiaDao.getShippingsDetailsLabelDataBase(em, ShippingDetailId);
-	}
-	
-	public ShippingDetailLabel getComprasDetalleLabel(int shippingDetailLabelId) throws BallartelyException {
-		return compraDetalleLabelRepository.findOne(shippingDetailLabelId);
-	}
-	
-	@Transactional(readOnly=false, rollbackFor=Throwable.class)
-	public void eliminarCompraDetalleLabel(ShippingDetailLabel shippingDetailLabel) throws BallartelyException {
-		compraDetalleLabelRepository.delete(shippingDetailLabel);
-	}
-
-	@Transactional(readOnly=false, rollbackFor=Throwable.class)
-	public String grabarCompraDetalleLabel(List<ShippingDetailLabel> lstEtiquetasMain) throws BallartelyException{
-		return guiaDao.grabarCompraDetalleLabel(em, lstEtiquetasMain);
 	}
 
 	public GuiaCabeceraRepository getGuiaCabeceraRepository() {
@@ -123,14 +131,6 @@ public class GuiaService {
 		this.movimientoRepository = movimientoRepository;
 	}
 	
-	public CompraDetalleLabelRepository getCompraDetalleLabelRepository() {
-		return compraDetalleLabelRepository;
-	}
-
-	public void setCompraDetalleLabelRepository(CompraDetalleLabelRepository compraDetalleLabelRepository) {
-		this.compraDetalleLabelRepository = compraDetalleLabelRepository;
-	}
-
 	public GuiaDao getGuiaDao() {
 		return guiaDao;
 	}
@@ -139,6 +139,20 @@ public class GuiaService {
 		this.guiaDao = guiaDao;
 	}
 
-	
+	public StockProductoRepository getStockProductoRepository() {
+		return stockProductoRepository;
+	}
+
+	public void setStockProductoRepository(StockProductoRepository stockProductoRepository) {
+		this.stockProductoRepository = stockProductoRepository;
+	}
+
+	public GuiaCotizacionRepository getGuiaCotizacionRepository() {
+		return guiaCotizacionRepository;
+	}
+
+	public void setGuiaCotizacionRepository(GuiaCotizacionRepository guiaCotizacionRepository) {
+		this.guiaCotizacionRepository = guiaCotizacionRepository;
+	}
 	
 }

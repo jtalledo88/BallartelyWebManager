@@ -34,8 +34,9 @@ CREATE TABLE `account` (
   PRIMARY KEY (`account_id`),
   UNIQUE KEY `account_number_UNIQUE` (`account_creation_date`),
   KEY `fk_account_client_idx` (`account_owner`),
+  CONSTRAINT `FKp6pnw6fqvfj5etm1blmra6apy` FOREIGN KEY (`account_owner`) REFERENCES `client` (`client_id`),
   CONSTRAINT `fk_account_client` FOREIGN KEY (`account_owner`) REFERENCES `client` (`client_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -44,7 +45,7 @@ CREATE TABLE `account` (
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` (`account_id`, `account_type`, `account_owner`, `account_creation_date`, `account_modification_date`, `account_status`) VALUES (00000000000000000001,'C',1,'2018-05-09 13:52:02',NULL,'1'),(00000000000000000002,'P',NULL,'2018-05-09 14:08:17',NULL,'1');
+INSERT INTO `account` (`account_id`, `account_type`, `account_owner`, `account_creation_date`, `account_modification_date`, `account_status`) VALUES (00000000000000000001,'C',1,'2018-05-09 13:52:02',NULL,'1'),(00000000000000000002,'P',NULL,'2018-05-09 14:08:17',NULL,'1'),(00000000000000000003,'C',2,'2018-06-08 23:37:20','2018-06-08 23:37:20','1');
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -57,4 +58,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-21 13:58:06
+-- Dump completed on 2018-08-03  1:00:38

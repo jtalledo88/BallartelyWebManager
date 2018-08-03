@@ -40,7 +40,7 @@ public class ProductLabelConverter implements Converter{
 			return null;
 		ProductLabel productLabel = (ProductLabel)value;
 		
-		return String.valueOf(productLabel.getProductLabelId());
+		return String.valueOf(productLabel.getId());
 	}
 
 	public EtiquetaProductoService getEtiquetaProductoService() {

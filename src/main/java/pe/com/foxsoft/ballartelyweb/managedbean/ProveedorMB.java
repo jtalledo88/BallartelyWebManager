@@ -100,7 +100,7 @@ public class ProveedorMB {
 			objProveedor.setProviderStatus(this.objProveedorMain.getProviderStatus());
 			
 			objProveedor = this.proveedorService.agregarProveedor(objProveedor);
-			sMensaje = String.format(Constantes.MESSAGE_PERSIST_SUCCESS, objProveedor.getProviderId());
+			sMensaje = Utilitarios.reemplazarMensaje(Constantes.MESSAGE_PERSIST_SUCCESS, objProveedor.getProviderId());
 			Utilitarios.mensaje("", sMensaje);
 			setLstProveedoresMain(new ArrayList<Provider>());
 			this.canRegTablaPrincipal = getListaPrincipalProveedores();
@@ -162,7 +162,7 @@ public class ProveedorMB {
 			}
 			
 			Provider objProvider = this.proveedorService.editarProveedor(this.objProveedorMain);
-			sMensaje = String.format(Constantes.MESSAGE_MERGE_SUCCESS, objProvider.getProviderId());
+			sMensaje = Utilitarios.reemplazarMensaje(Constantes.MESSAGE_MERGE_SUCCESS, objProvider.getProviderId());
 			Utilitarios.mensaje("", sMensaje);
 			this.canRegTablaPrincipal = getListaPrincipalProveedores();
 			

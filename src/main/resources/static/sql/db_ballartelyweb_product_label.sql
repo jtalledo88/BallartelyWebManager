@@ -25,15 +25,15 @@ DROP TABLE IF EXISTS `product_label`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `product_label` (
-  `product_label_id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `product_label_code` varchar(10) NOT NULL,
   `product_label_description` varchar(250) NOT NULL,
   `product_label_creation_date` datetime DEFAULT CURRENT_TIMESTAMP,
   `product_label_modification_date` datetime DEFAULT CURRENT_TIMESTAMP,
   `product_label_status` char(1) NOT NULL,
-  PRIMARY KEY (`product_label_id`),
+  PRIMARY KEY (`id`),
   UNIQUE KEY `product_label_code_UNIQUE` (`product_label_code`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,7 +42,7 @@ CREATE TABLE `product_label` (
 
 LOCK TABLES `product_label` WRITE;
 /*!40000 ALTER TABLE `product_label` DISABLE KEYS */;
-INSERT INTO `product_label` (`product_label_id`, `product_label_code`, `product_label_description`, `product_label_creation_date`, `product_label_modification_date`, `product_label_status`) VALUES (1,'P2','POLLO 2KG','2018-05-09 13:50:53',NULL,'1'),(2,'P3','POLLO 3KG','2018-05-09 13:51:01',NULL,'1'),(3,'P4','POLLO 4KG','2018-05-09 13:51:12',NULL,'1');
+INSERT INTO `product_label` (`id`, `product_label_code`, `product_label_description`, `product_label_creation_date`, `product_label_modification_date`, `product_label_status`) VALUES (1,'P2','POLLO 2KG','2018-05-09 13:50:53',NULL,'1'),(2,'P3','POLLO 3KG','2018-05-09 13:51:01',NULL,'1'),(3,'P4','POLLO 4KG','2018-05-09 13:51:12',NULL,'1'),(4,'DCH','POLLO DESCARTE','2018-08-01 13:31:26','2018-08-01 13:31:26','1'),(5,'DX','POLLO MUERTO','2018-08-01 13:32:33','2018-08-01 13:32:33','1');
 /*!40000 ALTER TABLE `product_label` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -55,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-21 13:58:07
+-- Dump completed on 2018-08-03  1:00:38

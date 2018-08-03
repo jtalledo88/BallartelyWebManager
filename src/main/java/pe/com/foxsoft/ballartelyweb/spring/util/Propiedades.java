@@ -26,6 +26,9 @@ public class Propiedades {
 	@Value("${ballartelyweb.uniquecode.upload}")
 	private String uniqueCodeUpload;
 	
+	@Value("${ballartelyweb.uniquecode.expend}")
+	private String uniqueCodeExpend;
+	
 	public String getTiposParametro() {
 		return tiposParametro;
 	}
@@ -72,6 +75,14 @@ public class Propiedades {
 
 	public void setUniqueCodeUpload(String uniqueCodeUpload) {
 		this.uniqueCodeUpload = uniqueCodeUpload;
+	}
+
+	public String getUniqueCodeExpend() {
+		return uniqueCodeExpend;
+	}
+
+	public void setUniqueCodeExpend(String uniqueCodeExpend) {
+		this.uniqueCodeExpend = uniqueCodeExpend;
 	}
 	
 }

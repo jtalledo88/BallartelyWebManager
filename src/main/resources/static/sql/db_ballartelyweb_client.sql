@@ -37,7 +37,7 @@ CREATE TABLE `client` (
   `client_status` char(1) NOT NULL,
   PRIMARY KEY (`client_id`),
   UNIQUE KEY `document_number_UNIQUE` (`document_number`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -46,7 +46,7 @@ CREATE TABLE `client` (
 
 LOCK TABLES `client` WRITE;
 /*!40000 ALTER TABLE `client` DISABLE KEYS */;
-INSERT INTO `client` (`client_id`, `document_type`, `document_number`, `client_names`, `client_address`, `client_phone_number`, `client_type`, `client_creation_date`, `client_modification_date`, `client_status`) VALUES (1,'RUC','10460117530','POLLERIA TALLEDO','CALLE LAS ARREPENTIDAS S/N','988899665','P','2018-05-09 13:52:02',NULL,'1');
+INSERT INTO `client` (`client_id`, `document_type`, `document_number`, `client_names`, `client_address`, `client_phone_number`, `client_type`, `client_creation_date`, `client_modification_date`, `client_status`) VALUES (1,'RUC','10460117530','POLLERIA TALLEDO','CALLE LAS ARREPENTIDAS S/N','988899665','P','2018-05-09 13:52:02',NULL,'1'),(2,'DNI','45588789','JORGE PEREZ','CALLE LAS ARREPENTIDAS 122','988778877','M','2018-06-08 23:37:19','2018-06-08 23:37:40','1');
 /*!40000 ALTER TABLE `client` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -59,4 +59,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-21 13:58:07
+-- Dump completed on 2018-08-03  1:00:39

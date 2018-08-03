@@ -20,5 +20,12 @@ public class Constantes {
 	public static final String STATUS_PRODUCT_COLD = "C";
 	public static final String STATUS_PRODUCT_FRESH = "F";
 	public static final String ROLE_DEFAULT = "ADMIN";
+	public static final String PRODUCT_CODE_MUERTOS = "DX";
+	public static final String COTIZED_NO = "N";
+	public static final String COTIZED_YES = "Y";
+	public static final String GASTO_BENEFICIO_CODE = "GBN";
+	public static final String GASTO_BENEFICIO_PORCENTAJE_CODE = "VCB";
+	public static final String PORCENTAJE_DESHIDRATADO_CODE = "VPD";
+	public static final String PORCENTAJE_MERMA_CODE = "VPM";
 
 }

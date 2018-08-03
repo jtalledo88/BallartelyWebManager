@@ -1,0 +1,262 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="../../../plantillas/defecto.xhtml">
+	<ui:define name="titulo">Cotizar Guías</ui:define>
+	<ui:define name="contenido">
+
+		<script type="text/javascript">
+		<!--
+			-->
+		</script>
+
+
+		<h1>Cotizar Guías</h1>
+		
+		<h:form id="wLisExpends">
+			<p:growl life="3000" showDetail="true" id="msjLisExpends"
+				autoUpdate="true" />
+			<p:panel id="pCotizar" toggleable="false" rendered="#{!cotizarGuiaMB.flagCotized}">
+				<div class="scrollTabla" style="min-height: 150px;">
+					<h3 style="text-decoration: underline;">Cabecera de Guía</h3>
+					<p:dataTable paginator="true" paginatorPosition="top" rows="5"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+						id="tblGuia" var="guia" value="#{cotizarGuiaMB.lstGuideHeadMain}" style="width: 100%; margin-bottom:20px;"
+	                 emptyMessage="No existen registros">
+				    	<p:column styleClass="oficina">
+							<f:facet name="header">
+								<h:outputText value="Item" />
+							</f:facet>
+								<h:outputText value="#{guia.id}"/>
+						</p:column>
+						<p:column styleClass="oficina">
+							<f:facet name="header">
+								<h:outputText value="Proveedor" />
+							</f:facet>
+								<h:outputText value="#{guia.provider.providerSocialReason}"/>
+						</p:column>
+						<p:column styleClass="oficina">
+							<f:facet name="header">
+								<h:outputText value="Nro. Comprobante" />
+							</f:facet>
+								<h:outputText value="#{guia.guideNumber}"/>
+						</p:column>
+						<p:column styleClass="oficina">
+							<f:facet name="header">
+								<h:outputText value="Estado" />
+							</f:facet>
+								<h:outputText value="#{guia.guideStatus}" converter="#{statusConverter}"/>
+						</p:column>
+						<p:column styleClass="oficina">
+							<f:facet name="header">
+								<h:outputText value="Fec. Creación" />
+							</f:facet>
+								<h:outputText value="#{guia.guideCreationDate}">
+									<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+								</h:outputText>
+						</p:column>
+						<f:facet name="footer">
+							<p:commandButton value="Seleccionar Guía" icon="ui-icon-search"
+								action="/paginas/consulta/guias/consultarGuias.xhtml?faces-redirect=true" ajax="false"/>
+						</f:facet>
+				    </p:dataTable> 
+				</div>
+				<div class="scrollTabla" style="min-height: 150px;">
+					<h3 style="text-decoration: underline;">Detalle de Guía</h3>
+					<p:dataTable paginator="true" paginatorPosition="top" rows="5"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" 
+						id="tblGuiaDetalle" var="guiaDetalle" value="#{cotizarGuiaMB.lstGuideDetailMain}" style="width: 100%;"
+	                 	emptyMessage="No existen registros">
+						<p:column styleClass="oficina">
+							<f:facet name="header">
+								<h:outputText value="Item" />
+							</f:facet>
+								<h:outputText value="#{guiaDetalle.id}"/>
+						</p:column>
+						<p:column styleClass="oficina">
+							<f:facet name="header">
+								<h:outputText value="Descripción" />
+							</f:facet>
+								<h:outputText value="#{guiaDetalle.productDescription}"/>
+						</p:column>
+						<p:column styleClass="oficina">
+							<f:facet name="header">
+								<h:outputText value="Cantidad Vivos" />
+							</f:facet>
+								<h:outputText value="#{guiaDetalle.productQuantity}"/>
+						</p:column>
+						<p:column styleClass="oficina">
+							<f:facet name="header">
+								<h:outputText value="Cantidad Muertos" />
+							</f:facet>
+								<h:outputText value="#{guiaDetalle.deadQuantity}"/>
+						</p:column>
+						<p:column styleClass="oficina">
+							<f:facet name="header">
+								<h:outputText value="Peso Neto" />
+							</f:facet>
+								<h:outputText value="#{guiaDetalle.netWeight}"/>
+						</p:column>
+						<p:column styleClass="oficina">
+							<f:facet name="header">
+								<h:outputText value="Peso Muertos" />
+							</f:facet>
+								<h:outputText value="#{guiaDetalle.deadWeight}"/>
+						</p:column>
+						<p:columnGroup type="footer">
+							<p:row>
+				                <p:column colspan="5" style="text-align:right" footerText="Cantidad Vivos:" />
+				                <p:column footerText="#{cotizarGuiaMB.cantidadVivosDetalle}" />
+				            </p:row>
+				            <p:row>
+				                <p:column colspan="5" style="text-align:right" footerText="Peso Vivos:" />
+				                <p:column footerText="#{cotizarGuiaMB.totalVivosDetalle}" />
+				            </p:row>
+				            <p:row>
+				                <p:column colspan="5" style="text-align:right" footerText="Peso Deshidratado:" />
+				                <p:column footerText="#{cotizarGuiaMB.totalDeshidratadoDetalle}" />
+				            </p:row>
+						</p:columnGroup>
+				    </p:dataTable> 
+				</div>
+				<div class="scrollTabla" style="min-height: 150px;">
+					<h3 style="text-decoration: underline;">Listado de Gastos</h3>
+					<p:remoteCommand name="onCellEdit"  update="tblExpenses:lblCantGastos" />
+					<p:dataTable paginator="true" paginatorPosition="top" rows="30"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" 
+						id="tblExpenses" var="expense" value="#{cotizarGuiaMB.lstGastosMain}" editable="true" editMode="cell"
+						style="width: 100%;"
+	                 	emptyMessage="No se encontraron registros">
+	                 	 <p:ajax event="cellEdit" listener="#{cotizarGuiaMB.onGastoCellEdit}" oncomplete="onCellEdit()" update="lblCantGastos" />
+						<p:column styleClass="oficina">
+							<f:facet name="header">
+								<h:outputText value="Item" />
+							</f:facet>
+								<h:outputText value="#{expense.id}"/>
+						</p:column>
+						<p:column styleClass="oficina">
+							<f:facet name="header">
+								<h:outputText value="Descripción" />
+							</f:facet>
+								<h:outputText value="#{expense.paramDescription}"/>
+						</p:column>
+						<p:column styleClass="oficina">
+							<f:facet name="header">
+								<h:outputText value="Monto" />
+							</f:facet>
+							<p:cellEditor rendered="#{expense.paramCode != 'GBN'}">
+				               <f:facet name="output">
+				               		<h:outputText value="#{expense.paramValue}">
+				               			<f:convertNumber maxFractionDigits="2" maxIntegerDigits="8" 
+				               				minFractionDigits="2" pattern=""/>
+				               		</h:outputText>
+				               	</f:facet>
+				               <f:facet name="input">
+				               		<p:inputNumber decimalPlaces="2" value="#{expense.paramValue}"
+				               			style="width:96%"/>
+				               	</f:facet>
+				           </p:cellEditor>
+				           	<h:outputText value="#{expense.paramValue}" rendered="#{expense.paramCode == 'GBN'}">
+				           		<f:convertNumber maxFractionDigits="2" maxIntegerDigits="8" minFractionDigits="2"/>
+				           	</h:outputText>
+						</p:column>
+						<f:facet name="footer">
+							Total Gastos: <h:outputText id="lblCantGastos" 
+								value="#{cotizarGuiaMB.cantTotalGastos}"/>
+						</f:facet>
+				    </p:dataTable>
+				</div>
+			</p:panel>
+			<p:panel id="pLstCotizada" toggleable="false" rendered="#{cotizarGuiaMB.flagCotized}">
+				<div class="scrollTabla" style="min-height: 150px;">
+					<h3 style="text-decoration: underline;">Guía Cotizada</h3>
+					<p:dataTable paginator="true" paginatorPosition="top" rows="5"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+						id="tblGuiaCotized" var="guia" value="#{cotizarGuiaMB.lstGuideCotizedMain}" style="width: 100%; margin-bottom:20px;"
+		                emptyMessage="No existen registros">
+				    	<p:column styleClass="oficina">
+							<f:facet name="header">
+								<h:outputText value="Item" />
+							</f:facet>
+								<h:outputText value="#{guia.id}"/>
+						</p:column>
+						<p:column styleClass="oficina">
+							<f:facet name="header">
+								<h:outputText value="Número Guía" />
+							</f:facet>
+								<h:outputText value="#{guia.guideHead.guideNumber}"/>
+						</p:column>
+						<p:column styleClass="oficina">
+							<f:facet name="header">
+								<h:outputText value="Costo Unitario Proveedor" />
+							</f:facet>
+								<h:outputText value="#{guia.unitCostGuide}"/>
+						</p:column>
+						<p:column styleClass="oficina">
+							<f:facet name="header">
+								<h:outputText value="Total Peso Deshidratado" />
+							</f:facet>
+								<h:outputText value="#{guia.totalWeightDehydrated}"/>
+						</p:column>
+						<p:column styleClass="oficina">
+							<f:facet name="header">
+								<h:outputText value="Total Gastos" />
+							</f:facet>
+								<h:outputText value="#{guia.totalExpenses}" />
+						</p:column>
+						<p:column styleClass="oficina">
+							<f:facet name="header">
+								<h:outputText value="Total Merma" />
+							</f:facet>
+								<h:outputText value="#{guia.totalDecrease}" />
+						</p:column>
+						<p:column styleClass="oficina">
+							<f:facet name="header">
+								<h:outputText value="Precio Generado Final" />
+							</f:facet>
+								<h:outputText style="font-weight: bold;" value="#{guia.totalUnitCost}" />
+						</p:column>
+						<p:column styleClass="oficina">
+							<f:facet name="header">
+								<h:outputText value="Fec. Creación" />
+							</f:facet>
+								<h:outputText value="#{guia.cotizationCreationDate}">
+									<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+								</h:outputText>
+						</p:column>
+						<f:facet name="footer">
+							<p:commandButton value="Regresar" icon="ui-icon-search"
+								action="/paginas/consulta/guias/consultarGuias.xhtml?faces-redirect=true" ajax="false"/>
+						</f:facet>
+				    </p:dataTable> 
+				</div>
+			</p:panel>
+			<div class="opcionesTabla" style="text-align: left;">
+				<p:commandButton 
+					value="Generar Cotización"
+					icon="ui-icon-save"
+					oncomplete="PF('confirmationCotizar').show()"
+					rendered="#{cotizarGuiaMB.objGuideHeadMain != null}"/>
+				<div style="clear: both;"></div>
+			</div>
+		</h:form>
+		<p:confirmDialog message="¿Está seguro de guardar los cambios?"
+			width="300" showEffect="explode" hideEffect="explode"
+			header="Mensaje de Confirmación" severity="alert"
+			widgetVar="confirmationCotizar" modal="true">
+			<h:form>
+				<p:commandButton value="Si"
+					actionListener="#{cotizarGuiaMB.cotizarGuia}"
+					update=":wLisExpends"
+					oncomplete="PF('confirmationCotizar').hide()"/>
+				<p:commandButton value="No"
+					onclick="PF('confirmationCotizar').hide()" type="button" />
+			</h:form>
+		</p:confirmDialog>
+	</ui:define>
+
+</ui:composition>

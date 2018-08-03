@@ -33,6 +33,8 @@ CREATE TABLE `provider` (
   `provider_creation_date` datetime DEFAULT NULL,
   `provider_modification_date` datetime DEFAULT NULL,
   `provider_status` char(1) NOT NULL,
+  `provider_car_number` varchar(255) DEFAULT NULL,
+  `provider_driver_license` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`provider_id`),
   UNIQUE KEY `provider_ruc_UNIQUE` (`provider_ruc`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
@@ -44,7 +46,7 @@ CREATE TABLE `provider` (
 
 LOCK TABLES `provider` WRITE;
 /*!40000 ALTER TABLE `provider` DISABLE KEYS */;
-INSERT INTO `provider` (`provider_id`, `provider_ruc`, `provider_social_reason`, `provider_address`, `provider_phone_number`, `provider_creation_date`, `provider_modification_date`, `provider_status`) VALUES (1,'17545587896','POLLOS LOS AVESTRUCES','AV SURICHAY 234','2455887','2018-05-09 13:52:55',NULL,'1');
+INSERT INTO `provider` (`provider_id`, `provider_ruc`, `provider_social_reason`, `provider_address`, `provider_phone_number`, `provider_creation_date`, `provider_modification_date`, `provider_status`, `provider_car_number`, `provider_driver_license`) VALUES (1,'20204844381','EL ROCIO','Carretera industrial a laredo km 1.5 Zona Industrial Trujillo La Libertad','(044)482828','2018-05-09 13:52:55','2018-07-28 23:32:42','1','T4K-903','D-46328181');
 /*!40000 ALTER TABLE `provider` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -57,4 +59,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-21 13:58:08
+-- Dump completed on 2018-08-03  1:00:37

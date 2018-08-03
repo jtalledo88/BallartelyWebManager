@@ -171,7 +171,7 @@
 						<f:facet name="header">
 							<h:outputText value="Item" />
 						</f:facet>
-						<h:outputText value="#{parametroGeneral.paramId}" />
+						<h:outputText value="#{parametroGeneral.id}" />
 					</p:column>
 					<p:column styleClass="oficina" exportable="false">
 						<f:facet name="header">
@@ -182,7 +182,7 @@
 							action="#{parametroGeneralMB.openEditarParametroGeneral}"
 							update=":wEditParamGen:pEditParamGen">
 							<f:param name="itemParametroGeneral"
-								value="#{parametroGeneral.paramId}" id="itemParametroGeneral" />
+								value="#{parametroGeneral.id}" id="itemParametroGeneral" />
 						</p:commandLink>
 					</p:column>
 
@@ -195,7 +195,7 @@
 							update="@form :confirmEliminarParametroGeneral">
 							<f:setPropertyActionListener value="#{parametroGeneral}"
 								target="#{parametroGeneralMB.objParametroGeneralMain}" />
-							<h:outputText value="#{parametroGeneral.paramId}" />
+							<h:outputText value="#{parametroGeneral.id}" />
 						</p:commandLink>
 					</p:column>
 					<p:column styleClass="oficina">

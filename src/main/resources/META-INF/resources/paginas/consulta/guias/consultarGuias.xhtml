@@ -241,6 +241,12 @@
 						</f:facet>
 						<h:outputText value="#{guia.guideBenefied}" converter="#{statusConverter}" />
 					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Cotizado" />
+						</f:facet>
+						<h:outputText value="#{guia.guideCotized}" converter="#{statusConverter}" />
+					</p:column>
 					<p:column styleClass="fecha">
 						<f:facet name="header">
 							<h:outputText value="Fecha Emisión" />
@@ -283,21 +289,35 @@
 							<p:graphicImage  url="../../../recursos/imagenes/icon_lupa.png" width="15" height="15" />
 						</p:commandLink>
 					</p:column>
-					<p:column styleClass="eliminar" exportable="false">
+					<p:column styleClass="eliminar" exportable="false" rendered="#{guia.guideBenefied == 'N'}">
 						<f:facet name="header">
 							<h:outputText value="Beneficiar" />
 						</f:facet>
-						<p:commandLink style="float: right; padding-right:48%;" rendered="#{guia.guideBenefied == 'N'}"
-							action="/paginas/gestion/beneficiarGuias.xhtml?faces-redirect=true" ajax="false">
+						<p:commandLink style="float: right; padding-right:48%;"
+							action="/paginas/gestion/guias/beneficiarGuias.xhtml?faces-redirect=true" ajax="false">
 							<f:setPropertyActionListener value="#{guia}"
 								target="#{beneficiarGuiaMB.objGuideHeadMain}" />
 							<p:graphicImage url="../../../recursos/imagenes/icon_beneficiar.png" width="15" height="15" />
 						</p:commandLink>
-						<p:graphicImage style="float: right; padding-right:48%;" url="../../../recursos/imagenes/icon-ok.png" 
-							width="15" height="15" rendered="#{guia.guideBenefied == 'Y'}"/>
 					</p:column>
-					
-					
+					<p:column styleClass="eliminar" exportable="false" >
+						<f:facet name="header">
+							<h:outputText value="Cotizar" rendered="#{guia.guideCotized == 'N'}"/>
+							<h:outputText value="Ver Cotización" rendered="#{guia.guideCotized != 'N'}"/>
+						</f:facet>
+						<p:commandLink style="float: right; padding-right:48%;" rendered="#{guia.guideCotized == 'N'}"
+							action="/paginas/gestion/guias/cotizarGuias.xhtml?faces-redirect=true" ajax="false">
+							<f:setPropertyActionListener value="#{guia}"
+								target="#{cotizarGuiaMB.objGuideHeadMain}" />
+							<p:graphicImage url="../../../recursos/imagenes/icon-cotizar.png" width="15" height="15" />
+						</p:commandLink>
+						<p:commandLink style="float: right; padding-right:48%;" rendered="#{guia.guideCotized != 'N'}"
+							action="/paginas/gestion/guias/cotizarGuias.xhtml?faces-redirect=true" ajax="false">
+							<f:setPropertyActionListener value="#{guia}"
+								target="#{cotizarGuiaMB.objGuideHeadMain}" />
+							<p:graphicImage url="../../../recursos/imagenes/icon_lupa.png" width="15" height="15" />
+						</p:commandLink>
+					</p:column>
 					<f:facet name="footer">  
           			Total registros: <h:outputText
 							value="#{consultaGuiaMB.canRegTablaPrincipal}" />
