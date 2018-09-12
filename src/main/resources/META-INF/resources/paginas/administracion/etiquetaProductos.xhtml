@@ -194,6 +194,12 @@
 					</p:column>
 					<p:column styleClass="oficina">
 						<f:facet name="header">
+							<h:outputText value="Valor Peso" />
+						</f:facet>
+						<h:outputText value="#{etiquetaProducto.productLabelWeight}" />
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
 							<h:outputText value="Estado" />
 						</f:facet>
 						<h:outputText
@@ -267,6 +273,46 @@
 							</div>
 							<div class="completo">
 								<div class="tercio">
+									<h:outputLabel for="txtValorPesoNuevo" value="Valor Peso:" />
+									<h:outputLabel value="*" style="Color:red" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputNumber id="txtValorPesoNuevo" decimalPlaces="2"
+											value="#{etiquetaProductoMB.objEtiquetaProductoMain.productLabelWeight}" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgPesoNuevo"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgPesoNuevo"
+											value="Valor de peso" />
+									</div>
+								</div>
+								<p:message for="txtValorPesoNuevo" />
+							</div>
+						</div>
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtCodEtiquetaNuevo" value="C&#243;digo:" />
+									<h:outputLabel value="*" style="Color:red" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtCodEtiquetaNuevo"
+											value="#{etiquetaProductoMB.objEtiquetaProductoMain.productLabelCode}" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgCodEtiqueta"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgCodEtiqueta"
+											value="C&#243;digo de etiqueta" />
+									</div>
+								</div>
+								<p:message for="txtCodEtiquetaNuevo" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
 									<h:outputLabel for="cboEstado" value="Estado:" />
 									<h:outputLabel value="*" style="Color:red" />
 								</div>
@@ -286,27 +332,6 @@
 									</div>
 								</div>
 								<p:message for="cboEstado" />
-							</div>
-						</div>
-						<div class="mitad">
-							<div class="completo">
-								<div class="tercio">
-									<h:outputLabel for="txtCodEtiquetaNuevo" value="C&#243;digo" />
-									<h:outputLabel value="*" style="Color:red" />
-								</div>
-								<div class="dostercios">
-									<div class="input">
-										<p:inputText id="txtCodEtiquetaNuevo"
-											value="#{etiquetaProductoMB.objEtiquetaProductoMain.productLabelCode}" />
-									</div>
-									<div class="tooltip">
-										<h:graphicImage id="imgCodEtiqueta"
-											url="../../recursos/imagenes/help.png"></h:graphicImage>
-										<p:tooltip for="imgCodEtiqueta"
-											value="C&#243;digo de etiqueta" />
-									</div>
-								</div>
-								<p:message for="txtCodEtiquetaNuevo" />
 							</div>
 						</div>
 
@@ -357,7 +382,27 @@
 									</div>
 									<p:message for="txtEtiquetaProductoEditar" />
 								</div>
-
+								<div class="completo">
+									<div class="tercio">
+										<h:outputLabel for="txtValorPesoEditar" value="Valor Peso:" />
+										<h:outputLabel value="*" style="Color:red" />
+									</div>
+									<div class="dostercios">
+										<div class="input">
+											<p:inputNumber id="txtValorPesoEditar" decimalPlaces="2"
+												value="#{etiquetaProductoMB.objEtiquetaProductoMain.productLabelWeight}" />
+										</div>
+										<div class="tooltip">
+											<h:graphicImage id="imgPesoEditar"
+												url="../../recursos/imagenes/help.png"></h:graphicImage>
+											<p:tooltip for="imgPesoEditar"
+												value="Valor de peso" />
+										</div>
+									</div>
+									<p:message for="txtValorPesoEditar" />
+								</div>
+							</div>
+							<div class="mitad">
 								<div class="completo">
 									<div class="tercio">
 										<h:outputLabel for="txtCodEtiquetaEditar" value="C&#243;digo:" />
@@ -377,8 +422,6 @@
 									</div>
 									<p:message for="txtCodEtiquetaEditar" />
 								</div>
-							</div>
-							<div class="mitad">
 								<div class="completo">
 									<div class="tercio">
 										<h:outputLabel for="cboEstadoEditar" value="Estado:" />

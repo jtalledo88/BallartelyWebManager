@@ -330,12 +330,18 @@
 							</div>
 							<div class="completo">
 								<div class="tercio">
-									<h:outputLabel for="txtNumeroPlaca" value="Nro. Placa:" />
+									<h:outputLabel for="cboTransport" value="Nro. Placa:" />
 								</div>
 								<div class="dostercios">
-									<div class="input">
-										<p:inputText id="txtNumeroPlaca" readonly="true"
-											value="#{registroGuiaMB.objGuideHeadMain.provider.providerCarNumber}" />
+									<div class="combo">
+										<p:selectOneMenu id="cboTransport" value="#{registroGuiaMB.objGuideHeadMain.transport}"
+											converter="#{transportConverter}">
+											<f:selectItem itemLabel="--Seleccione--" itemValue=""/>
+											<f:selectItems value="#{registroGuiaMB.lstTransports}" var="transport" 
+												itemLabel="#{transport.carNumber}" itemValue="#{transport}"/>
+											<p:ajax event="itemSelect" process="@form" update="txtLicencia"/>
+											<p:ajax event="change" process="@form" update="txtLicencia"/>
+										</p:selectOneMenu>
 									</div>
 									<div class="tooltip">
 										<h:graphicImage id="imgNumeroPlaca"
@@ -344,7 +350,7 @@
 											value="Número de Placa" />
 									</div>
 								</div>
-								<p:message for="txtNumeroPlaca" />
+								<p:message for="cboTransport" />
 							</div>
 						</div>
 						<div class="mitad">
@@ -373,7 +379,7 @@
 								<div class="dostercios">
 									<div class="input">
 										<p:inputText id="txtLicencia" readonly="true"
-											value="#{registroGuiaMB.objGuideHeadMain.provider.providerDriverLicense}" />
+											value="#{registroGuiaMB.objGuideHeadMain.transport.driverLicenseNumber}" />
 
 									</div>
 									<div class="tooltip">

@@ -1,6 +1,7 @@
 package pe.com.foxsoft.ballartelyweb.jpa.data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -31,7 +32,7 @@ public class ProductLabel implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id")
-	private int id;
+	private Integer id;
 
 	@Column(name="product_label_code")
 	private String productLabelCode;
@@ -43,6 +44,9 @@ public class ProductLabel implements Serializable {
 
 	@Column(name="product_label_description")
 	private String productLabelDescription;
+	
+	@Column(name="product_label_weight")
+	private BigDecimal productLabelWeight;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="product_label_modification_date")
@@ -55,11 +59,11 @@ public class ProductLabel implements Serializable {
 	public ProductLabel() {
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -85,6 +89,14 @@ public class ProductLabel implements Serializable {
 
 	public void setProductLabelDescription(String productLabelDescription) {
 		this.productLabelDescription = productLabelDescription;
+	}
+
+	public BigDecimal getProductLabelWeight() {
+		return productLabelWeight;
+	}
+
+	public void setProductLabelWeight(BigDecimal productLabelWeight) {
+		this.productLabelWeight = productLabelWeight;
 	}
 
 	public Date getProductLabelModificationDate() {

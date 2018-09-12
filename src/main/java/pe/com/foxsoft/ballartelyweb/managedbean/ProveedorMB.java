@@ -5,18 +5,23 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.ManagedBean;
+import javax.annotation.PostConstruct;
 import javax.faces.FacesException;
 import javax.faces.context.FacesContext;
 
+import org.primefaces.model.DualListModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import pe.com.foxsoft.ballartelyweb.jpa.data.GeneralParameter;
 import pe.com.foxsoft.ballartelyweb.jpa.data.Provider;
+import pe.com.foxsoft.ballartelyweb.jpa.data.ProviderTransport;
+import pe.com.foxsoft.ballartelyweb.jpa.data.Transport;
 import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
 import pe.com.foxsoft.ballartelyweb.spring.service.ParametroGeneralService;
 import pe.com.foxsoft.ballartelyweb.spring.service.ProveedorService;
+import pe.com.foxsoft.ballartelyweb.spring.service.TransporteService;
 import pe.com.foxsoft.ballartelyweb.spring.util.Constantes;
 import pe.com.foxsoft.ballartelyweb.spring.util.Propiedades;
 import pe.com.foxsoft.ballartelyweb.spring.util.Utilitarios;
@@ -30,6 +35,9 @@ public class ProveedorMB {
 	private ProveedorService proveedorService;
 
 	@Autowired
+	private TransporteService transporteService;
+	
+	@Autowired
 	private ParametroGeneralService parametroGeneralService;
 	
 	@Autowired
@@ -37,6 +45,8 @@ public class ProveedorMB {
 
 	private Provider objProveedorMain;
 	private Provider objProveedorSearch;
+	
+	private DualListModel<Transport> lstTransports;
 
 	private List<Provider> lstProveedoresMain;
 	private List<GeneralParameter> lstEstadosGenerales;
@@ -45,6 +55,11 @@ public class ProveedorMB {
 	private boolean validaListaBuscar = true;
 	private int canRegTablaPrincipal;
 	private boolean flagConfirmEliProvider = false;
+	
+	@PostConstruct
+    public void init() {
+		this.lstTransports = new DualListModel<>();
+	}
 
 	public ProveedorMB() {
 		this.objProveedorMain = new Provider();
@@ -63,7 +78,7 @@ public class ProveedorMB {
 		} catch (BallartelyException e) {
 			String sMensaje = "Error en buscarProveedores";
 			this.logger.error(e.getMessage());
-			throw new FacesException(sMensaje, e);
+			Utilitarios.mensajeError("Excepcion", sMensaje);
 		}
 	}
 
@@ -100,7 +115,7 @@ public class ProveedorMB {
 			objProveedor.setProviderStatus(this.objProveedorMain.getProviderStatus());
 			
 			objProveedor = this.proveedorService.agregarProveedor(objProveedor);
-			sMensaje = Utilitarios.reemplazarMensaje(Constantes.MESSAGE_PERSIST_SUCCESS, objProveedor.getProviderId());
+			sMensaje = Utilitarios.reemplazarMensaje(Constantes.MESSAGE_PERSIST_SUCCESS, objProveedor.getId());
 			Utilitarios.mensaje("", sMensaje);
 			setLstProveedoresMain(new ArrayList<Provider>());
 			this.canRegTablaPrincipal = getListaPrincipalProveedores();
@@ -108,7 +123,7 @@ public class ProveedorMB {
 		} catch (BallartelyException e) {
 			sMensaje = "Error en agregarProveedor";
 			this.logger.error(e.getMessage());
-			throw new FacesException(sMensaje, e);
+			Utilitarios.mensajeError("Excepcion", sMensaje);
 		}
 	}
 
@@ -132,7 +147,40 @@ public class ProveedorMB {
 		} catch (BallartelyException e) {
 			String sMensaje = "Error en openEditarProveedor";
 			this.logger.error(e.getMessage());
-			throw new FacesException(sMensaje, e);
+			Utilitarios.mensajeError("Excepcion", sMensaje);
+		}
+	}
+	
+	public void openGestionTransportes() {
+		try {
+			List<Transport> lstSource = this.transporteService.getListaTransportesDisponibles();
+			List<Transport> lstTarget = this.transporteService.getListaTransportesProveedor(this.objProveedorMain.getId());
+			this.lstTransports = new DualListModel<>(lstSource, lstTarget);
+		} catch (BallartelyException e) {
+			String sMensaje = "Error en openGestionTransportes";
+			this.logger.error(e.getMessage());
+			Utilitarios.mensajeError("Excepcion", sMensaje);
+		}
+	}
+	
+	public void gestionarTransportes() {
+		String sMensaje = null;
+		try {
+			List<Transport> lstTarget = this.lstTransports.getTarget();
+			List<ProviderTransport> lstProviderTransports = new ArrayList<>();
+			for(Transport t: lstTarget) {
+				ProviderTransport objProviderTransport = new ProviderTransport();
+				objProviderTransport.setProvider(this.objProveedorMain);
+				objProviderTransport.setTransport(t);
+				
+				lstProviderTransports.add(objProviderTransport);
+			}
+			sMensaje = this.transporteService.gestionarTransporteProveedores(this.objProveedorMain.getId(), lstProviderTransports);
+			Utilitarios.mensajeInfo("", sMensaje);
+		} catch (BallartelyException e) {
+			sMensaje = "Error en gestionarTransportes";
+			this.logger.error(e.getMessage());
+			Utilitarios.mensajeError("Excepcion", sMensaje);
 		}
 	}
 
@@ -162,7 +210,7 @@ public class ProveedorMB {
 			}
 			
 			Provider objProvider = this.proveedorService.editarProveedor(this.objProveedorMain);
-			sMensaje = Utilitarios.reemplazarMensaje(Constantes.MESSAGE_MERGE_SUCCESS, objProvider.getProviderId());
+			sMensaje = Utilitarios.reemplazarMensaje(Constantes.MESSAGE_MERGE_SUCCESS, objProvider.getId());
 			Utilitarios.mensaje("", sMensaje);
 			this.canRegTablaPrincipal = getListaPrincipalProveedores();
 			
@@ -320,6 +368,14 @@ public class ProveedorMB {
 		this.validaListaBuscar = validaListaBuscar;
 	}
 
+	public DualListModel<Transport> getLstTransports() {
+		return lstTransports;
+	}
+
+	public void setLstTransports(DualListModel<Transport> lstTransports) {
+		this.lstTransports = lstTransports;
+	}
+
 	public ProveedorService getProveedorService() {
 		return proveedorService;
 	}
@@ -342,6 +398,14 @@ public class ProveedorMB {
 
 	public void setPropiedades(Propiedades propiedades) {
 		this.propiedades = propiedades;
+	}
+
+	public TransporteService getTransporteService() {
+		return transporteService;
+	}
+
+	public void setTransporteService(TransporteService transporteService) {
+		this.transporteService = transporteService;
 	}
 	
 }

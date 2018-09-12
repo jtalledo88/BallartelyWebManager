@@ -57,7 +57,7 @@
 								<div class="dostercios">
 									<div class="input">
 										<p:autoComplete id="txtNomCliente" maxResults="10"
-											value="#{clienteMB.objClienteSearch.clientNames}"
+											value="#{clienteMB.objClienteSearch.customerNames}"
 											completeMethod="#{clienteMB.completeNom}"
 											autocomplete="false" ajax="false" />
 									</div>
@@ -77,7 +77,7 @@
 								<div class="dostercios">
 									<div class="combo">
 										<p:selectOneMenu id="cboTipoCli"
-											value="#{clienteMB.objClienteSearch.clientType}">
+											value="#{clienteMB.objClienteSearch.customerType}">
 											<f:selectItem itemLabel="-- Todos -- " itemValue=""/>
 											<f:selectItems value="#{clienteMB.lstTiposCliGenerales}" 
 												var="tipoCliGeneral" itemLabel="#{tipoCliGeneral.paramValue}"
@@ -122,7 +122,7 @@
 								<div class="dostercios">
 									<div class="combo">
 										<p:selectOneMenu id="cboEstado"
-											value="#{clienteMB.objClienteSearch.clientStatus}">
+											value="#{clienteMB.objClienteSearch.customerStatus}">
 											<f:selectItem itemLabel="-- Todos --" itemValue="" />
 											<f:selectItem itemLabel="Activo" itemValue="1" />
 											<f:selectItem itemLabel="Inactivo" itemValue="0" />
@@ -196,7 +196,7 @@
 						<f:facet name="header">
 							<h:outputText value="Item" />
 						</f:facet>
-						<h:outputText value="#{cliente.clientId}" />
+						<h:outputText value="#{cliente.id}" />
 					</p:column>
 					<p:column styleClass="oficina" exportable="false">
 						<f:facet name="header">
@@ -206,7 +206,7 @@
 							onclick="PF('dlgEditarCliente').show()"
 							action="#{clienteMB.openEditarCliente}"
 							update=":wEditCli:pEditCli">
-							<f:param name="itemCliente" value="#{cliente.clientId}"
+							<f:param name="itemCliente" value="#{cliente.id}"
 								id="itemCliente" />
 						</p:commandLink>
 					</p:column>
@@ -220,7 +220,7 @@
 							update="@form :confirmEliminarCliente">
 							<f:setPropertyActionListener value="#{cliente}"
 								target="#{clienteMB.objClienteMain}" />
-							<h:outputText value="#{cliente.clientId}" />
+							<h:outputText value="#{cliente.id}" />
 						</p:commandLink>
 					</p:column>
 
@@ -240,37 +240,37 @@
 						<f:facet name="header">
 							<h:outputText value="Tipo Cliente" />
 						</f:facet>
-						<h:outputText value="#{cliente.clientType}" converter="#{generalParameterConverter}" />
+						<h:outputText value="#{cliente.customerType}" converter="#{generalParameterConverter}" />
 					</p:column>
 					<p:column styleClass="oficina">
 						<f:facet name="header">
 							<h:outputText value="Nombre / Razón Social" />
 						</f:facet>
-						<h:outputText value="#{cliente.clientNames}" />
+						<h:outputText value="#{cliente.customerNames}" />
 					</p:column>
 					<p:column styleClass="oficina">
 						<f:facet name="header">
 							<h:outputText value="Dirección" />
 						</f:facet>
-						<h:outputText value="#{cliente.clientAddress}" />
+						<h:outputText value="#{cliente.customerAddress}" />
 					</p:column>
 					<p:column styleClass="oficina">
 						<f:facet name="header">
 							<h:outputText value="Número Telefono" />
 						</f:facet>
-						<h:outputText value="#{cliente.clientPhoneNumber}" />
+						<h:outputText value="#{cliente.customerPhoneNumber}" />
 					</p:column>
 					<p:column styleClass="oficina">
 						<f:facet name="header">
 							<h:outputText value="Estado" />
 						</f:facet>
-						<h:outputText value="#{cliente.clientStatus}" converter="#{statusConverter}" />
+						<h:outputText value="#{cliente.customerStatus}" converter="#{statusConverter}" />
 					</p:column>
 					<p:column styleClass="fecha">
 						<f:facet name="header">
 							<h:outputText value="Fecha Registro" />
 						</f:facet>
-						<h:outputText value="#{cliente.clientCreationDate}">
+						<h:outputText value="#{cliente.customerCreationDate}">
 							<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
 						</h:outputText>
 					</p:column>
@@ -278,7 +278,7 @@
 						<f:facet name="header">
 							<h:outputText value="Fecha de Act." />
 						</f:facet>
-						<h:outputText value="#{cliente.clientModificationDate}">
+						<h:outputText value="#{cliente.customerModificationDate}">
 							<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
 						</h:outputText>
 					</p:column>
@@ -342,7 +342,7 @@
 								<div class="dostercios">
 									<div class="input">
 										<p:inputText id="txtNomClienteNuevo"
-											value="#{clienteMB.objClienteMain.clientNames}" />
+											value="#{clienteMB.objClienteMain.customerNames}" />
 									</div>
 									<div class="tooltip">
 										<h:graphicImage id="imgNomClienteNuevo"
@@ -362,7 +362,7 @@
 								<div class="dostercios">
 									<div class="input">
 										<p:inputText id="txtNumTelefonoNuevo"
-											value="#{clienteMB.objClienteMain.clientPhoneNumber}" />
+											value="#{clienteMB.objClienteMain.customerPhoneNumber}" />
 									</div>
 									<div class="tooltip">
 										<h:graphicImage id="imgNumTelefonoNuevo"
@@ -381,7 +381,7 @@
 								<div class="dostercios">
 									<div class="combo">
 										<p:selectOneMenu id="cboEstado"
-											value="#{clienteMB.objClienteMain.clientStatus}">
+											value="#{clienteMB.objClienteMain.customerStatus}">
 											<f:selectItem itemLabel="-- Seleccione --" itemValue="" />
 											<f:selectItem itemLabel="Activo" itemValue="1" />
 											<f:selectItem itemLabel="Inactivo" itemValue="0" />
@@ -424,7 +424,7 @@
 								<div class="dostercios">
 									<div class="input">
 										<p:inputText id="txtDireccionNuevo"
-											value="#{clienteMB.objClienteMain.clientAddress}" />
+											value="#{clienteMB.objClienteMain.customerAddress}" />
 									</div>
 									<div class="tooltip">
 										<h:graphicImage id="imgDireccion"
@@ -443,7 +443,7 @@
 								<div class="dostercios">
 									<div class="combo">
 										<p:selectOneMenu id="cboTipoCliNuevo"
-											value="#{clienteMB.objClienteMain.clientType}">
+											value="#{clienteMB.objClienteMain.customerType}">
 											<f:selectItem itemLabel="-- Seleccione -- " itemValue=""/>
 											<f:selectItems value="#{clienteMB.lstTiposCliGenerales}"
 												var="tipoCliGeneral" itemLabel="#{tipoCliGeneral.paramValue}"
@@ -517,7 +517,7 @@
 									<div class="dostercios">
 										<div class="input">
 											<p:inputText id="txtNomClienteEditar"
-												value="#{clienteMB.objClienteMain.clientNames}" />
+												value="#{clienteMB.objClienteMain.customerNames}" />
 										</div>
 										<div class="tooltip">
 											<h:graphicImage id="imgNomClienteEditar"
@@ -537,7 +537,7 @@
 									<div class="dostercios">
 										<div class="input">
 											<p:inputText id="txtNumTelefonoEditar"
-												value="#{clienteMB.objClienteMain.clientPhoneNumber}" />
+												value="#{clienteMB.objClienteMain.customerPhoneNumber}" />
 										</div>
 										<div class="tooltip">
 											<h:graphicImage id="imgNumTelefonoEditar"
@@ -556,7 +556,7 @@
 									<div class="dostercios">
 										<div class="combo">
 											<p:selectOneMenu id="cboEstadoEditar"
-												value="#{clienteMB.objClienteMain.clientStatus}">
+												value="#{clienteMB.objClienteMain.customerStatus}">
 												<f:selectItem itemLabel="-- Seleccione --" itemValue="" />
 												<f:selectItem itemLabel="Activo" itemValue="1" />
 												<f:selectItem itemLabel="Inactivo" itemValue="0" />
@@ -600,7 +600,7 @@
 									<div class="dostercios">
 										<div class="input">
 											<p:inputText id="txtDireccionEditar"
-												value="#{clienteMB.objClienteMain.clientAddress}" />
+												value="#{clienteMB.objClienteMain.customerAddress}" />
 										</div>
 										<div class="tooltip">
 											<h:graphicImage id="imgDireccion"
@@ -619,7 +619,7 @@
 									<div class="dostercios">
 										<div class="combo">
 											<p:selectOneMenu id="cboTipoCliEditar"
-												value="#{clienteMB.objClienteMain.clientType}">
+												value="#{clienteMB.objClienteMain.customerType}">
 												<f:selectItem itemLabel="-- Seleccione -- " itemValue=""/>
 												<f:selectItems value="#{clienteMB.lstTiposCliGenerales}"
 													var="tipoCliGeneral" itemLabel="#{tipoCliGeneral.paramValue}"

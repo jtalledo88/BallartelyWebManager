@@ -33,14 +33,6 @@ public class ProveedorService {
 	public void setEm(EntityManager em) {
 		this.em = em;
 	}
-
-	public ProveedorRepository getProveedorJPA() {
-		return proveedorRepository;
-	}
-
-	public void setProveedorJPA(ProveedorRepository proveedorJPA) {
-		this.proveedorRepository = proveedorJPA;
-	}
 	
 	public List<Provider> buscarProveedores(Provider provider) throws BallartelyException {		
 		return proveedorDao.getProvidersDataBase(em, provider);

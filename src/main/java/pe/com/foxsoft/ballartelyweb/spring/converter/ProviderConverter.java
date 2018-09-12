@@ -38,7 +38,7 @@ public class ProviderConverter implements Converter{
 		if(value == null)
 			return null;
 
-		return String.valueOf(((Provider)value).getProviderId());
+		return String.valueOf(((Provider)value).getId());
 	}
 
 	public ProveedorService getProveedorService() {

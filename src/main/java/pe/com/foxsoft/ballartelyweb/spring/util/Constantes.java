@@ -27,5 +27,6 @@ public class Constantes {
 	public static final String GASTO_BENEFICIO_PORCENTAJE_CODE = "VCB";
 	public static final String PORCENTAJE_DESHIDRATADO_CODE = "VPD";
 	public static final String PORCENTAJE_MERMA_CODE = "VPM";
+	public static final String METRIC_UNIT_KG = "KG";
 
 }

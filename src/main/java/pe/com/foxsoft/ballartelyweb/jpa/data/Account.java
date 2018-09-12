@@ -24,7 +24,7 @@ public class Account implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="account_id")
-	private int accountId;
+	private Integer accountId;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="account_creation_date")
@@ -45,7 +45,7 @@ public class Account implements Serializable {
 	//bi-directional many-to-one association to Client
 	@ManyToOne
 	@JoinColumn(name="account_owner")
-	private Client client;
+	private Customer customer;
 
 	//bi-directional many-to-one association to Movement
 	@OneToMany(mappedBy="account", fetch=FetchType.LAZY)
@@ -54,11 +54,11 @@ public class Account implements Serializable {
 	public Account() {
 	}
 
-	public int getAccountId() {
+	public Integer getAccountId() {
 		return this.accountId;
 	}
 
-	public void setAccountId(int accountId) {
+	public void setAccountId(Integer accountId) {
 		this.accountId = accountId;
 	}
 
@@ -94,12 +94,12 @@ public class Account implements Serializable {
 		this.accountType = accountType;
 	}
 
-	public Client getClient() {
-		return this.client;
+	public Customer getCustomer() {
+		return this.customer;
 	}
 
-	public void setClient(Client client) {
-		this.client = client;
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
 	}
 
 	public List<Movement> getMovements() {

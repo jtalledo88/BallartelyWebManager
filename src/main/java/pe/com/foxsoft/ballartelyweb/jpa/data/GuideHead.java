@@ -36,7 +36,7 @@ public class GuideHead implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id")
-	private int id;
+	private Integer id;
 
 	@Column(name="guide_number")
 	private String guideNumber;
@@ -86,6 +86,14 @@ public class GuideHead implements Serializable {
 	
 	@Column(name="reason")
 	private String reason;
+	
+	@Column(name="guide_type")
+	private String guideType;
+	
+	//bi-directional many-to-one association to Transport
+	@ManyToOne
+	@JoinColumn(name="transport_id")
+	private Transport transport;
 
 	//bi-directional many-to-one association to ShippingDetail
 	@OneToMany(mappedBy="guideHead", fetch=FetchType.LAZY)
@@ -95,15 +103,20 @@ public class GuideHead implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="provider_id")
 	private Provider provider;
+	
+	//bi-directional many-to-one association to Provider
+	@ManyToOne
+	@JoinColumn(name="customer_id")
+	private Customer customer;
 
 	public GuideHead() {
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -219,6 +232,14 @@ public class GuideHead implements Serializable {
 		this.reason = reason;
 	}
 
+	public String getGuideType() {
+		return guideType;
+	}
+
+	public void setGuideType(String guideType) {
+		this.guideType = guideType;
+	}
+
 	public List<GuideDetail> getGuideDetails() {
 		return guideDetails;
 	}
@@ -233,6 +254,22 @@ public class GuideHead implements Serializable {
 
 	public void setProvider(Provider provider) {
 		this.provider = provider;
+	}
+
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
+
+	public Transport getTransport() {
+		return transport;
+	}
+
+	public void setTransport(Transport transport) {
+		this.transport = transport;
 	}
 
 }

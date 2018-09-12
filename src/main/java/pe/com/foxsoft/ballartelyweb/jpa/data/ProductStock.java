@@ -32,10 +32,10 @@ public class ProductStock implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id")
-	private int id;
+	private Integer id;
 
 	@Column(name="product_stock_cant")
-	private int productStockCant;
+	private Integer productStockCant;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="product_stock_creation_date")
@@ -53,19 +53,19 @@ public class ProductStock implements Serializable {
 	public ProductStock() {
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	public int getProductStockCant() {
+	public Integer getProductStockCant() {
 		return this.productStockCant;
 	}
 
-	public void setProductStockCant(int productStockCant) {
+	public void setProductStockCant(Integer productStockCant) {
 		this.productStockCant = productStockCant;
 	}
 

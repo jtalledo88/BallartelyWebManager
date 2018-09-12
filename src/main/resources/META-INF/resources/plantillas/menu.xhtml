@@ -17,11 +17,20 @@
 				url="/presentacion/movimientos/consultas/consultarEntrega.xhtml" />
 		</p:submenu>
 		<p:submenu label="Gestión">
-			<p:menuitem value="Registrar Guías"
-				url="/paginas/gestion/guias/registrarGuia.xhtml" />
-			<p:menuitem value="Etiquetas"
-				url="/paginas/gestion/etiquetas.xhtml" />
-				
+			<p:submenu label="Guías">
+				<p:submenu label="Compras">
+					<p:menuitem value="Registrar"
+						url="/paginas/gestion/guias/registrarGuia.xhtml" />
+					<p:menuitem value="Beneficiar"
+						url="/paginas/gestion/guias/beneficiarGuias.xhtml" />
+					<p:menuitem value="Cotizar"
+						url="/paginas/gestion/guias/cotizarGuias.xhtml" />
+				</p:submenu>
+				<p:submenu label="Ventas">
+					<p:menuitem value="Registrar"
+						url="/paginas/gestion/guias/registrarVenta.xhtml" />
+				</p:submenu>
+			</p:submenu>
 			<p:menuitem value="Gestionar Diferencias"
 				url="/presentacion/movimientos/gestion/gestionarDiferencias.xhtml" />
 			<p:menuitem value="Gestionar Movimientos"
@@ -42,6 +51,8 @@
 				url="/paginas/administracion/clientes.xhtml" />
 			<p:menuitem value="Parametros Generales"
 				url="/paginas/administracion/parametrosGenerales.xhtml" />
+			<p:menuitem value="Transportes"
+				url="/paginas/administracion/transportes.xhtml" />
 		</p:submenu>
 		<p:submenu label="Utiles">
 			<p:menuitem value="Encriptador"

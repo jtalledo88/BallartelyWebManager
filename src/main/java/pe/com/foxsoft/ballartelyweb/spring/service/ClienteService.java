@@ -9,8 +9,8 @@ import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import pe.com.foxsoft.ballartelyweb.jpa.dao.ClienteDao;
-import pe.com.foxsoft.ballartelyweb.jpa.data.Client;
+import pe.com.foxsoft.ballartelyweb.jpa.dao.CustomerDao;
+import pe.com.foxsoft.ballartelyweb.jpa.data.Customer;
 import pe.com.foxsoft.ballartelyweb.jpa.repository.ClienteRepository;
 import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
 
@@ -23,7 +23,7 @@ public class ClienteService {
 	private ClienteRepository clienteRepository;
 	
 	@Inject
-	private ClienteDao clienteDao;
+	private CustomerDao clienteDao;
 	
 	public EntityManager getEm() {
 		return em;
@@ -42,34 +42,34 @@ public class ClienteService {
 		this.clienteRepository = clienteJPA;
 	}
 	
-	public List<Client> buscarClientes(Client client) throws BallartelyException {		
-		return clienteDao.getClientsDataBase(em, client);
+	public List<Customer> buscarClientes(Customer client) throws BallartelyException {		
+		return clienteDao.getCustomersDataBase(em, client);
 	}
 	
 	@Transactional(readOnly=false, noRollbackFor=BallartelyException.class)
-	public Client agregarCliente(Client client) throws BallartelyException {
+	public Customer agregarCliente(Customer client) throws BallartelyException {
 		return clienteRepository.save(client);
 	}
 	
-	public Client obtenerCliente(Client client) throws BallartelyException {
-		return clienteDao.getClientByDocNumberDataBase(em, client);
+	public Customer obtenerCliente(Customer client) throws BallartelyException {
+		return clienteDao.getCustomerByDocNumberDataBase(em, client);
 	}
 	
-	public Client obtenerCliente(int itemClient) throws BallartelyException {
+	public Customer obtenerCliente(int itemClient) throws BallartelyException {
 		return clienteRepository.findOne(itemClient);
 	}
 
 	@Transactional(readOnly=false, rollbackFor=Throwable.class)
-	public Client editarCliente(Client client) throws BallartelyException {
+	public Customer editarCliente(Customer client) throws BallartelyException {
 		return clienteRepository.save(client);
 	}
 
 	@Transactional(readOnly=false, rollbackFor=Throwable.class)
-	public void eliminarCliente(Client client) throws BallartelyException {
+	public void eliminarCliente(Customer client) throws BallartelyException {
 		clienteRepository.delete(client);
 	}
 
-	public List<Client> getListaClientes() throws BallartelyException {
+	public List<Customer> getListaClientes() throws BallartelyException {
 		return clienteRepository.findAll();
 	}
 
@@ -81,11 +81,11 @@ public class ClienteService {
 		this.clienteRepository = clienteRepository;
 	}
 
-	public ClienteDao getClienteDao() {
+	public CustomerDao getClienteDao() {
 		return clienteDao;
 	}
 
-	public void setClienteDao(ClienteDao clienteDao) {
+	public void setClienteDao(CustomerDao clienteDao) {
 		this.clienteDao = clienteDao;
 	}
 

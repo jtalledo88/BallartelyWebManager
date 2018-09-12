@@ -23,13 +23,15 @@ import pe.com.foxsoft.ballartelyweb.jpa.data.GuideDetail;
 import pe.com.foxsoft.ballartelyweb.jpa.data.GuideHead;
 import pe.com.foxsoft.ballartelyweb.jpa.data.Movement;
 import pe.com.foxsoft.ballartelyweb.jpa.data.Provider;
+import pe.com.foxsoft.ballartelyweb.jpa.data.Transport;
 import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
-import pe.com.foxsoft.ballartelyweb.spring.service.GuiaService;
 import pe.com.foxsoft.ballartelyweb.spring.service.CuentaService;
 import pe.com.foxsoft.ballartelyweb.spring.service.EmpresaService;
 import pe.com.foxsoft.ballartelyweb.spring.service.EtiquetaProductoService;
+import pe.com.foxsoft.ballartelyweb.spring.service.GuiaService;
 import pe.com.foxsoft.ballartelyweb.spring.service.ParametroGeneralService;
 import pe.com.foxsoft.ballartelyweb.spring.service.ProveedorService;
+import pe.com.foxsoft.ballartelyweb.spring.service.TransporteService;
 import pe.com.foxsoft.ballartelyweb.spring.util.Constantes;
 import pe.com.foxsoft.ballartelyweb.spring.util.Propiedades;
 import pe.com.foxsoft.ballartelyweb.spring.util.Utilitarios;
@@ -58,6 +60,9 @@ public class RegistroGuiaMB {
 	private EmpresaService empresaService;
 	
 	@Autowired
+	private TransporteService transporteService;
+	
+	@Autowired
 	private Propiedades propiedades;
 
 	private GuideHead objGuideHeadMain;
@@ -65,11 +70,13 @@ public class RegistroGuiaMB {
 
 	private List<GuideDetail> lstItemsGuideMain;
 	private List<Provider> lstProveedores;
+	private List<Transport> lstTransports;
 
 	public RegistroGuiaMB() {
 		this.objGuideHeadMain = new GuideHead();
 		this.objGuideHeadMain.setProvider(new Provider());
 		this.lstItemsGuideMain = new ArrayList<>();
+		this.lstTransports = new ArrayList<>();
 		agregarItemGuia();
 	}
 
@@ -160,14 +167,21 @@ public class RegistroGuiaMB {
 			reiniciarFormulario();
 			Utilitarios.mensaje("", sMensaje);
 		} catch (BallartelyException e) {
-			sMensaje = "Error en agregarCliente";
+			sMensaje = "Error en registrarGuia";
 			this.logger.error(e.getMessage());
 			throw new FacesException(sMensaje, e);
 		}
 	}
 	
 	public void cargaPuntoPartida(AjaxBehaviorEvent event) {
-		this.objGuideHeadMain.setStartPoint(this.objGuideHeadMain.getProvider().getProviderAddress());
+		try {
+			this.objGuideHeadMain.setStartPoint(this.objGuideHeadMain.getProvider().getProviderAddress());
+			this.lstTransports = this.transporteService.getListaTransportesProveedor(this.objGuideHeadMain.getProvider().getId());
+		} catch (BallartelyException e) {
+			String sMensaje = "Error en cargaPuntoPartida";
+			this.logger.error(e.getMessage());
+			throw new FacesException(sMensaje, e);
+		}
 	}
 
 	public void editarItem(RowEditEvent event) {
@@ -312,6 +326,14 @@ public class RegistroGuiaMB {
 		this.empresaService = empresaService;
 	}
 
+	public TransporteService getTransporteService() {
+		return transporteService;
+	}
+
+	public void setTransporteService(TransporteService transporteService) {
+		this.transporteService = transporteService;
+	}
+
 	public Propiedades getPropiedades() {
 		return propiedades;
 	}
@@ -352,6 +374,14 @@ public class RegistroGuiaMB {
 
 	public void setIsGuide(InputStream isGuide) {
 		this.isGuide = isGuide;
+	}
+
+	public List<Transport> getLstTransports() {
+		return lstTransports;
+	}
+
+	public void setLstTransports(List<Transport> lstTransports) {
+		this.lstTransports = lstTransports;
 	}
 
 }

@@ -151,7 +151,7 @@
 						<f:facet name="header">
 							<h:outputText value="Item" />
 						</f:facet>
-						<h:outputText value="#{proveedor.providerId}" />
+						<h:outputText value="#{proveedor.id}" />
 					</p:column>
 					<p:column styleClass="oficina" exportable="false">
 						<f:facet name="header">
@@ -161,7 +161,7 @@
 							onclick="PF('dlgEditarProveedor').show()"
 							action="#{proveedorMB.openEditarProveedor}"
 							update=":wEditProv:pEditProv">
-							<f:param name="itemProveedor" value="#{proveedor.providerId}"
+							<f:param name="itemProveedor" value="#{proveedor.id}"
 								id="itemProveedor" />
 						</p:commandLink>
 					</p:column>
@@ -175,7 +175,7 @@
 							update="@form :confirmEliminarProveedor">
 							<f:setPropertyActionListener value="#{proveedor}"
 								target="#{proveedorMB.objProveedorMain}" />
-							<h:outputText value="#{proveedor.providerId}" />
+							<h:outputText value="#{proveedor.id}" />
 						</p:commandLink>
 					</p:column>
 					
@@ -568,6 +568,38 @@
 						<div class="boton">
 							<p:commandButton value="Guardar" icon="ui-icon-disk"
 								onclick="PF('confirmationEditarProveedor').show()" />
+							<p:commandButton value="Transportes"
+								icon="ui-icon-plus"
+								actionListener="#{proveedorMB.openGestionTransportes}"
+								oncomplete="PF('dlgSelTrans').show()"
+								update=":iddlgSelTrans" />
+						</div>
+					</p:tab>
+				</p:accordionPanel>
+
+			</h:form>
+		</p:dialog>
+		
+		<!-- ******************************************** EDITAR PRODUCTO ****************************************** -->
+
+		<p:dialog header="Gestionar Transportes" id="iddlgSelTrans"
+			widgetVar="dlgSelTrans" modal="true" width="630" position="top">
+
+			<p:growl life="3000" showDetail="true" id="msjSelTrans"
+				autoUpdate="true" />
+
+			<h1>Gestionar Transportes</h1>
+			<h:form id="wSelTrans">
+				<p:accordionPanel id="pSeltrans">
+					<p:tab title="Lista de Transportes">
+						<div class="filas">
+							<p:pickList id="pklTransports" 
+								value="#{proveedorMB.lstTransports}" var="transports" itemLabel="#{transports.carNumber}  - #{transports.driverNames}" 
+								itemValue="#{transports}" converter="#{transportConverter}"/>
+						</div>
+						<div class="boton">
+							<p:commandButton value="Guardar" icon="ui-icon-disk"
+								onclick="PF('confirmationGestionarTransportes').show()" />
 						</div>
 					</p:tab>
 				</p:accordionPanel>
@@ -622,8 +654,20 @@
 					onclick="PF('confirmationEliminarProveedor').hide()" type="button" />
 			</h:form>
 		</p:confirmDialog>
-
-
+		
+		<p:confirmDialog message="¿Está seguro de editar los datos?"
+			width="300" showEffect="explode" hideEffect="explode"
+			header="Mensaje de Confirmación" severity="alert"
+			widgetVar="confirmationGestionarTransportes" modal="true">
+			<h:form>
+				<p:commandButton value="Si" ajax="true"
+					actionListener="#{proveedorMB.gestionarTransportes}"
+					update=":msjSelTrans,:wLisProvider:tblProveedores"
+					oncomplete="PF('confirmationGestionarTransportes').hide()" />
+				<p:commandButton value="No"
+					onclick="PF('confirmationGestionarTransportes').hide()" type="button" />
+			</h:form>
+		</p:confirmDialog>
 
 	</ui:define>
 

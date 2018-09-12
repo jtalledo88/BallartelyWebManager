@@ -22,8 +22,8 @@ public class Movement implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="movement_id")
-	private int movementId;
+	@Column(name="id")
+	private Integer id;
 
 	@Column(name="movement_amount")
 	private BigDecimal movementAmount;
@@ -37,7 +37,7 @@ public class Movement implements Serializable {
 	private String movementObservation;
 
 	@Column(name="movement_quantity")
-	private int movementQuantity;
+	private Integer movementQuantity;
 
 	@Column(name="movement_type")
 	private String movementType;
@@ -58,12 +58,12 @@ public class Movement implements Serializable {
 	public Movement() {
 	}
 
-	public int getMovementId() {
-		return this.movementId;
+	public Integer getId() {
+		return this.id;
 	}
 
-	public void setMovementId(int movementId) {
-		this.movementId = movementId;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public BigDecimal getMovementAmount() {
@@ -90,11 +90,11 @@ public class Movement implements Serializable {
 		this.movementObservation = movementObservation;
 	}
 
-	public int getMovementQuantity() {
+	public Integer getMovementQuantity() {
 		return this.movementQuantity;
 	}
 
-	public void setMovementQuantity(int movementQuantity) {
+	public void setMovementQuantity(Integer movementQuantity) {
 		this.movementQuantity = movementQuantity;
 	}
 

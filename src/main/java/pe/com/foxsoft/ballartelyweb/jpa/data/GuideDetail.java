@@ -22,7 +22,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 
 /**
- * The persistent class for the shipping_detail database table.
+ * The persistent class for the guide_detail database table.
  * 
  */
 @Entity
@@ -34,13 +34,13 @@ public class GuideDetail implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id")
-	private int id;
+	private Integer id;
 
 	@Column(name="boxes_quantity")
-	private int boxesQuantity;
+	private Integer boxesQuantity;
 	
 	@Column(name="product_quantity")
-	private int productQuantity;
+	private Integer productQuantity;
 	
 	@Column(name="initial_weight")
 	private BigDecimal initialWeight;
@@ -61,7 +61,7 @@ public class GuideDetail implements Serializable {
 	private String productDescription;
 	
 	@Column(name="dead_quantity")
-	private int deadQuantity;
+	private Integer deadQuantity;
 	
 	@Column(name="dead_weight")
 	private BigDecimal deadWeight;
@@ -84,27 +84,27 @@ public class GuideDetail implements Serializable {
 	public GuideDetail() {
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	public int getBoxesQuantity() {
+	public Integer getBoxesQuantity() {
 		return boxesQuantity;
 	}
 
-	public void setBoxesQuantity(int boxesQuantity) {
+	public void setBoxesQuantity(Integer boxesQuantity) {
 		this.boxesQuantity = boxesQuantity;
 	}
 
-	public int getProductQuantity() {
+	public Integer getProductQuantity() {
 		return productQuantity;
 	}
 
-	public void setProductQuantity(int productQuantity) {
+	public void setProductQuantity(Integer productQuantity) {
 		this.productQuantity = productQuantity;
 	}
 
@@ -156,11 +156,11 @@ public class GuideDetail implements Serializable {
 		this.productDescription = productDescription;
 	}
 
-	public int getDeadQuantity() {
+	public Integer getDeadQuantity() {
 		return deadQuantity;
 	}
 
-	public void setDeadQuantity(int deadQuantity) {
+	public void setDeadQuantity(Integer deadQuantity) {
 		this.deadQuantity = deadQuantity;
 	}
 

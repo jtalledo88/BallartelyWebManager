@@ -23,7 +23,7 @@ public class GeneralParameter implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id")
-	private int id;
+	private Integer id;
 
 	@Column(name="param_code")
 	private String paramCode;
@@ -53,11 +53,11 @@ public class GeneralParameter implements Serializable {
 	public GeneralParameter() {
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

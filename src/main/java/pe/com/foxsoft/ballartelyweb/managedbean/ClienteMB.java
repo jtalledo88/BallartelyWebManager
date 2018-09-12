@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import pe.com.foxsoft.ballartelyweb.jpa.data.Account;
-import pe.com.foxsoft.ballartelyweb.jpa.data.Client;
+import pe.com.foxsoft.ballartelyweb.jpa.data.Customer;
 import pe.com.foxsoft.ballartelyweb.jpa.data.GeneralParameter;
 import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
 import pe.com.foxsoft.ballartelyweb.spring.service.ClienteService;
@@ -40,10 +40,10 @@ public class ClienteMB {
 	@Autowired
 	private Propiedades propiedades;
 
-	private Client objClienteMain;
-	private Client objClienteSearch;
+	private Customer objClienteMain;
+	private Customer objClienteSearch;
 
-	private List<Client> lstClientesMain;
+	private List<Customer> lstClientesMain;
 	private List<GeneralParameter> lstEstadosGenerales;
 	private List<GeneralParameter> lstTiposDocGenerales;
 	private List<GeneralParameter> lstTiposCliGenerales;
@@ -54,8 +54,8 @@ public class ClienteMB {
 	private boolean flagConfirmEliClient = false;
 
 	public ClienteMB() {
-		this.objClienteMain = new Client();
-		this.objClienteSearch = new Client();
+		this.objClienteMain = new Customer();
+		this.objClienteSearch = new Customer();
 		this.lstClientesMain = new ArrayList<>();
 		this.lstEstadosGenerales = new ArrayList<>();
 		this.lstTiposDocGenerales = new ArrayList<>();
@@ -79,7 +79,7 @@ public class ClienteMB {
 	public void agregarCliente() {
 		String sMensaje = "";
 		
-		Client objCliente = new Client();
+		Customer objCliente = new Customer();
 		Account objAccount = new Account();
 		try {
 			if ("".equals(this.objClienteMain.getDocumentType())) {
@@ -90,23 +90,23 @@ public class ClienteMB {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe llenar el número de documento del cliente.");
 				return;
 			}
-			if ("".equals(this.objClienteMain.getClientNames())) {
+			if ("".equals(this.objClienteMain.getCustomerNames())) {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe llenar el nombre o razón social del cliente.");
 				return;
 			}
-			if ("".equals(this.objClienteMain.getClientAddress())) {
+			if ("".equals(this.objClienteMain.getCustomerAddress())) {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe llenar la dirección del cliente.");
 				return;
 			}
-			if ("".equals(this.objClienteMain.getClientPhoneNumber())) {
+			if ("".equals(this.objClienteMain.getCustomerPhoneNumber())) {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe llenar el número de teléfono del cliente.");
 				return;
 			}
-			if ("".equals(this.objClienteMain.getClientStatus())) {
+			if ("".equals(this.objClienteMain.getCustomerStatus())) {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe seleccionar un estado.");
 				return;
 			}
-			if ("".equals(this.objClienteMain.getClientType())) {
+			if ("".equals(this.objClienteMain.getCustomerType())) {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe seleccionar un tipo de cliente.");
 				return;
 			}
@@ -114,21 +114,21 @@ public class ClienteMB {
 			
 			objCliente.setDocumentType(this.objClienteMain.getDocumentType());
 			objCliente.setDocumentNumber(this.objClienteMain.getDocumentNumber());
-			objCliente.setClientNames(this.objClienteMain.getClientNames());
-			objCliente.setClientAddress(this.objClienteMain.getClientAddress());
-			objCliente.setClientPhoneNumber(this.objClienteMain.getClientPhoneNumber());
-			objCliente.setClientStatus(this.objClienteMain.getClientStatus());
-			objCliente.setClientType(this.objClienteMain.getClientType());
+			objCliente.setCustomerNames(this.objClienteMain.getCustomerNames());
+			objCliente.setCustomerAddress(this.objClienteMain.getCustomerAddress());
+			objCliente.setCustomerPhoneNumber(this.objClienteMain.getCustomerPhoneNumber());
+			objCliente.setCustomerStatus(this.objClienteMain.getCustomerStatus());
+			objCliente.setCustomerType(this.objClienteMain.getCustomerType());
 			
 			objCliente = this.clienteService.agregarCliente(objCliente);
 			
 			objAccount.setAccountType(Constantes.ACCOUNT_TYPE_C);
 			objAccount.setAccountStatus(Constantes.STATUS_ACTIVE);
-			objAccount.setClient(objCliente);
+			objAccount.setCustomer(objCliente);
 			this.cuentaService.agregarCuenta(objAccount);
-			sMensaje = String.format(Constantes.MESSAGE_PERSIST_SUCCESS, objCliente.getClientId());
+			sMensaje = String.format(Constantes.MESSAGE_PERSIST_SUCCESS, objCliente.getId());
 			Utilitarios.mensaje("", sMensaje);
-			setLstClientesMain(new ArrayList<Client>());
+			setLstClientesMain(new ArrayList<Customer>());
 			this.canRegTablaPrincipal = getListaPrincipalClientes();
 		
 		} catch (BallartelyException e) {
@@ -139,18 +139,18 @@ public class ClienteMB {
 	}
 
 	public void openAgregarCliente() {
-		this.objClienteMain = new Client();
+		this.objClienteMain = new Customer();
 		this.objClienteMain.setDocumentType("");
 		this.objClienteMain.setDocumentNumber("");
-		this.objClienteMain.setClientNames("");
-		this.objClienteMain.setClientAddress("");
-		this.objClienteMain.setClientPhoneNumber("");
-		this.objClienteMain.setClientType("");
-		this.objClienteMain.setClientStatus("");
+		this.objClienteMain.setCustomerNames("");
+		this.objClienteMain.setCustomerAddress("");
+		this.objClienteMain.setCustomerPhoneNumber("");
+		this.objClienteMain.setCustomerType("");
+		this.objClienteMain.setCustomerStatus("");
 	}
 
 	public void openEditarCliente() {
-		setObjClienteMain(new Client());
+		setObjClienteMain(new Customer());
 
 		Map<String, String> paramMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 
@@ -176,29 +176,29 @@ public class ClienteMB {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe llenar el número de documento del cliente.");
 				return;
 			}
-			if ("".equals(this.objClienteMain.getClientNames())) {
+			if ("".equals(this.objClienteMain.getCustomerNames())) {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe llenar el nombre o razón social del cliente.");
 				return;
 			}
-			if ("".equals(this.objClienteMain.getClientAddress())) {
+			if ("".equals(this.objClienteMain.getCustomerAddress())) {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe llenar la dirección del cliente.");
 				return;
 			}
-			if ("".equals(this.objClienteMain.getClientPhoneNumber())) {
+			if ("".equals(this.objClienteMain.getCustomerPhoneNumber())) {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe llenar el número de teléfono del cliente.");
 				return;
 			}
-			if ("".equals(this.objClienteMain.getClientStatus())) {
+			if ("".equals(this.objClienteMain.getCustomerStatus())) {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe seleccionar un estado.");
 				return;
 			}
-			if ("".equals(this.objClienteMain.getClientType())) {
+			if ("".equals(this.objClienteMain.getCustomerType())) {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe seleccionar un tipo de cliente.");
 				return;
 			}
 			
-			Client objClienteAct = this.clienteService.editarCliente(this.objClienteMain);
-			sMensaje = String.format(Constantes.MESSAGE_MERGE_SUCCESS, objClienteAct.getClientId());
+			Customer objClienteAct = this.clienteService.editarCliente(this.objClienteMain);
+			sMensaje = String.format(Constantes.MESSAGE_MERGE_SUCCESS, objClienteAct.getId());
 			Utilitarios.mensaje("", sMensaje);
 			this.canRegTablaPrincipal = getListaPrincipalClientes();
 			
@@ -218,7 +218,7 @@ public class ClienteMB {
 		try {
 			this.clienteService.eliminarCliente(this.objClienteMain);
 			sMensaje = Constantes.MESSAGE_REMOVE_SUCCESS;
-			setLstClientesMain(new ArrayList<Client>());
+			setLstClientesMain(new ArrayList<Customer>());
 			this.canRegTablaPrincipal = getListaPrincipalClientes();
 			Utilitarios.mensaje("", sMensaje);
 		} catch (BallartelyException e) {
@@ -234,9 +234,9 @@ public class ClienteMB {
 		try {
 			this.lstClientesMain = this.clienteService.getListaClientes();
 			can = this.lstClientesMain.size();
-			for (Client c : this.lstClientesMain) {
-				if (c.getClientNames() != null) {
-					this.lstNomClienteBUS.add(c.getClientNames());
+			for (Customer c : this.lstClientesMain) {
+				if (c.getCustomerNames() != null) {
+					this.lstNomClienteBUS.add(c.getCustomerNames());
 				}
 				if (c.getDocumentNumber() != null) {
 					this.lstNumDocClienteBUS.add(c.getDocumentNumber());
@@ -300,30 +300,30 @@ public class ClienteMB {
 		return results;
 	}
 
-	public Client getObjClienteMain() {
+	public Customer getObjClienteMain() {
 		return this.objClienteMain;
 	}
 
-	public void setObjClienteMain(Client objClienteMain) {
+	public void setObjClienteMain(Customer objClienteMain) {
 		this.objClienteMain = objClienteMain;
 	}
 	
-	public Client getObjClienteSearch() {
+	public Customer getObjClienteSearch() {
 		return objClienteSearch;
 	}
 
-	public void setObjClienteSearch(Client objClienteSearch) {
+	public void setObjClienteSearch(Customer objClienteSearch) {
 		this.objClienteSearch = objClienteSearch;
 	}
 
-	public List<Client> getLstClientesMain() {
+	public List<Customer> getLstClientesMain() {
 		if ((this.lstClientesMain.isEmpty()) && (this.validaListaBuscar)) {
 			this.canRegTablaPrincipal = getListaPrincipalClientes();
 		}
 		return this.lstClientesMain;
 	}
 
-	public void setLstClientesMain(List<Client> lstClientesMain) {
+	public void setLstClientesMain(List<Customer> lstClientesMain) {
 		this.lstClientesMain = lstClientesMain;
 	}
 

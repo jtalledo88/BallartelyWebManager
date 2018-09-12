@@ -23,8 +23,8 @@ public class Provider implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="provider_id")
-	private int providerId;
+	@Column(name="id")
+	private Integer id;
 
 	@Column(name="provider_address")
 	private String providerAddress;
@@ -47,12 +47,6 @@ public class Provider implements Serializable {
 
 	@Column(name="provider_social_reason")
 	private String providerSocialReason;
-	
-	@Column(name="provider_driver_license")
-	private String providerDriverLicense;
-	
-	@Column(name="provider_car_number")
-	private String providerCarNumber;
 
 	@Column(name="provider_status")
 	private String providerStatus;
@@ -68,12 +62,12 @@ public class Provider implements Serializable {
 	public Provider() {
 	}
 
-	public int getProviderId() {
-		return this.providerId;
+	public Integer getId() {
+		return this.id;
 	}
 
-	public void setProviderId(int providerId) {
-		this.providerId = providerId;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public String getProviderAddress() {
@@ -138,22 +132,6 @@ public class Provider implements Serializable {
 
 	public void setMovements(List<Movement> movements) {
 		this.movements = movements;
-	}
-
-	public String getProviderDriverLicense() {
-		return providerDriverLicense;
-	}
-
-	public void setProviderDriverLicense(String providerDriverLicense) {
-		this.providerDriverLicense = providerDriverLicense;
-	}
-
-	public String getProviderCarNumber() {
-		return providerCarNumber;
-	}
-
-	public void setProviderCarNumber(String providerCarNumber) {
-		this.providerCarNumber = providerCarNumber;
 	}
 
 	public Movement addMovement(Movement movement) {

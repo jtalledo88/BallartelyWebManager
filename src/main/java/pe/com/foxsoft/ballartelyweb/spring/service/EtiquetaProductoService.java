@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +14,7 @@ import pe.com.foxsoft.ballartelyweb.jpa.dao.EtiquetaProductoDao;
 import pe.com.foxsoft.ballartelyweb.jpa.data.ProductLabel;
 import pe.com.foxsoft.ballartelyweb.jpa.repository.EtiquetaProductoRepository;
 import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
+import pe.com.foxsoft.ballartelyweb.spring.util.Constantes;
 
 @Service
 public class EtiquetaProductoService {
@@ -66,7 +68,10 @@ public class EtiquetaProductoService {
 	}
 	
 	public List<ProductLabel> getListaEtiquetaProductos() throws BallartelyException {
-		return etiquetaProductoRepository.findAll();
+		ProductLabel productLabel = new ProductLabel();
+		productLabel.setProductLabelStatus(Constantes.STATUS_ACTIVE);
+		Example<ProductLabel> eProductLabel = Example.of(productLabel);
+		return etiquetaProductoRepository.findAll(eProductLabel);
 	}
 
 	public EtiquetaProductoRepository getEtiquetaProductoRepository() {

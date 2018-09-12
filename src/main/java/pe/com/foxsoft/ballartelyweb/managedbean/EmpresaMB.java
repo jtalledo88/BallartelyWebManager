@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.ManagedBean;
+import javax.annotation.PostConstruct;
 import javax.faces.FacesException;
 
+import org.primefaces.model.DualListModel;
 import org.primefaces.model.ScheduleModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,11 +16,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import pe.com.foxsoft.ballartelyweb.jpa.data.Account;
-import pe.com.foxsoft.ballartelyweb.jpa.data.Client;
+import pe.com.foxsoft.ballartelyweb.jpa.data.Customer;
 import pe.com.foxsoft.ballartelyweb.jpa.data.Enterprise;
+import pe.com.foxsoft.ballartelyweb.jpa.data.EnterpriseTransport;
+import pe.com.foxsoft.ballartelyweb.jpa.data.Transport;
 import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
 import pe.com.foxsoft.ballartelyweb.spring.service.CuentaService;
 import pe.com.foxsoft.ballartelyweb.spring.service.EmpresaService;
+import pe.com.foxsoft.ballartelyweb.spring.service.TransporteService;
 import pe.com.foxsoft.ballartelyweb.spring.util.CalendarioModel;
 import pe.com.foxsoft.ballartelyweb.spring.util.Constantes;
 import pe.com.foxsoft.ballartelyweb.spring.util.Utilitarios;
@@ -33,12 +38,22 @@ public class EmpresaMB {
 	
 	@Autowired
 	private CuentaService cuentaService;
+	
+	@Autowired
+	private TransporteService transporteService;
 
 	private Enterprise empresa = new Enterprise();
 	private List<Account> lstCuentaPrincipal;
 	private double saldoCuentaTotal = 10.05;
 	
 	private ScheduleModel calendarioEventos;
+	
+	private DualListModel<Transport> lstTransports;
+	
+	@PostConstruct
+    public void init() {
+		this.lstTransports = new DualListModel<>();
+	}
 	
 	public EmpresaMB() {
 		lstCuentaPrincipal = new ArrayList<>();
@@ -84,7 +99,7 @@ public class EmpresaMB {
 		try {
 			Account account = new Account();
 			account.setAccountType(Constantes.ACCOUNT_TYPE_P);
-			account.setClient(new Client());
+			account.setCustomer(new Customer());
 			account.setAccountStatus(Constantes.STATUS_ACTIVE);
 			lstCuentaPrincipal = cuentaService.obtenerCuentas(account);
 		} catch (BallartelyException e) {
@@ -94,8 +109,41 @@ public class EmpresaMB {
 		}
 	}
 	
+	public void openGestionTransportes() {
+		try {
+			List<Transport> lstSource = this.transporteService.getListaTransportesDisponibles();
+			List<Transport> lstTarget = this.transporteService.getListaTransportesEmpresa(this.empresa.getId());
+			this.lstTransports = new DualListModel<>(lstSource, lstTarget);
+		} catch (BallartelyException e) {
+			String sMensaje = "Error en openGestionTransportes";
+			this.logger.error(e.getMessage());
+			Utilitarios.mensajeError("Excepcion", sMensaje);
+		}
+	}
+	
 	public void openVerMovimientos() {
 		
+	}
+	
+	public void gestionarTransportes() {
+		String sMensaje = null;
+		try {
+			List<Transport> lstTarget = this.lstTransports.getTarget();
+			List<EnterpriseTransport> lstEnterpriseTransports = new ArrayList<>();
+			for(Transport t: lstTarget) {
+				EnterpriseTransport objEnterpriseTransport = new EnterpriseTransport();
+				objEnterpriseTransport.setEnterprise(empresa);
+				objEnterpriseTransport.setTransport(t);
+				
+				lstEnterpriseTransports.add(objEnterpriseTransport);
+			}
+			sMensaje = this.transporteService.gestionarTransporteEmpresa(this.empresa.getId(), lstEnterpriseTransports);
+			Utilitarios.mensajeInfo("", sMensaje);
+		} catch (BallartelyException e) {
+			sMensaje = "Error en gestionarTransportes";
+			this.logger.error(e.getMessage());
+			Utilitarios.mensajeError("Excepcion", sMensaje);
+		}
 	}
 	
 	private void cargarEmpresa() {
@@ -129,6 +177,14 @@ public class EmpresaMB {
 	public void setCuentaService(CuentaService cuentaService) {
 		this.cuentaService = cuentaService;
 	}
+	
+	public TransporteService getTransporteService() {
+		return transporteService;
+	}
+
+	public void setTransporteService(TransporteService transporteService) {
+		this.transporteService = transporteService;
+	}
 
 	public Enterprise getEmpresa() {
 		cargarEmpresa();
@@ -146,6 +202,14 @@ public class EmpresaMB {
 
 	public void setLstCuentaPrincipal(List<Account> lstCuentaPrincipal) {
 		this.lstCuentaPrincipal = lstCuentaPrincipal;
+	}
+	
+	public DualListModel<Transport> getLstTransports() {
+		return lstTransports;
+	}
+
+	public void setLstTransports(DualListModel<Transport> lstTransports) {
+		this.lstTransports = lstTransports;
 	}
 
 	public double getSaldoCuentaTotal() {

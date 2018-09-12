@@ -18,9 +18,9 @@ public class CuentaDao {
 	public List<Account> getAccountsByOwnerDataBase(EntityManager em, Account account) throws BallartelyException {
 		try {
 			TypedQuery<Account> queryAccounts = em.createQuery(
-					"select a from Account a left join fetch a.client c where (a.accountType = '" + Constantes.ACCOUNT_TYPE_C + 
-					"' and c.clientId = :clientId) and a.accountStatus = :accountStatus", Account.class);
-			queryAccounts.setParameter("clientId", account.getClient().getClientId());
+					"select a from Account a left join fetch a.customer c where (a.accountType = '" + Constantes.ACCOUNT_TYPE_C + 
+					"' and c.id = :customerId) and a.accountStatus = :accountStatus", Account.class);
+			queryAccounts.setParameter("customerId", account.getCustomer().getId());
 			queryAccounts.setParameter("accountStatus", account.getAccountStatus());
 			
 			return queryAccounts.getResultList();

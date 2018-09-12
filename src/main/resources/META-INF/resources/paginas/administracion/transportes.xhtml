@@ -1,0 +1,552 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="../../plantillas/defecto.xhtml">
+	<ui:define name="titulo">Administrar Transportes</ui:define>
+	<ui:define name="contenido">
+
+		<script type="text/javascript">
+		<!--
+			-->
+		</script>
+
+
+		<h1>Administrar Transporte</h1>
+		<h:form id="wListransport">
+			<!-- <p:panel header="Criterios de b&#250;squeda" toggleable="true"> -->
+
+			<p:growl life="3000" showDetail="true" id="msjLisTransport"
+				autoUpdate="true" />
+
+			<p:accordionPanel>
+				<p:tab title="Criterios de b&#250;squeda">
+					<div class="filas">
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtNumeroPlacaTransporte"
+										value="Nro Placa:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:autoComplete id="txtNumeroPlacaTransporte"
+											value="#{transporteMB.objTransporteSearch.carNumber}"
+											completeMethod="#{transporteMB.completeCarNumber}"
+											autocomplete="false" ajax="false" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgMarcaTransporte"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgMarcaTransporte"
+											value="Marca del transporte" />
+									</div>
+								</div>
+								<p:message for="txtNumeroPlacaTransporte" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="cboEstado" value="Estado:" />
+								</div>
+								<div class="dostercios">
+									<div class="combo">
+										<p:selectOneMenu id="cboEstado"
+											value="#{transporteMB.objTransporteSearch.transportStatus}">
+											<f:selectItem itemLabel="-- Todos --" itemValue=""/>
+											<f:selectItem itemLabel="Activo" itemValue="1" />
+											<f:selectItem itemLabel="Inactivo" itemValue="0" />
+										</p:selectOneMenu>
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgEstado"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgEstado" value="Estado del transporte" />
+									</div>
+								</div>
+								<p:message for="cboEstado" />
+							</div>
+						</div>
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtNombresConductor" value="Conductor:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:autoComplete id="txtNombresConductor" maxResults="10"
+											value="#{transporteMB.objTransporteSearch.driverNames}"
+											completeMethod="#{transporteMB.completeDriverNames}"
+											autocomplete="false" ajax="false" />
+
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgNombreConductor"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgNombreConductor"
+											value="Nombres del conductor" />
+									</div>
+								</div>
+								<p:message for="txtNombresConductor" />
+							</div>
+						</div>
+					</div>
+					<div class="boton">
+						<p:commandButton value="Buscar" icon="ui-icon-search"
+							actionListener="#{transporteMB.buscarTransportes}"
+							update=":wListransport:tblTransportes" />
+					</div>
+					<div style="clear: both;"></div>
+					<!-- </p:panel> -->
+				</p:tab>
+			</p:accordionPanel>
+			<h2>Resultados</h2>
+			<p:separator />
+
+			<div class="opcionesTabla" style="text-align: left;">
+				<p:commandButton value="Agregar Transporte"
+					icon="ui-icon-plus"
+					actionListener="#{transporteMB.openAgregarTransporte}"
+					oncomplete="PF('dlgAgregarTransporte').show()"
+					update=":iddlgAgregarTransporte" />
+				<div style="clear: both;"></div>
+			</div>
+
+			<div class="scrollTabla">
+				<p:dataTable paginator="true" paginatorPosition="top" rows="10"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+					style="width: 100%; margin-bottom:20px;" var="transporte"
+					value="#{transporteMB.lstTransportesMain}" id="tblTransportes"
+					emptyMessage="No se encontraron registros">
+					<f:facet name="{Exporters}">
+						<h:commandLink>
+							<p:graphicImage url="../../recursos/imagenes/excel.png"
+								width="24" />
+							<p:dataExporter type="xls" target="tblTransportes"
+								fileName="Transports" />
+						</h:commandLink>
+
+						<h:commandLink>
+							<p:graphicImage url="../../recursos/imagenes/pdf.png" width="24" />
+							<p:dataExporter type="pdf" target="tblTransportes"
+								fileName="Transports" />
+						</h:commandLink>
+
+						<h:commandLink>
+							<p:graphicImage url="../../recursos/imagenes/csv.png" width="24" />
+							<p:dataExporter type="csv" target="tblTransportes"
+								fileName="Transports" />
+						</h:commandLink>
+
+						<h:commandLink>
+							<p:graphicImage url="../../recursos/imagenes/xml.png" width="24" />
+							<p:dataExporter type="xml" target="tblTransportes"
+								fileName="Transports" />
+						</h:commandLink>
+					</f:facet>
+
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Item" />
+						</f:facet>
+						<h:outputText value="#{transporte.id}" />
+					</p:column>
+					<p:column styleClass="oficina" exportable="false">
+						<f:facet name="header">
+							<h:outputText value="Editar" title="Editar" />
+						</f:facet>
+						<p:commandLink value="Editar"
+							onclick="PF('dlgEditarTransporte').show()"
+							action="#{transporteMB.openEditarTransporte}"
+							update=":wEditTrans:pEditTrans">
+							<f:param name="itemTransporte" value="#{transporte.id}"
+								id="itemProveedor" />
+						</p:commandLink>
+					</p:column>
+
+					<p:column styleClass="eliminar" exportable="false">
+						<f:facet name="header">
+							<h:outputText value="Eliminar" />
+						</f:facet>
+						<p:commandLink value="Eliminar"
+							action="#{transporteMB.visibleConfirmElimTransporte}"
+							update="@form :confirmEliminarTransporte">
+							<f:setPropertyActionListener value="#{transporte}"
+								target="#{transporteMB.objTransporteMain}" />
+							<h:outputText value="#{transporte.id}" />
+						</p:commandLink>
+					</p:column>
+					
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Marca" />
+						</f:facet>
+						<h:outputText value="#{transporte.carMark}" />
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Placa" />
+						</f:facet>
+						<h:outputText value="#{transporte.carNumber}" />
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Nro. Licencia" />
+						</f:facet>
+						<h:outputText value="#{transporte.driverLicenseNumber}" />
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Conductor" />
+						</f:facet>
+						<h:outputText value="#{transporte.driverNames}" />
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Estado" />
+						</f:facet>
+						<h:outputText value="#{transporte.transportStatus}" converter="#{statusConverter}" />
+					</p:column>
+					<p:column styleClass="fecha">
+						<f:facet name="header">
+							<h:outputText value="Fecha Registro" />
+						</f:facet>
+						<h:outputText value="#{transporte.transportCreationDate}">
+							<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+						</h:outputText>
+					</p:column>
+					<p:column styleClass="fecha">
+						<f:facet name="header">
+							<h:outputText value="Fecha de Act." />
+						</f:facet>
+						<h:outputText value="#{transporte.transportModificationDate}">
+							<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+						</h:outputText>
+					</p:column>
+					<f:facet name="footer">  
+          			Total registros: <h:outputText
+							value="#{transporteMB.canRegTablaPrincipal}" />
+					</f:facet>
+				</p:dataTable>
+			</div>
+			<!-- <div class="opcionesTabla" style="text-align: left;">
+				<p:commandButton value="Exportar"
+					action="exportar/productos.jsp" icon="ui-icon-disk"
+					target="_blank" ajax="false" />
+			<div style="clear: both;"></div>
+			</div> -->
+		</h:form>
+
+		<!-- ******************************************* PRODUCTOS ************************************************ -->
+
+		<p:dialog header="Agregar Transporte" widgetVar="dlgAgregarTransporte"
+			modal="true" width="930" position="top" id="iddlgAgregarTransporte">
+
+			<p:growl life="3000" showDetail="true" id="msjAgregarTransporte"
+				autoUpdate="true" />
+
+			<h1>Agregar Transporte</h1>
+			<h:form id="wAgregarTrans">
+				<p:panel header="Datos del Transporte" toggleable="false"
+					id="pAgregarProv">
+					<div class="filas">
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtMarcaTransporteNuevo"
+										value="Marca:" />
+									<h:outputLabel value="*" style="Color:red" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtMarcaTransporteNuevo"
+											value="#{transporteMB.objTransporteMain.carMark}" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgMarcaTransporteNuevo"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgMarcaTransporteNuevo"
+											value="Marca del Transporte" />
+									</div>
+								</div>
+								<p:message for="txtMarcaTransporteNuevo" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtNumLicenciaNuevo"
+										value="Número de Licencia:" />
+									<h:outputLabel value="*" style="Color:red" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtNumLicenciaNuevo"
+											value="#{transporteMB.objTransporteMain.driverLicenseNumber}" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgNumLicenciaNuevo"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgNumLicenciaNuevo"
+											value="Número de licencia de transportista" />
+									</div>
+								</div>
+								<p:message for="txtNumLicenciaNuevo" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="cboEstado" value="Estado:" />
+									<h:outputLabel value="*" style="Color:red" />
+								</div>
+								<div class="dostercios">
+									<div class="combo">
+										<p:selectOneMenu id="cboEstado"
+											value="#{transporteMB.objTransporteMain.transportStatus}">
+											<f:selectItem itemLabel="-- Seleccione --" itemValue="" />
+											<f:selectItem itemLabel="Activo" itemValue="1" />
+											<f:selectItem itemLabel="Inactivo" itemValue="0" />
+										</p:selectOneMenu>
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgEstado"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgEstado" value="Estado del transporte" />
+									</div>
+								</div>
+								<p:message for="cboEstado" />
+							</div>
+						</div>
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtNumPlacaNuevo" value="Número placa:" />
+									<h:outputLabel value="*" style="Color:red" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtNumPlacaNuevo"
+											value="#{transporteMB.objTransporteMain.carNumber}" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgNumPlacaNuevo"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgNumPlacaNuevo"
+											value="Número de placa de transporte" />
+									</div>
+								</div>
+								<p:message for="txtNumPlacaNuevo" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtNomConductorNuevo" value="Conductor:" />
+									<h:outputLabel value="*" style="Color:red" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtNomConductorNuevo"
+											value="#{transporteMB.objTransporteMain.driverNames}" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgNomConductorNuevo"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgNomConductorNuevo"
+											value="Nombres del conductor" />
+									</div>
+								</div>
+								<p:message for="txtNomConductorNuevo" />
+							</div>
+						</div>
+
+					</div>
+					<div class="boton">
+						<p:commandButton value="Agregar" icon="ui-icon-disk"
+							onclick="PF('confirmationAgregarTransporte').show()" />
+					</div>
+					<div style="clear: both;"></div>
+				</p:panel>
+
+				<div style="clear: both;"></div>
+			</h:form>
+		</p:dialog>
+
+		<!-- ******************************************** EDITAR PRODUCTO ****************************************** -->
+
+		<p:dialog header="Editar Transporte"
+			widgetVar="dlgEditarTransporte" modal="true" width="930" position="top">
+
+			<p:growl life="3000" showDetail="true" id="msjEditarTransporte"
+				autoUpdate="true" />
+
+			<h1>Editar Transporte</h1>
+			<h:form id="wEditTrans">
+				<p:accordionPanel id="pEditTrans">
+					<p:tab title="Datos del Transporte">
+						<div class="filas">
+							<div class="mitad">
+								<div class="completo">
+									<div class="tercio">
+										<h:outputLabel for="txtMarcaTransporteEditar" value="Marca:" />
+										<h:outputLabel value="*" style="Color:red" />
+									</div>
+									<div class="dostercios">
+										<div class="input">
+											<p:inputText id="txtMarcaTransporteEditar"
+												value="#{transporteMB.objTransporteMain.carMark}" />
+										</div>
+										<div class="tooltip">
+											<h:graphicImage id="imgMarcaTransporteEditar"
+												url="../../recursos/imagenes/help.png"></h:graphicImage>
+											<p:tooltip for="imgMarcaTransporteEditar"
+												value="Marca del transporte" />
+										</div>
+									</div>
+									<p:message for="txtMarcaTransporteEditar" />
+								</div>
+								<div class="completo">
+									<div class="tercio">
+										<h:outputLabel for="txtNumLicenciaEditar"
+											value="Número de Licencia:" />
+										<h:outputLabel value="*" style="Color:red" />
+									</div>
+									<div class="dostercios">
+										<div class="input">
+											<p:inputText id="txtNumLicenciaEditar"
+												value="#{transporteMB.objTransporteMain.driverLicenseNumber}" />
+										</div>
+										<div class="tooltip">
+											<h:graphicImage id="imgNumLicenciaEditar"
+												url="../../recursos/imagenes/help.png"></h:graphicImage>
+											<p:tooltip for="imgNumLicenciaEditar"
+												value="Número de licencia de transportista" />
+										</div>
+									</div>
+									<p:message for="txtNumLicenciaEditar" />
+								</div>
+								<div class="completo">
+									<div class="tercio">
+										<h:outputLabel for="cboEstadoEditar" value="Estado:" />
+										<h:outputLabel value="*" style="Color:red" />
+									</div>
+									<div class="dostercios">
+										<div class="combo">
+											<p:selectOneMenu id="cboEstadoEditar"
+												value="#{transporteMB.objTransporteMain.transportStatus}">
+												<f:selectItem itemLabel="-- Seleccione --" itemValue="" />
+												<f:selectItem itemLabel="Activo" itemValue="1" />
+												<f:selectItem itemLabel="Inactivo" itemValue="0" />
+											</p:selectOneMenu>
+										</div>
+										<div class="tooltip">
+											<h:graphicImage id="imgEstadoEditar"
+												url="../../recursos/imagenes/help.png"></h:graphicImage>
+											<p:tooltip for="imgEstadoEditar"
+												value="Estado del transporte" />
+										</div>
+									</div>
+									<p:message for="cboEstadoEditar" />
+								</div>	
+							</div>
+							<div class="mitad">
+								<div class="completo">
+									<div class="tercio">
+										<h:outputLabel for="txtNumPlacaEditar" value="Número placa:" />
+										<h:outputLabel value="*" style="Color:red" />
+									</div>
+									<div class="dostercios">
+										<div class="input">
+											<p:inputText id="txtNumPlacaEditar"
+												value="#{transporteMB.objTransporteMain.carNumber}" />
+										</div>
+										<div class="tooltip">
+											<h:graphicImage id="imgNumPlacaEditar"
+												url="../../recursos/imagenes/help.png"></h:graphicImage>
+											<p:tooltip for="imgNumPlacaEditar"
+												value="Número de placa de transporte" />
+										</div>
+									</div>
+									<p:message for="txtNumPlacaEditar" />
+								</div>
+								<div class="completo">
+									<div class="tercio">
+										<h:outputLabel for="txtNomConductorEditar" value="Conductor:" />
+										<h:outputLabel value="*" style="Color:red" />
+									</div>
+									<div class="dostercios">
+										<div class="input">
+											<p:inputText id="txtNomConductorEditar"
+												value="#{transporteMB.objTransporteMain.driverNames}" />
+										</div>
+										<div class="tooltip">
+											<h:graphicImage id="imgNomConductorEditar"
+												url="../../recursos/imagenes/help.png"></h:graphicImage>
+											<p:tooltip for="imgNomConductorEditar"
+												value="Nombres del conductor" />
+										</div>
+									</div>
+									<p:message for="txtNomConductorEditar" />
+								</div>
+							</div>
+						</div>
+						<div class="boton">
+							<p:commandButton value="Guardar" icon="ui-icon-disk"
+								onclick="PF('confirmationEditarTransporte').show()" />
+						</div>
+					</p:tab>
+				</p:accordionPanel>
+
+			</h:form>
+		</p:dialog>
+
+
+		<p:confirmDialog message="¿Está seguro de agregar el registro?"
+			width="300" showEffect="explode" hideEffect="explode"
+			header="Mensaje de Confirmación" severity="alert"
+			widgetVar="confirmationAgregarTransporte" modal="true">
+			<h:form>
+				<p:commandButton value="Si"
+					actionListener="#{transporteMB.agregarTransporte}"
+					update=":msjAgregarTransporte,:wListransport:tblTransportes"
+					oncomplete="PF('confirmationAgregarTransporte').hide()" />
+				<p:commandButton value="No"
+					onclick="PF('confirmationAgregarTransporte').hide()" type="button" />
+			</h:form>
+		</p:confirmDialog>
+
+
+		<p:confirmDialog message="¿Está seguro de editar los datos?"
+			width="300" showEffect="explode" hideEffect="explode"
+			header="Mensaje de Confirmación" severity="alert"
+			widgetVar="confirmationEditarTransporte" modal="true">
+			<h:form>
+				<p:commandButton value="Si" ajax="true"
+					actionListener="#{transporteMB.editarTransporte}"
+					update=":msjEditarTransporte,:wListransport:tblTransportes"
+					oncomplete="PF('confirmationEditarTransporte').hide()" />
+				<p:commandButton value="No"
+					onclick="PF('confirmationEditarTransporte').hide()" type="button" />
+			</h:form>
+		</p:confirmDialog>
+
+
+		<p:confirmDialog
+			message="¿Está usted seguro que desea eliminar el registro?"
+			width="300" showEffect="explode" hideEffect="explode"
+			header="Mensaje de Confirmación" severity="alert"
+			widgetVar="confirmationEliminarTransporte" modal="true"
+			id="confirmEliminarTransporte"
+			visible="#{transporteMB.flagConfirmEliTransport}">
+			<h:form>
+				<p:commandButton value="Si" ajax="false"
+					actionListener="#{transporteMB.eliminarTransporte}"
+					update="msjLisTransport,:wListransport:tblTransportes"
+					oncomplete="PF('confirmationEliminarTransporte').hide()" />
+				<p:commandButton value="No"
+					onclick="PF('confirmationEliminarTransporte').hide()" type="button" />
+			</h:form>
+		</p:confirmDialog>
+
+
+
+	</ui:define>
+
+</ui:composition>

@@ -36,8 +36,9 @@ public class ProductLabelConverter implements Converter{
 
 	@Override
 	public String getAsString(FacesContext context, UIComponent component, Object value) {
-		if(value == null)
+		if(value == null || "".equals(value))
 			return null;
+		
 		ProductLabel productLabel = (ProductLabel)value;
 		
 		return String.valueOf(productLabel.getId());

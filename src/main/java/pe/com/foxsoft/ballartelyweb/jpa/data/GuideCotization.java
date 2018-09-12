@@ -32,7 +32,7 @@ public class GuideCotization implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id")
-	private int id;
+	private Integer id;
 	
 	@Column(name="unit_cost_guide")
 	private BigDecimal unitCostGuide;
@@ -58,11 +58,11 @@ public class GuideCotization implements Serializable {
 	@JoinColumn(name="guide_head_id")
 	private GuideHead guideHead;
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

@@ -19,10 +19,10 @@ public class MovimientoDao {
 	public List<Movement> getAccountsByOwnerDataBase(EntityManager em, Account account) throws BallartelyException {
 		try {
 			TypedQuery<Movement> queryUser = em.createQuery(
-					"select m from Movement a join fetch a.client c where (a.accountType = '" + Constantes.ACCOUNT_TYPE_C + 
-					"' and c.clientId = :clientId) or (a.accountType = '" + Constantes.ACCOUNT_TYPE_P +"' and c.clientId is null) "
+					"select m from Movement a join fetch a.customer c where (a.accountType = '" + Constantes.ACCOUNT_TYPE_C + 
+					"' and c.id = :customerId) or (a.accountType = '" + Constantes.ACCOUNT_TYPE_P +"' and c.id is null) "
 							+ "and a.accountStatus = :accountStatus", Movement.class);
-			queryUser.setParameter("clientId", account.getClient().getClientId());
+			queryUser.setParameter("customerId", account.getCustomer().getId());
 			queryUser.setParameter("accountStatus", account.getAccountStatus());
 			
 			return queryUser.getResultList();

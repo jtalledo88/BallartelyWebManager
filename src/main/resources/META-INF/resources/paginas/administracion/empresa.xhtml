@@ -156,6 +156,11 @@
 					actionListener="#{empresaMB.openVerCuenta}"
 					oncomplete="PF('dlgVerCuenta').show()"
 					update=":iddlgVerCuenta" />
+				<p:commandButton value="Transportes"
+								icon="ui-icon-plus"
+								actionListener="#{empresaMB.openGestionTransportes}"
+								oncomplete="PF('dlgSelTrans').show()"
+								update=":iddlgSelTrans" />
 				<div style="clear: both;"></div>
 			</div>
 		</h:form>
@@ -262,7 +267,33 @@
 			</p:dataTable>
 			</h:form>
 		</p:dialog>
+		
+		<!-- ******************************************** EDITAR PRODUCTO ****************************************** -->
 
+		<p:dialog header="Gestionar Transportes" id="iddlgSelTrans"
+			widgetVar="dlgSelTrans" modal="true" width="630" position="top">
+
+			<p:growl life="3000" showDetail="true" id="msjSelTrans"
+				autoUpdate="true" />
+
+			<h1>Gestionar Transportes</h1>
+			<h:form id="wSelTrans">
+				<p:accordionPanel id="pSeltrans">
+					<p:tab title="Lista de Transportes">
+						<div class="filas">
+							<p:pickList id="pklTransports" 
+								value="#{empresaMB.lstTransports}" var="transports" itemLabel="#{transports.carNumber}  - #{transports.driverNames}" 
+								itemValue="#{transports}" converter="#{transportConverter}"/>
+						</div>
+						<div class="boton">
+							<p:commandButton value="Guardar" icon="ui-icon-disk"
+								onclick="PF('confirmationGestionarTransportes').show()" />
+						</div>
+					</p:tab>
+				</p:accordionPanel>
+
+			</h:form>
+		</p:dialog>
 
 		<p:confirmDialog message="¿Está seguro de editar los datos?"
 			width="300" showEffect="explode" hideEffect="explode"
@@ -277,7 +308,19 @@
 					onclick="PF('confirmationEditarEmpresa').hide()" type="button" />
 			</h:form>
 		</p:confirmDialog>
-
+		<p:confirmDialog message="¿Está seguro de editar los datos?"
+			width="300" showEffect="explode" hideEffect="explode"
+			header="Mensaje de Confirmación" severity="alert"
+			widgetVar="confirmationGestionarTransportes" modal="true">
+			<h:form>
+				<p:commandButton value="Si" ajax="true"
+					actionListener="#{empresaMB.gestionarTransportes}"
+					update=":msjSelTrans"
+					oncomplete="PF('confirmationGestionarTransportes').hide()" />
+				<p:commandButton value="No"
+					onclick="PF('confirmationGestionarTransportes').hide()" type="button" />
+			</h:form>
+		</p:confirmDialog>
 
 	</ui:define>
 
