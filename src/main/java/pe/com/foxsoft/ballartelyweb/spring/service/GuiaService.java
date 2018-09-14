@@ -25,6 +25,7 @@ import pe.com.foxsoft.ballartelyweb.jpa.repository.GuiaDetalleRepository;
 import pe.com.foxsoft.ballartelyweb.jpa.repository.GuiaDetalleVentaRepository;
 import pe.com.foxsoft.ballartelyweb.jpa.repository.MovimientoRepository;
 import pe.com.foxsoft.ballartelyweb.jpa.repository.StockProductoRepository;
+import pe.com.foxsoft.ballartelyweb.spring.domain.ProductGuide;
 import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
 import pe.com.foxsoft.ballartelyweb.spring.util.Constantes;
 import pe.com.foxsoft.ballartelyweb.spring.util.Utilitarios;
@@ -133,6 +134,10 @@ public class GuiaService {
 		guideCotization.setGuideHead(guideHead);
 		Example<GuideCotization> eGuideCotization = Example.of(guideCotization);
 		return guiaCotizacionRepository.findOne(eGuideCotization);
+	}
+	
+	public List<ProductGuide> getListaProductoGuia() throws BallartelyException {
+		return guiaDao.getListaProductoGuia(em);
 	}
 
 	public GuiaCabeceraRepository getGuiaCabeceraRepository() {

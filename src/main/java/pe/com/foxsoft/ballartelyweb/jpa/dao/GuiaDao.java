@@ -1,10 +1,13 @@
 package pe.com.foxsoft.ballartelyweb.jpa.dao;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
@@ -12,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import pe.com.foxsoft.ballartelyweb.jpa.data.GuideCotization;
 import pe.com.foxsoft.ballartelyweb.jpa.data.GuideDetail;
 import pe.com.foxsoft.ballartelyweb.jpa.data.GuideHead;
+import pe.com.foxsoft.ballartelyweb.spring.domain.ProductGuide;
 import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
 import pe.com.foxsoft.ballartelyweb.spring.util.Utilitarios;
 
@@ -98,5 +102,36 @@ public class GuiaDao{
 		} catch (Exception e) {
 			throw new BallartelyException(BallartelyException.GENERAL_ERROR, e.getMessage());
 		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<ProductGuide> getListaProductoGuia(EntityManager em) throws BallartelyException {
+		try {
+			Query queryProductGuide = em.createNativeQuery(
+					"select a.id, b.product_label_id,b.product_stock_cant, c.total_unit_cost " + 
+					"from guide_head a join product_stock b on a.id = b.guide_head_id  " + 
+					"join guide_cotization c on a.id = c.guide_head_id " + 
+					"order by a.id ");
+			
+			List<Object[]>  result = queryProductGuide.getResultList();
+			List<ProductGuide> lstProductGuide = new ArrayList<>();
+			for(Object[] o: result) {
+				ProductGuide productGuide = new ProductGuide();
+				productGuide.setFirstColumn(String.valueOf((Integer)o[0]));
+				productGuide.setId((Integer)o[1]);
+				productGuide.setStockInput(0);
+				productGuide.setStockProduct((Integer)o[2]);
+				productGuide.setCostProduct((BigDecimal)o[3]);
+				
+				lstProductGuide.add(productGuide);
+			}
+			
+			return lstProductGuide;
+		} catch (NoResultException nre) {
+			throw new BallartelyException(BallartelyException.NO_RESULT_ERROR, nre.getMessage());
+		} catch (Exception e) {
+			throw new BallartelyException(BallartelyException.GENERAL_ERROR, e.getMessage());
+		}
+		
 	}
 }

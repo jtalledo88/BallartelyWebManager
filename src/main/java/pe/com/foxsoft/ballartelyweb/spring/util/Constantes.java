@@ -28,5 +28,7 @@ public class Constantes {
 	public static final String PORCENTAJE_DESHIDRATADO_CODE = "VPD";
 	public static final String PORCENTAJE_MERMA_CODE = "VPM";
 	public static final String METRIC_UNIT_KG = "KG";
+	public static final String PRODUCT_LABEL_NOT_SALES = "'DCH','DX'";
+	
 
 }

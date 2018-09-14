@@ -8,11 +8,11 @@ import java.util.List;
 
 import javax.annotation.ManagedBean;
 import javax.faces.FacesException;
-import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 
 import org.primefaces.event.FileUploadEvent;
-import org.primefaces.event.RowEditEvent;
+import org.primefaces.model.DefaultTreeNode;
+import org.primefaces.model.TreeNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +20,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import pe.com.foxsoft.ballartelyweb.jpa.data.Customer;
 import pe.com.foxsoft.ballartelyweb.jpa.data.Enterprise;
 import pe.com.foxsoft.ballartelyweb.jpa.data.GeneralParameter;
-import pe.com.foxsoft.ballartelyweb.jpa.data.GuideCotization;
 import pe.com.foxsoft.ballartelyweb.jpa.data.GuideDetailSales;
 import pe.com.foxsoft.ballartelyweb.jpa.data.GuideHead;
 import pe.com.foxsoft.ballartelyweb.jpa.data.Movement;
 import pe.com.foxsoft.ballartelyweb.jpa.data.ProductLabel;
 import pe.com.foxsoft.ballartelyweb.jpa.data.Provider;
 import pe.com.foxsoft.ballartelyweb.jpa.data.Transport;
+import pe.com.foxsoft.ballartelyweb.spring.domain.ProductGuide;
 import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
 import pe.com.foxsoft.ballartelyweb.spring.service.ClienteService;
 import pe.com.foxsoft.ballartelyweb.spring.service.CuentaService;
@@ -69,15 +69,14 @@ public class RegistroVentaMB {
 	private Propiedades propiedades;
 
 	private GuideHead objGuideHeadMain;
-	private GuideHead objGuiaCompraSeleccion;
 	private InputStream isGuide;
-	private BigDecimal precioUnitarioGuia;
 
 	private List<GuideDetailSales> lstItemsGuideMain;
 	private List<Customer> lstClientes;
 	private List<Transport> lstTransports;
 	private List<ProductLabel> lstProducts;
 	private List<GuideHead> lstGuidesBuy;
+	private TreeNode rootProductGuide;
 
 	public RegistroVentaMB() {
 		this.objGuideHeadMain = new GuideHead();
@@ -86,7 +85,7 @@ public class RegistroVentaMB {
 		this.lstTransports = new ArrayList<>();
 		this.lstProducts = new ArrayList<>();
 		this.lstGuidesBuy = new ArrayList<>();
-		agregarItemGuia();
+		this.rootProductGuide = new DefaultTreeNode();
 	}
 
 	public void agregarItemGuia() {
@@ -118,6 +117,30 @@ public class RegistroVentaMB {
 		} catch (BallartelyException e) {
 			this.logger.error(e.getMessage());
 		}
+	}
+
+	private TreeNode createRootProductGuide() throws BallartelyException {
+		obtenerProductos();
+		List<ProductGuide> lstProductGuide = this.guiaService.getListaProductoGuia();
+		TreeNode root = new DefaultTreeNode(new ProductGuide(), null);
+		for(ProductLabel productLabel: this.lstProducts) {
+			TreeNode nodeProduct = new DefaultTreeNode(new ProductGuide(productLabel.getId(), productLabel.getProductLabelDescription()),  root);
+			List<ProductGuide> lstProductGuideFilt = getProductGuideList(lstProductGuide, productLabel.getId());
+			for(ProductGuide productGuide: lstProductGuideFilt) {
+				new DefaultTreeNode(productGuide, nodeProduct);
+			}
+		}
+		return root;
+	}
+	
+	private List<ProductGuide> getProductGuideList(List<ProductGuide> lstProductGuide, Integer productLabelId) {
+		List<ProductGuide> lstProductGuideResult = new ArrayList<>();
+		for(ProductGuide productGuide: lstProductGuide) {
+			if(productGuide.getId() == productLabelId) {
+				lstProductGuideResult.add(productGuide);
+			}
+		}
+		return lstProductGuideResult;
 	}
 
 	public void registrarGuia() {
@@ -206,58 +229,6 @@ public class RegistroVentaMB {
 		this.objGuideHeadMain.setEndPoint(this.objGuideHeadMain.getCustomer().getCustomerAddress());
 	}
 
-	public void editarItem(RowEditEvent event) {
-		GuideDetailSales detail = (GuideDetailSales)event.getObject();
-		
-		if(this.precioUnitarioGuia == null || this.precioUnitarioGuia.compareTo(BigDecimal.ZERO) <= 0) {
-			Utilitarios.mensajeError("Campos Obligatorios", "Debe ingresar el costo de guía mayor a 0.");
-			FacesContext.getCurrentInstance().validationFailed();
-			return;
-		}
-		if(detail.getProductLabel() == null) {
-			Utilitarios.mensajeError("Campos Obligatorios", "Debe seleccionar un producto.");
-			FacesContext.getCurrentInstance().validationFailed();
-			return;
-		}
-		if(!validarEtiquetaProducto(detail)) {
-			Utilitarios.mensajeError("Campos Obligatorios", "Producto ya seleccionado.");
-			FacesContext.getCurrentInstance().validationFailed();
-			return;
-		}
-	
-		if(detail.getProductQuantity() == 0) {
-			Utilitarios.mensajeError("Campos Obligatorios", "Debe ingresar una cantidad de pollos mayor a 0.");
-			FacesContext.getCurrentInstance().validationFailed();
-			return;
-		}
-		if(detail.getTotalWeight() == null || detail.getTotalWeight().compareTo(BigDecimal.ZERO) <= 0) {
-			BigDecimal productWeight = detail.getProductLabel().getProductLabelWeight();
-			Integer quantity = detail.getProductQuantity();
-			detail.setTotalWeight(productWeight.multiply(BigDecimal.valueOf(quantity)));
-		}
-		if(detail.getTotalCost() == null || detail.getTotalCost().compareTo(BigDecimal.ZERO) <= 0) {
-			BigDecimal totalWeight = detail.getTotalWeight();
-			detail.setTotalCost(totalWeight.multiply(this.precioUnitarioGuia));
-		}
-		
-		
-	}
-	
-	private boolean validarEtiquetaProducto(GuideDetailSales detail) {
-		int occurs = 0;
-		for(GuideDetailSales det: lstItemsGuideMain) {
-			if(det.getProductLabel().getId() == detail.getProductLabel().getId()) {
-				occurs++;
-			}
-		}
-		return occurs <= 1;
-	}
-
-	public void eliminarItem(RowEditEvent event) {
-		GuideDetailSales detail = (GuideDetailSales)event.getObject();
-		this.lstItemsGuideMain.remove(detail);
-    }
-
 	public List<Customer> completeCustomer(String query) {
         List<Customer> lstClientesFiltro = new ArrayList<Customer>();
         obtenerClientes();
@@ -273,8 +244,7 @@ public class RegistroVentaMB {
 	
 	public void openSeleccionarPrecioGuia() {
 		try {
-			this.objGuiaCompraSeleccion = null;
-			this.lstGuidesBuy = this.guiaService.getListaGuiasCabecera();
+			this.rootProductGuide = createRootProductGuide();
 		} catch (BallartelyException e) {
 			String sMensaje = "Error en openSeleccionarPrecioGuia";
 			this.logger.error(e.getMessage());
@@ -284,8 +254,36 @@ public class RegistroVentaMB {
 	
 	public void seleccionarPrecioGuia() {
 		try {
-			GuideCotization guideCotization = this.guiaService.getCotization(this.objGuiaCompraSeleccion);
-			this.precioUnitarioGuia = guideCotization.getTotalUnitCost();
+			this.lstItemsGuideMain = new ArrayList<>();
+			List<TreeNode> lstNodeProductLabel = this.rootProductGuide.getChildren();
+			int idx = 0;
+			for(TreeNode nodeProductLabel: lstNodeProductLabel) {
+				GuideDetailSales guideDetailSales = new GuideDetailSales();
+				Integer cantidad = 0;
+				BigDecimal pesoTotal = BigDecimal.ZERO;
+				BigDecimal costoTotal = BigDecimal.ZERO;
+				ProductGuide productLabel = (ProductGuide)nodeProductLabel.getData();
+				guideDetailSales.setId(++idx);
+				guideDetailSales.setProductLabel(this.etiquetaProductoService.obtenerEtiquetaProducto(productLabel.getId()));
+				guideDetailSales.setGuideHead(this.objGuideHeadMain);
+				List<TreeNode> lstNodeProductGuide = nodeProductLabel.getChildren();
+				for(TreeNode nodeProductGuide: lstNodeProductGuide) {
+					ProductGuide productGuide = (ProductGuide)nodeProductGuide.getData();
+					cantidad += productGuide.getStockInput();
+					BigDecimal peso = guideDetailSales.getProductLabel().getProductLabelWeight().multiply(BigDecimal.valueOf(productGuide.getStockInput()));
+					pesoTotal = pesoTotal.add(peso);
+					costoTotal = costoTotal.add(productGuide.getCostProduct().multiply(peso));
+				}
+				if(cantidad == 0) {
+					continue;
+				}
+				guideDetailSales.setProductQuantity(cantidad);
+				guideDetailSales.setMetricUnit(Constantes.METRIC_UNIT_KG);
+				guideDetailSales.setTotalWeight(pesoTotal);
+				guideDetailSales.setTotalCost(costoTotal);
+				this.lstItemsGuideMain.add(guideDetailSales);
+			}
+			
 		} catch (BallartelyException e) {
 			String sMensaje = "Error en seleccionarPrecioGuia";
 			this.logger.error(e.getMessage());
@@ -326,7 +324,7 @@ public class RegistroVentaMB {
 	
 	private void obtenerProductos() {
 		try {
-			this.lstProducts = this.etiquetaProductoService.getListaEtiquetaProductos();
+			this.lstProducts = this.etiquetaProductoService.getListaEtiquetaProductosVenta();
 		} catch (BallartelyException e) {
 			String sMensaje = "Error en obtenerProductos";
 			this.logger.error(e.getMessage(), e);
@@ -440,7 +438,6 @@ public class RegistroVentaMB {
 	}
 
 	public List<ProductLabel> getLstProducts() {
-		obtenerProductos();
 		return lstProducts;
 	}
 
@@ -456,20 +453,12 @@ public class RegistroVentaMB {
 		this.lstGuidesBuy = lstGuidesBuy;
 	}
 
-	public GuideHead getObjGuiaCompraSeleccion() {
-		return objGuiaCompraSeleccion;
+	public TreeNode getRootProductGuide() {
+		return rootProductGuide;
 	}
 
-	public void setObjGuiaCompraSeleccion(GuideHead objGuiaCompraSeleccion) {
-		this.objGuiaCompraSeleccion = objGuiaCompraSeleccion;
-	}
-
-	public BigDecimal getPrecioUnitarioGuia() {
-		return precioUnitarioGuia;
-	}
-
-	public void setPrecioUnitarioGuia(BigDecimal precioUnitarioGuia) {
-		this.precioUnitarioGuia = precioUnitarioGuia;
+	public void setRootProductGuide(TreeNode rootProductGuide) {
+		this.rootProductGuide = rootProductGuide;
 	}
 	
 }

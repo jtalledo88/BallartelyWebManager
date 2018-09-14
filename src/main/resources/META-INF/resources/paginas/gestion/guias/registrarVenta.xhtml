@@ -396,15 +396,10 @@
 					<div style="clear: both;"></div>
 					<p:separator />
 					<div class="opcionesTabla" style="text-align: left;">
-						<h:outputLabel value="Costo de Guía:"/>
-						<p:inputNumber id="txtPrecioUnitGuia" value="#{registroVentaMB.precioUnitarioGuia}" />
-						<p:commandButton value="Seleccionar Guía" icon="ui-icon-search" 
+						<p:commandButton value="Seleccionar Productos" icon="ui-icon-search" 
 							actionListener="#{registroVentaMB.openSeleccionarPrecioGuia}"
 							update="wSelPrecioGuia:pSelPrecioGuia"
 							oncomplete="PF('dlgSelPrecioGuia').show()"/>
-						<p:commandButton value="Agregar Producto" icon="ui-icon-plus" 
-							process="@this" update=":wLisGuide:msjLisGuide,:wLisGuide:tblItemGuia"
-                          	actionListener="#{registroVentaMB.agregarItemGuia}" />
 					</div>
 					<p:separator />
 					<!-- </p:panel> -->
@@ -413,13 +408,9 @@
 			
 
 			<div class="scrollTabla">
-				<p:remoteCommand name="onRowEdit"  update="wLisGuide" />
 				<p:dataTable style="width: 100%;" var="itemGuia" value="#{registroVentaMB.lstItemsGuideMain}" 
-					id="tblItemGuia" editable="true" widgetVar="tblItemGuia"
+					id="tblItemGuia" widgetVar="tblItemGuia"
 					emptyMessage="Agregar Items a la Guía">
-					
-					<p:ajax event="rowEdit" listener="#{registroVentaMB.editarItem}" oncomplete="if (!args.validationFailed) {onRowEdit()}" update="wLisGuide:msjLisGuide" />
-					<p:ajax event="rowEditCancel" listener="#{registroVentaMB.eliminarItem}" oncomplete="onRowEdit()" />
 					
 					<p:column styleClass="oficina">
 						<f:facet name="header">
@@ -431,32 +422,13 @@
 						<f:facet name="header">
 							<h:outputText value="Producto" />
 						</f:facet>
-						<p:cellEditor>
-		                	<f:facet name="output">
-		                		<h:outputText value="#{itemGuia.productLabel.productLabelDescription}"/>
-		                	</f:facet>
-		                  	<f:facet name="input">
-		                  		<p:selectOneMenu value="#{itemGuia.productLabel}" converter="#{productLabelConverter}">
-		                  			<f:selectItem itemLabel="--Seleccione--" itemValue=""/>
-		                  			<f:selectItems value="#{registroVentaMB.lstProducts}" var="product" 
-		                  				itemLabel="#{product.productLabelDescription}" itemValue="#{product}"/>
-		                  		</p:selectOneMenu>
-							</f:facet>
-		              	</p:cellEditor>
+						<h:outputText value="#{itemGuia.productLabel.productLabelDescription}"/>
 					</p:column>
 					<p:column styleClass="oficina">
 						<f:facet name="header">
 							<h:outputText value="Cantidad" />
 						</f:facet>
-						<p:cellEditor>
-		                	<f:facet name="output">
-		                		<h:outputText value="#{itemGuia.productQuantity}"/>
-		                	</f:facet>
-		                  	<f:facet name="input">
-		                  		<p:inputNumber value="#{itemGuia.productQuantity}" decimalPlaces="0" 
-	                  				maxlength="10" minValue="0" />
-							</f:facet>
-		              	</p:cellEditor>
+						<h:outputText value="#{itemGuia.productQuantity}"/>
 					</p:column>
 					<p:column styleClass="oficina">
 						<f:facet name="header">
@@ -468,35 +440,18 @@
 						<f:facet name="header">
 							<h:outputText value="Peso Total" />
 						</f:facet>
-						<p:cellEditor>
-		                	<f:facet name="output">
-		                		<h:outputText value="#{itemGuia.totalWeight}">
-		                			 <f:convertNumber maxFractionDigits="2" minFractionDigits="2" maxIntegerDigits="8" />
-		                		</h:outputText>
-		                	</f:facet>
-		                  	<f:facet name="input">
-		                  		<p:inputNumber value="#{itemGuia.totalWeight}" minValue="0" maxlength="10" />
-							</f:facet>
-		              	</p:cellEditor>
+						<h:outputText value="#{itemGuia.totalWeight}">
+		                	<f:convertNumber maxFractionDigits="2" minFractionDigits="2" maxIntegerDigits="8" />
+		                </h:outputText>
 					</p:column>
 					<p:column styleClass="oficina">
 						<f:facet name="header">
 							<h:outputText value="Costo Total" />
 						</f:facet>
-						<p:cellEditor>
-		                	<f:facet name="output">
-		                		<h:outputText value="#{itemGuia.totalCost}">
-		                			<f:convertNumber maxFractionDigits="2" minFractionDigits="2" maxIntegerDigits="8" />
-		                		</h:outputText>
-		                	</f:facet>
-		                  	<f:facet name="input">
-		                  		<p:inputNumber value="#{itemGuia.totalCost}" minValue="0" maxlength="10"/>
-							</f:facet>
-		              	</p:cellEditor>
+						<h:outputText value="#{itemGuia.totalCost}">
+		                	<f:convertNumber maxFractionDigits="2" minFractionDigits="2" maxIntegerDigits="8" />
+		                </h:outputText>
 					</p:column>
-					<p:column style="width:32px">
-			           <p:rowEditor />
-			       </p:column>
 				</p:dataTable>
 			</div>
 			<p:separator />
@@ -572,43 +527,69 @@
 				<p:accordionPanel id="pSelPrecioGuia">
 					<p:tab title="Guías">
 						<div class="filas">
-							<p:dataTable style="width: 100%;" var="guia" value="#{registroVentaMB.lstGuidesBuy}" 
-								id="tblGuia" widgetVar="tblGuia" selection="#{registroVentaMB.objGuiaCompraSeleccion}"
-								rowKey="#{guia.id}" emptyMessage="No existen registros">
-								<p:column selectionMode="single" style="width:16px;text-align:center"/>
+							<p:treeTable style="width: 100%;" var="guia" value="#{registroVentaMB.rootProductGuide}" 
+								id="ttbProductsGuide">
+								
+							</p:treeTable>
+							<p:treeTable style="width: 100%;" var="guia" value="#{registroVentaMB.rootProductGuide}" 
+								id="tblGuia" widgetVar="tblGuia" editable="true" editMode="cell" 
+								emptyMessage="No existen registros">
+								
 								<p:column styleClass="oficina">
 									<f:facet name="header">
-										<h:outputText value="Item" />
+										<h:outputText value="Producto/Guías" />
 									</f:facet>
-									<h:outputText value="#{guia.id}"/>
+									<h:outputText value="#{guia.firstColumn}"/>
 								</p:column>
 								<p:column styleClass="oficina">
 									<f:facet name="header">
-										<h:outputText value="Nro Guía" />
+										<h:outputText value="Cantidad" />
 									</f:facet>
-									<h:outputText value="#{guia.guideNumber}"/>
+									<p:cellEditor rendered="#{guia.stockInput != null}">
+										<f:facet name="output">
+											<h:outputText value="#{guia.stockInput}"/>
+										</f:facet>
+										<f:facet name="input">
+											<p:inputNumber value="#{guia.stockInput}" maxValue="#{guia.stockProduct}" decimalPlaces="0"/>
+										</f:facet>
+									</p:cellEditor>
+									<h:outputText value="#{guia.stockInput}" rendered="#{guia.stockInput == null}"/>
 								</p:column>
 								<p:column styleClass="oficina">
 									<f:facet name="header">
-										<h:outputText value="Estado" />
+										<h:outputText value="Stock actual" />
 									</f:facet>
-									<h:outputText value="#{guia.guideStatus}" converter="#{statusConverter}"/>
+									<p:cellEditor rendered="#{guia.stockProduct != null}">
+										<f:facet name="output">
+											<h:outputText value="#{guia.stockProduct}"/>
+										</f:facet>
+										<f:facet name="input">
+											<p:inputText value="#{guia.stockProduct}"/>
+										</f:facet>
+									</p:cellEditor>
+									<h:outputText value="#{guia.stockProduct}" rendered="#{guia.stockProduct} == null"/>
 								</p:column>
 								<p:column styleClass="oficina">
 									<f:facet name="header">
-										<h:outputText value="Fec. Emisión" />
+										<h:outputText value="Costo x Peso" />
 									</f:facet>
-									<h:outputText value="#{guia.emissionDate}">
-										<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
-									</h:outputText>
+									<p:cellEditor rendered="#{guia.costProduct != null}">
+										<f:facet name="output">
+											<h:outputText value="#{guia.costProduct}" />
+										</f:facet>
+										<f:facet name="input">
+											<p:inputText value="#{guia.costProduct}" />
+										</f:facet>
+									</p:cellEditor>
+									<h:outputText value="#{guia.costProduct}" rendered="#{guia.costProduct == null}"/>
 								</p:column>
-							</p:dataTable>
+							</p:treeTable>
 						</div>
 						<div style="clear: both;"></div>
 						<div class="boton">
-							<p:commandButton value="Seleccionar" icon="ui-icon-close"
+							<p:commandButton value="Seleccionar" icon="ui-icon-save"
 								actionListener="#{registroVentaMB.seleccionarPrecioGuia}"
-								update=":wLisGuide:pDatosCliente:txtPrecioUnitGuia"
+								update=":wLisGuide:tblItemGuia"
 								oncomplete="PF('dlgSelPrecioGuia').hide()" />
 						</div>
 					</p:tab>

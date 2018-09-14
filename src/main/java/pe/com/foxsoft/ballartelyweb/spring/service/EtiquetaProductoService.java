@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pe.com.foxsoft.ballartelyweb.jpa.dao.EtiquetaProductoDao;
 import pe.com.foxsoft.ballartelyweb.jpa.data.ProductLabel;
 import pe.com.foxsoft.ballartelyweb.jpa.repository.EtiquetaProductoRepository;
+import pe.com.foxsoft.ballartelyweb.jpa.repository.StockProductoRepository;
 import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
 import pe.com.foxsoft.ballartelyweb.spring.util.Constantes;
 
@@ -24,6 +25,9 @@ public class EtiquetaProductoService {
 	@Autowired
 	private EtiquetaProductoRepository etiquetaProductoRepository;
 	
+	@Autowired 
+	private StockProductoRepository stockProductoRepository;
+	
 	@Autowired
 	private EtiquetaProductoDao etiquetaProductoDao;
 	
@@ -34,14 +38,6 @@ public class EtiquetaProductoService {
 	@PersistenceContext
 	public void setEm(EntityManager em) {
 		this.em = em;
-	}
-
-	public EtiquetaProductoRepository getEtiquetaProductoJPA() {
-		return etiquetaProductoRepository;
-	}
-
-	public void setEtiquetaProductoJPA(EtiquetaProductoRepository etiquetaProductoJPA) {
-		this.etiquetaProductoRepository = etiquetaProductoJPA;
 	}
 
 	public List<ProductLabel> buscarEtiquetaProductos(ProductLabel productLabel) throws BallartelyException {		
@@ -73,6 +69,10 @@ public class EtiquetaProductoService {
 		Example<ProductLabel> eProductLabel = Example.of(productLabel);
 		return etiquetaProductoRepository.findAll(eProductLabel);
 	}
+	
+	public List<ProductLabel> getListaEtiquetaProductosVenta() throws BallartelyException {
+		return etiquetaProductoDao.getProductLabelSalesDataBase(em);
+	}
 
 	public EtiquetaProductoRepository getEtiquetaProductoRepository() {
 		return etiquetaProductoRepository;
@@ -88,6 +88,14 @@ public class EtiquetaProductoService {
 
 	public void setEtiquetaProductoDao(EtiquetaProductoDao etiquetaProductoDao) {
 		this.etiquetaProductoDao = etiquetaProductoDao;
+	}
+
+	public StockProductoRepository getStockProductoRepository() {
+		return stockProductoRepository;
+	}
+
+	public void setStockProductoRepository(StockProductoRepository stockProductoRepository) {
+		this.stockProductoRepository = stockProductoRepository;
 	}
 
 }

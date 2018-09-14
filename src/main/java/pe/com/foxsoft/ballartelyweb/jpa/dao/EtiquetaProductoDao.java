@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import pe.com.foxsoft.ballartelyweb.jpa.data.ProductLabel;
 import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
+import pe.com.foxsoft.ballartelyweb.spring.util.Constantes;
 
 @Repository
 public class EtiquetaProductoDao {
@@ -23,6 +24,20 @@ public class EtiquetaProductoDao {
 			queryProductLabel.setParameter("productLabelDescription", productLabel.getProductLabelDescription());
 			queryProductLabel.setParameter("productLabelStatus", productLabel.getProductLabelStatus());
 			
+			return queryProductLabel.getResultList();
+		} catch (NoResultException nre) {
+			throw new BallartelyException(BallartelyException.NO_RESULT_ERROR, nre.getMessage());
+		} catch (Exception e) {
+			throw new BallartelyException(BallartelyException.GENERAL_ERROR, e.getMessage());
+		}
+	}
+
+	public List<ProductLabel> getProductLabelSalesDataBase(EntityManager em) throws BallartelyException {
+		try {
+			TypedQuery<ProductLabel> queryProductLabel = em.createQuery(
+					"select p from ProductLabel p where p.productLabelCode not in ( " + Constantes.PRODUCT_LABEL_NOT_SALES + ")"
+					+ "and p.productLabelStatus = :productLabelStatus", ProductLabel.class);
+			queryProductLabel.setParameter("productLabelStatus", Constantes.STATUS_ACTIVE);
 			return queryProductLabel.getResultList();
 		} catch (NoResultException nre) {
 			throw new BallartelyException(BallartelyException.NO_RESULT_ERROR, nre.getMessage());
