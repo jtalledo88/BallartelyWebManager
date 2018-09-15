@@ -15,8 +15,10 @@ public class Constantes {
 	public static final String STATUS_INACTIVE = "0";
 	public static final String BENEFIED_YES = "Y";
 	public static final String BENEFIED_NO = "N";
-	public static final String MOVEMENT_OBSERVATION_GUIDE = "Registro de Guia.";
-	public static final String MOVEMENT_TYPE_GUIDE = "GUIA";
+	public static final String MOVEMENT_OBSERVATION_GUIDE_BUY = "Registro de Guia de compra.";
+	public static final String MOVEMENT_OBSERVATION_GUIDE_SALES = "Registro de Guia de venta.";
+	public static final String MOVEMENT_TYPE_BUY = "COMP";
+	public static final String MOVEMENT_TYPE_SALES = "VENT";
 	public static final String STATUS_PRODUCT_COLD = "C";
 	public static final String STATUS_PRODUCT_FRESH = "F";
 	public static final String ROLE_DEFAULT = "ADMIN";
@@ -29,6 +31,8 @@ public class Constantes {
 	public static final String PORCENTAJE_MERMA_CODE = "VPM";
 	public static final String METRIC_UNIT_KG = "KG";
 	public static final String PRODUCT_LABEL_NOT_SALES = "'DCH','DX'";
+	public static final String GUIDE_TYPE_SALES = "V";
+	public static final String GUIDE_TYPE_BUY = "C";
 	
 
 }

@@ -24,7 +24,6 @@ import pe.com.foxsoft.ballartelyweb.jpa.data.GuideDetailSales;
 import pe.com.foxsoft.ballartelyweb.jpa.data.GuideHead;
 import pe.com.foxsoft.ballartelyweb.jpa.data.Movement;
 import pe.com.foxsoft.ballartelyweb.jpa.data.ProductLabel;
-import pe.com.foxsoft.ballartelyweb.jpa.data.Provider;
 import pe.com.foxsoft.ballartelyweb.jpa.data.Transport;
 import pe.com.foxsoft.ballartelyweb.spring.domain.ProductGuide;
 import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
@@ -69,7 +68,9 @@ public class RegistroVentaMB {
 	private Propiedades propiedades;
 
 	private GuideHead objGuideHeadMain;
+	private GuideDetailSales objItemGuiaEliminar;
 	private InputStream isGuide;
+	private boolean flagCargaProductGuide;
 
 	private List<GuideDetailSales> lstItemsGuideMain;
 	private List<Customer> lstClientes;
@@ -77,10 +78,10 @@ public class RegistroVentaMB {
 	private List<ProductLabel> lstProducts;
 	private List<GuideHead> lstGuidesBuy;
 	private TreeNode rootProductGuide;
+	private List<ProductGuide> lstProductGuideStock;
 
 	public RegistroVentaMB() {
 		this.objGuideHeadMain = new GuideHead();
-		this.objGuideHeadMain.setProvider(new Provider());
 		this.lstItemsGuideMain = new ArrayList<>();
 		this.lstTransports = new ArrayList<>();
 		this.lstProducts = new ArrayList<>();
@@ -163,47 +164,46 @@ public class RegistroVentaMB {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe ingresar el punto de llegada.");
 				return;
 			}
-			if("".equals(objGuideHeadMain.getInvoiceNumber())) {
-				Utilitarios.mensajeError("Campos Obligatorios", "Debe ingresar el número de factura.");
-				return;
-			}
 			if("".equals(objGuideHeadMain.getReason())) {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe seleccionar un motivo.");
 				return;
 			}
-			if(objGuideHeadMain.getProvider() == null) {
-				Utilitarios.mensajeError("Campos Obligatorios", "Debe ingresar el proveedor.");
+			if(objGuideHeadMain.getCustomer() == null) {
+				Utilitarios.mensajeError("Campos Obligatorios", "Debe seleccionar el cliente.");
 				return;
 			}
-			
+			if(objGuideHeadMain.getTransport() == null) {
+				Utilitarios.mensajeError("Campos Obligatorios", "Debe seleccionar el transportista.");
+				return;
+			}
 			if(isGuide == null) {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe subir la guía digitalizada.");
 				return;
 			}
+			if(lstItemsGuideMain.isEmpty()) {
+				Utilitarios.mensajeError("Campos Obligatorios", "Debe ingresar items.");
+				return;
+			}
 			
-			
-			objGuideHeadMain.setGuideStatus(Constantes.STATUS_PRODUCT_FRESH);
-			objGuideHeadMain.setGuideBenefied(Constantes.BENEFIED_NO);
-			objGuideHeadMain.setGuideCotized(Constantes.COTIZED_NO);
-			
+			objGuideHeadMain.setGuideType(Constantes.GUIDE_TYPE_SALES);
+			//TODO Agregar alerta de tipo de cliente y combo de cuenta de cliente
 			Movement movement = new Movement();
 			movement.setAccount(cuentaService.obtenerCuentaPrincipal());
 			movement.setMovementAmount(getMovementAmount());
-			movement.setMovementObservation(Constantes.MOVEMENT_OBSERVATION_GUIDE);
+			movement.setMovementObservation(Constantes.MOVEMENT_OBSERVATION_GUIDE_SALES);
 			movement.setMovementQuantity(getMovementQuantity());
-			movement.setMovementType(Constantes.MOVEMENT_TYPE_GUIDE);
+			movement.setMovementType(Constantes.MOVEMENT_TYPE_SALES);
 			movement.setPaymentDocumentnumber(objGuideHeadMain.getGuideNumber());
-			movement.setProvider(objGuideHeadMain.getProvider());
-			
-			sMensaje = guiaService.insertarGuiaVenta(objGuideHeadMain, lstItemsGuideMain, movement);
+			movement.setCustomer(objGuideHeadMain.getCustomer());
+			sMensaje = guiaService.insertarGuiaVenta(objGuideHeadMain, lstItemsGuideMain, lstProductGuideStock,movement);
 			GeneralParameter generalParameterUpload = this.parametroGeneralService.obtenerParametroGeneral(propiedades.getUniqueCodeUpload());
-			String guideFile = Constantes.MOVEMENT_TYPE_GUIDE + "_" + objGuideHeadMain.getGuideNumber() + "." + objGuideHeadMain.getGuideFile();
+			String guideFile = Constantes.MOVEMENT_TYPE_SALES + "_" + objGuideHeadMain.getGuideNumber() + "." + objGuideHeadMain.getGuideFile();
 			objGuideHeadMain.setGuideFile(guideFile);
 			Utilitarios.guardarArchivo(generalParameterUpload.getParamValue(), objGuideHeadMain.getGuideFile(), isGuide);
 			reiniciarFormulario();
 			Utilitarios.mensaje("", sMensaje);
 		} catch (BallartelyException e) {
-			sMensaje = "Error en agregarCliente";
+			sMensaje = "Error en registrarGuia";
 			this.logger.error(e.getMessage());
 			throw new FacesException(sMensaje, e);
 		}
@@ -223,6 +223,10 @@ public class RegistroVentaMB {
 			amount = amount.add(detail.getTotalCost());
 		}
 		return amount;
+	}
+	
+	public void eliminarItemGuia() {
+		this.lstItemsGuideMain.remove(this.objItemGuiaEliminar);
 	}
 
 	public void cargaPuntoLlegada(AjaxBehaviorEvent event) {
@@ -244,7 +248,10 @@ public class RegistroVentaMB {
 	
 	public void openSeleccionarPrecioGuia() {
 		try {
-			this.rootProductGuide = createRootProductGuide();
+			if(!this.flagCargaProductGuide) {
+				this.rootProductGuide = createRootProductGuide();
+				this.flagCargaProductGuide = true;
+			}
 		} catch (BallartelyException e) {
 			String sMensaje = "Error en openSeleccionarPrecioGuia";
 			this.logger.error(e.getMessage());
@@ -257,6 +264,7 @@ public class RegistroVentaMB {
 			this.lstItemsGuideMain = new ArrayList<>();
 			List<TreeNode> lstNodeProductLabel = this.rootProductGuide.getChildren();
 			int idx = 0;
+			lstProductGuideStock = new ArrayList<>();
 			for(TreeNode nodeProductLabel: lstNodeProductLabel) {
 				GuideDetailSales guideDetailSales = new GuideDetailSales();
 				Integer cantidad = 0;
@@ -273,6 +281,9 @@ public class RegistroVentaMB {
 					BigDecimal peso = guideDetailSales.getProductLabel().getProductLabelWeight().multiply(BigDecimal.valueOf(productGuide.getStockInput()));
 					pesoTotal = pesoTotal.add(peso);
 					costoTotal = costoTotal.add(productGuide.getCostProduct().multiply(peso));
+					if(productGuide.getStockInput() > 0) {
+						lstProductGuideStock.add(productGuide);
+					}
 				}
 				if(cantidad == 0) {
 					continue;
@@ -306,10 +317,13 @@ public class RegistroVentaMB {
 	
 	private void reiniciarFormulario() {
 		this.objGuideHeadMain = new GuideHead();
-		this.objGuideHeadMain.setProvider(new Provider());
 		this.isGuide = null;
 		this.lstItemsGuideMain = new ArrayList<>();
-		agregarItemGuia();
+		this.lstProducts = new ArrayList<>();
+		this.lstTransports = new ArrayList<>();
+		this.rootProductGuide = new DefaultTreeNode();
+		this.objItemGuiaEliminar = null;
+		this.flagCargaProductGuide = false;
 	}
 	
 	private void obtenerClientes() {
@@ -459,6 +473,14 @@ public class RegistroVentaMB {
 
 	public void setRootProductGuide(TreeNode rootProductGuide) {
 		this.rootProductGuide = rootProductGuide;
+	}
+
+	public GuideDetailSales getObjItemGuiaEliminar() {
+		return objItemGuiaEliminar;
+	}
+
+	public void setObjItemGuiaEliminar(GuideDetailSales objItemGuiaEliminar) {
+		this.objItemGuiaEliminar = objItemGuiaEliminar;
 	}
 	
 }

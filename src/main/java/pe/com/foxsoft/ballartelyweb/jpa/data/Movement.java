@@ -54,6 +54,11 @@ public class Movement implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="provider_id")
 	private Provider provider;
+	
+	//bi-directional many-to-one association to Customer
+	@ManyToOne
+	@JoinColumn(name="customer_id")
+	private Customer customer;
 
 	public Movement() {
 	}
@@ -128,6 +133,14 @@ public class Movement implements Serializable {
 
 	public void setProvider(Provider provider) {
 		this.provider = provider;
+	}
+
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
 	}
 
 }

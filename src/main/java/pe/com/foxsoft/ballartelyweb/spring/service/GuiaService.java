@@ -81,15 +81,20 @@ public class GuiaService {
 	}
 	
 	@Transactional(readOnly=false, rollbackFor=BallartelyException.class)
-	public String insertarGuiaVenta(GuideHead guideHead, List<GuideDetailSales> lstGuideDetails, Movement movement) throws BallartelyException {
+	public String insertarGuiaVenta(GuideHead guideHead, List<GuideDetailSales> lstGuideDetails, List<ProductGuide> lstProductGuideStock, Movement movement) throws BallartelyException {
 		/** Grabamos la cabecera a BD **/
 		GuideHead objGuiaCabecera = guiaCabeceraRepository.save(guideHead);
 		
 		/** Registramos el detalle de la compra en BD y actualizamos el STOCK del producto registrado **/
 		for(GuideDetailSales detail: lstGuideDetails) {
+			detail.setId(null);
 			detail.setGuideHead(objGuiaCabecera);
 		}
+		/** Actualizamos el stock**/
 		guiaDetalleVentaRepository.save(lstGuideDetails);
+		for(ProductGuide productGuide: lstProductGuideStock) {
+			guiaDao.actualizarStockGuia(em, productGuide);
+		}
 		/** Registramos el movimiento en BD**/
 		movimientoRepository.save(movement);
 		return Utilitarios.reemplazarMensaje(Constantes.MESSAGE_PERSIST_SUCCESS, objGuiaCabecera.getId());

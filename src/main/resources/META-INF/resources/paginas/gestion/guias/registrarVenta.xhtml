@@ -452,6 +452,11 @@
 		                	<f:convertNumber maxFractionDigits="2" minFractionDigits="2" maxIntegerDigits="8" />
 		                </h:outputText>
 					</p:column>
+					<p:column style="width:32px;text-align: center">
+			             <p:commandButton  onclick="PF('confirmationEliminarItem').show()" icon="ui-icon-trash" title="Eliminar">
+			                <f:setPropertyActionListener  value="#{itemGuia}" target="#{registroVentaMB.objItemGuiaEliminar}" />
+			            </p:commandButton>
+			        </p:column>
 				</p:dataTable>
 			</div>
 			<p:separator />
@@ -550,7 +555,7 @@
 											<h:outputText value="#{guia.stockInput}"/>
 										</f:facet>
 										<f:facet name="input">
-											<p:inputNumber value="#{guia.stockInput}" maxValue="#{guia.stockProduct}" decimalPlaces="0"/>
+											<p:inputNumber value="#{guia.stockInput}" minValue="0" maxValue="#{guia.stockProduct}" decimalPlaces="0"/>
 										</f:facet>
 									</p:cellEditor>
 									<h:outputText value="#{guia.stockInput}" rendered="#{guia.stockInput == null}"/>
@@ -587,7 +592,7 @@
 						</div>
 						<div style="clear: both;"></div>
 						<div class="boton">
-							<p:commandButton value="Seleccionar" icon="ui-icon-save"
+							<p:commandButton value="Seleccionar" icon="ui-icon-disk"
 								actionListener="#{registroVentaMB.seleccionarPrecioGuia}"
 								update=":wLisGuide:tblItemGuia"
 								oncomplete="PF('dlgSelPrecioGuia').hide()" />
@@ -605,17 +610,30 @@
 			widgetVar="confirmationRegistrarGuia" modal="true"
 			id="confirmRegistrarGuia">
 			<h:form>
-				<p:commandButton value="Si" ajax="false"
+				<p:commandButton value="Si" ajax="true"
 					actionListener="#{registroVentaMB.registrarGuia}"
-					update=":msjLisGuide,:wLisGuide"
+					update=":wLisGuide"
 					oncomplete="PF('confirmationRegistrarGuia').hide()" />
 				<p:commandButton value="No"
 					onclick="PF('confirmationRegistrarGuia').hide()" type="button" />
 			</h:form>
 		</p:confirmDialog>
-
-
-
+		
+		<p:confirmDialog
+			message="¿Está usted seguro que desea eliminar el item?"
+			width="300" showEffect="explode" hideEffect="explode"
+			header="Mensaje de Confirmación" severity="alert"
+			widgetVar="confirmationEliminarItem" modal="true"
+			id="confirmEliminarItem">
+			<h:form>
+				<p:commandButton value="Si" ajax="true"
+					actionListener="#{registroVentaMB.eliminarItemGuia}"
+					update=":wLisGuide:tblItemGuia"
+					oncomplete="PF('confirmationEliminarItem').hide()" />
+				<p:commandButton value="No"
+					onclick="PF('confirmationEliminarItem').hide()" type="button" />
+			</h:form>
+		</p:confirmDialog>
 	</ui:define>
 
 </ui:composition>

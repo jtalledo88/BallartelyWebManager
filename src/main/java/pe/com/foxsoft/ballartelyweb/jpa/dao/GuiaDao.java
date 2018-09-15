@@ -134,4 +134,19 @@ public class GuiaDao{
 		}
 		
 	}
+
+	public int actualizarStockGuia(EntityManager em, ProductGuide productGuide) throws BallartelyException {
+		try {
+			Query queryProductGuideStock = em.createQuery(
+					"update ProductStock ps set ps.productStockCant = ps.productStockCant - :productStockCant " +
+					"where ps.guideHead.id = :guideHeadId and ps.productLabel.id = :productLabelId");
+			queryProductGuideStock.setParameter("productStockCant", productGuide.getStockInput());
+			queryProductGuideStock.setParameter("guideHeadId", Integer.parseInt(productGuide.getFirstColumn()));
+			queryProductGuideStock.setParameter("productLabelId", productGuide.getId());
+			
+			return queryProductGuideStock.executeUpdate();
+		} catch (Exception e) {
+			throw new BallartelyException(BallartelyException.GENERAL_ERROR, e.getMessage());
+		}
+	}
 }

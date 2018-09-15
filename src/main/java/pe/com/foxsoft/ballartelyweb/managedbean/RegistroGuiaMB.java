@@ -148,20 +148,21 @@ public class RegistroGuiaMB {
 			objGuideHeadMain.setGuideStatus(Constantes.STATUS_PRODUCT_FRESH);
 			objGuideHeadMain.setGuideBenefied(Constantes.BENEFIED_NO);
 			objGuideHeadMain.setGuideCotized(Constantes.COTIZED_NO);
+			objGuideHeadMain.setGuideType(Constantes.GUIDE_TYPE_BUY);
 			
 			Movement movement = new Movement();
 			movement.setAccount(cuentaService.obtenerCuentaPrincipal());
 			movement.setMovementAmount(lstItemsGuideMain.get(0).getUnitCost().multiply(
 					lstItemsGuideMain.get(0).getNetWeight().subtract(lstItemsGuideMain.get(0).getDeadWeight())));
-			movement.setMovementObservation(Constantes.MOVEMENT_OBSERVATION_GUIDE);
+			movement.setMovementObservation(Constantes.MOVEMENT_OBSERVATION_GUIDE_BUY);
 			movement.setMovementQuantity(lstItemsGuideMain.get(0).getProductQuantity() - lstItemsGuideMain.get(0).getDeadQuantity());
-			movement.setMovementType(Constantes.MOVEMENT_TYPE_GUIDE);
+			movement.setMovementType(Constantes.MOVEMENT_TYPE_BUY);
 			movement.setPaymentDocumentnumber(objGuideHeadMain.getGuideNumber());
 			movement.setProvider(objGuideHeadMain.getProvider());
 			
 			sMensaje = guiaService.insertarGuia(objGuideHeadMain, lstItemsGuideMain, movement);
 			GeneralParameter generalParameterUpload = this.parametroGeneralService.obtenerParametroGeneral(propiedades.getUniqueCodeUpload());
-			String guideFile = Constantes.MOVEMENT_TYPE_GUIDE + "_" + objGuideHeadMain.getGuideNumber() + "." + objGuideHeadMain.getGuideFile();
+			String guideFile = Constantes.MOVEMENT_TYPE_BUY + "_" + objGuideHeadMain.getGuideNumber() + "." + objGuideHeadMain.getGuideFile();
 			objGuideHeadMain.setGuideFile(guideFile);
 			Utilitarios.guardarArchivo(generalParameterUpload.getParamValue(), objGuideHeadMain.getGuideFile(), isGuide);
 			reiniciarFormulario();
