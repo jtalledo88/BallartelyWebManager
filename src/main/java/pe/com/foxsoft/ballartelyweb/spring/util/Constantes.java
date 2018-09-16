@@ -33,6 +33,7 @@ public class Constantes {
 	public static final String PRODUCT_LABEL_NOT_SALES = "'DCH','DX'";
 	public static final String GUIDE_TYPE_SALES = "V";
 	public static final String GUIDE_TYPE_BUY = "C";
+	public static final String CUSTOMER_TYPE_MOROSO = "M";
 	
 
 }

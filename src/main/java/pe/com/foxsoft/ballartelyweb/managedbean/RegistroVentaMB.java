@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import pe.com.foxsoft.ballartelyweb.jpa.data.Account;
 import pe.com.foxsoft.ballartelyweb.jpa.data.Customer;
 import pe.com.foxsoft.ballartelyweb.jpa.data.Enterprise;
 import pe.com.foxsoft.ballartelyweb.jpa.data.GeneralParameter;
@@ -69,8 +70,10 @@ public class RegistroVentaMB {
 
 	private GuideHead objGuideHeadMain;
 	private GuideDetailSales objItemGuiaEliminar;
+	private Account objCuentaCliente;
 	private InputStream isGuide;
 	private boolean flagCargaProductGuide;
+	private BigDecimal amountAccount;
 
 	private List<GuideDetailSales> lstItemsGuideMain;
 	private List<Customer> lstClientes;
@@ -79,6 +82,7 @@ public class RegistroVentaMB {
 	private List<GuideHead> lstGuidesBuy;
 	private TreeNode rootProductGuide;
 	private List<ProductGuide> lstProductGuideStock;
+	private List<Account> lstAccountsCustomer;
 
 	public RegistroVentaMB() {
 		this.objGuideHeadMain = new GuideHead();
@@ -87,6 +91,7 @@ public class RegistroVentaMB {
 		this.lstProducts = new ArrayList<>();
 		this.lstGuidesBuy = new ArrayList<>();
 		this.rootProductGuide = new DefaultTreeNode();
+		this.lstAccountsCustomer = new ArrayList<>();
 	}
 
 	public void agregarItemGuia() {
@@ -188,7 +193,7 @@ public class RegistroVentaMB {
 			objGuideHeadMain.setGuideType(Constantes.GUIDE_TYPE_SALES);
 			//TODO Agregar alerta de tipo de cliente y combo de cuenta de cliente
 			Movement movement = new Movement();
-			movement.setAccount(cuentaService.obtenerCuentaPrincipal());
+			movement.setAccount(this.objCuentaCliente);
 			movement.setMovementAmount(getMovementAmount());
 			movement.setMovementObservation(Constantes.MOVEMENT_OBSERVATION_GUIDE_SALES);
 			movement.setMovementQuantity(getMovementQuantity());
@@ -230,7 +235,33 @@ public class RegistroVentaMB {
 	}
 
 	public void cargaPuntoLlegada(AjaxBehaviorEvent event) {
+		this.amountAccount = null;
 		this.objGuideHeadMain.setEndPoint(this.objGuideHeadMain.getCustomer().getCustomerAddress());
+		cargaCuentasCliente();
+		if(Constantes.CUSTOMER_TYPE_MOROSO.equals(this.objGuideHeadMain.getCustomer().getCustomerType())) {
+			Utilitarios.mensajeInfo("Advertencia", "El cliente seleccionado tiene calificación morosa.");
+		}
+	}
+	
+	private void cargaCuentasCliente() {
+		try {
+			this.lstAccountsCustomer = this.cuentaService.obtenerCuentas(this.objGuideHeadMain.getCustomer().getId());
+		} catch (BallartelyException e) {
+			String sMensaje = "Error en cargaSaldoCuenta";
+			this.logger.error(e.getMessage());
+			throw new FacesException(sMensaje, e);
+		}
+		
+	}
+
+	public void cargaSaldoCuenta() {
+		try {
+			this.amountAccount = this.cuentaService.getAmountAccountDataBase(this.objCuentaCliente.getId());
+		} catch (BallartelyException e) {
+			String sMensaje = "Error en cargaSaldoCuenta";
+			this.logger.error(e.getMessage());
+			throw new FacesException(sMensaje, e);
+		}
 	}
 
 	public List<Customer> completeCustomer(String query) {
@@ -324,6 +355,9 @@ public class RegistroVentaMB {
 		this.rootProductGuide = new DefaultTreeNode();
 		this.objItemGuiaEliminar = null;
 		this.flagCargaProductGuide = false;
+		this.lstAccountsCustomer = new ArrayList<>();
+		this.objCuentaCliente = null;
+		this.amountAccount = null;
 	}
 	
 	private void obtenerClientes() {
@@ -481,6 +515,30 @@ public class RegistroVentaMB {
 
 	public void setObjItemGuiaEliminar(GuideDetailSales objItemGuiaEliminar) {
 		this.objItemGuiaEliminar = objItemGuiaEliminar;
+	}
+
+	public List<Account> getLstAccountsCustomer() {
+		return lstAccountsCustomer;
+	}
+
+	public void setLstAccountsCustomer(List<Account> lstAccountsCustomer) {
+		this.lstAccountsCustomer = lstAccountsCustomer;
+	}
+
+	public Account getObjCuentaCliente() {
+		return objCuentaCliente;
+	}
+
+	public void setObjCuentaCliente(Account objCuentaCliente) {
+		this.objCuentaCliente = objCuentaCliente;
+	}
+
+	public BigDecimal getAmountAccount() {
+		return amountAccount;
+	}
+
+	public void setAmountAccount(BigDecimal amountAccount) {
+		this.amountAccount = amountAccount;
 	}
 	
 }

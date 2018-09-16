@@ -371,6 +371,30 @@
 								</div>
 								<p:message for="txtRazonSocialCliente" />
 							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="cboCuentasCliente" value="Cuenta de cargo:" />
+								</div>
+								<div class="dostercios">
+									<div class="combo" style="display: flex;">
+										<p:selectOneMenu id="cboCuentasCliente" value="#{registroVentaMB.objCuentaCliente}"
+											converter="#{accountConverter}">
+											<f:selectItem itemLabel="--Seleccione--" itemValue=""/>
+											<f:selectItems value="#{registroVentaMB.lstAccountsCustomer}" var="account"
+												itemLabel="#{account.codeAccount}" itemValue="#{account}" />
+											<p:ajax event="itemSelect" listener="#{registroVentaMB.cargaSaldoCuenta}" process="@form" update="txtSaldoCuenta"/>
+											<p:ajax event="change" listener="#{registroVentaMB.cargaSaldoCuenta}" process="@form" update="txtSaldoCuenta"/>
+										</p:selectOneMenu>
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgCuentaCliente"
+											url="../../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgCuentaCliente"
+											value="Cuentas del cliente" />
+									</div>
+								</div>
+								<p:message for="cboCuentasCliente" />
+							</div>
 						</div>
 						<div class="mitad">
 							<div class="completo">
@@ -390,6 +414,24 @@
 									</div>
 								</div>
 								<p:message for="txtRucCliente" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+								
+									<h:outputLabel for="txtSaldoCuenta" value="Saldo de Cuenta:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputNumber id="txtSaldoCuenta" readonly="true" decimalPlaces="2"
+											value="#{registroVentaMB.amountAccount}" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgSaldoCuenta"
+											url="../../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgSaldoCuenta" value="Saldo de la cuenta" />
+									</div>
+								</div>
+								<p:message for="txtSaldoCuenta" />
 							</div>
 						</div>
 					</div>

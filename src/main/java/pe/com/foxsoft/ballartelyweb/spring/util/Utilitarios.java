@@ -248,5 +248,9 @@ public class Utilitarios {
 			return BigDecimal.ZERO;
 		}
 	}
+
+	public static String rellenarCadena(String cadena, int longi, String caracter) {
+		return StringUtils.leftPad(cadena, longi, caracter);
+	}
 	
 }

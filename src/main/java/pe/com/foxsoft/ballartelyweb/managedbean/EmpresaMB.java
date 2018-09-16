@@ -16,7 +16,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import pe.com.foxsoft.ballartelyweb.jpa.data.Account;
-import pe.com.foxsoft.ballartelyweb.jpa.data.Customer;
 import pe.com.foxsoft.ballartelyweb.jpa.data.Enterprise;
 import pe.com.foxsoft.ballartelyweb.jpa.data.EnterpriseTransport;
 import pe.com.foxsoft.ballartelyweb.jpa.data.Transport;
@@ -97,11 +96,8 @@ public class EmpresaMB {
 	public void openVerCuenta() {
 		String sMensaje = null;
 		try {
-			Account account = new Account();
-			account.setAccountType(Constantes.ACCOUNT_TYPE_P);
-			account.setCustomer(new Customer());
-			account.setAccountStatus(Constantes.STATUS_ACTIVE);
-			lstCuentaPrincipal = cuentaService.obtenerCuentas(account);
+			lstCuentaPrincipal = new ArrayList<>();
+			lstCuentaPrincipal.add(cuentaService.obtenerCuentaPrincipal());
 		} catch (BallartelyException e) {
 			sMensaje = "Error en openVerCuenta";
 			this.logger.error(e.getMessage());

@@ -1,5 +1,6 @@
 package pe.com.foxsoft.ballartelyweb.spring.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import pe.com.foxsoft.ballartelyweb.jpa.dao.CuentaDao;
+import pe.com.foxsoft.ballartelyweb.jpa.dao.MovimientoDao;
 import pe.com.foxsoft.ballartelyweb.jpa.data.Account;
 import pe.com.foxsoft.ballartelyweb.jpa.repository.CuentaRepository;
 import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
@@ -24,6 +26,9 @@ public class CuentaService {
 	
 	@Autowired
 	private CuentaDao cuentaDao;
+	
+	@Autowired
+	private MovimientoDao movimientoDao;
 	
 	public EntityManager getEm() {
 		return em;
@@ -55,8 +60,8 @@ public class CuentaService {
 		return cuentaDao.getAccountPrincipalDataBase(em);
 	}
 	
-	public List<Account> obtenerCuentas(Account account) throws BallartelyException {
-		return cuentaDao.getAccountsByOwnerDataBase(em, account);
+	public List<Account> obtenerCuentas(Integer customerId) throws BallartelyException {
+		return cuentaDao.getAccountsByOwnerDataBase(em, customerId);
 	}
 
 	@Transactional(readOnly=false, rollbackFor=Throwable.class)
@@ -73,6 +78,11 @@ public class CuentaService {
 	public List<Account> getListaCuentas() throws BallartelyException {
 		return cuentaRepository.findAll();
 	}
+	
+	@Transactional(readOnly=true, noRollbackFor=BallartelyException.class)
+	public BigDecimal getAmountAccountDataBase(Integer itemAccount) throws BallartelyException {
+		return movimientoDao.getAmountAccountDataBase(em, itemAccount);
+	}
 
 	public CuentaRepository getCuentaRepository() {
 		return cuentaRepository;
@@ -88,6 +98,14 @@ public class CuentaService {
 
 	public void setCuentaDao(CuentaDao cuentaDao) {
 		this.cuentaDao = cuentaDao;
+	}
+
+	public MovimientoDao getMovimientoDao() {
+		return movimientoDao;
+	}
+
+	public void setMovimientoDao(MovimientoDao movimientoDao) {
+		this.movimientoDao = movimientoDao;
 	}
 
 }

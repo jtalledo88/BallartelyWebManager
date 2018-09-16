@@ -7,6 +7,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import pe.com.foxsoft.ballartelyweb.spring.util.Utilitarios;
+
 import java.util.Date;
 import java.util.List;
 
@@ -23,8 +25,11 @@ public class Account implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="account_id")
-	private Integer accountId;
+	@Column(name="id")
+	private Integer id;
+	
+	@Transient
+	private String codeAccount;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="account_creation_date")
@@ -54,12 +59,12 @@ public class Account implements Serializable {
 	public Account() {
 	}
 
-	public Integer getAccountId() {
-		return this.accountId;
+	public Integer getId() {
+		return this.id;
 	}
 
-	public void setAccountId(Integer accountId) {
-		this.accountId = accountId;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public Date getAccountCreationDate() {
@@ -123,5 +128,33 @@ public class Account implements Serializable {
 
 		return movement;
 	}
+	
+	public String getCodeAccount() {
+		this.codeAccount = Utilitarios.rellenarCadena(String.valueOf(id), 20, "0");
+		return codeAccount;
+	}
+
+	public void setCodeAccount(String codeAccount) {
+		this.codeAccount = codeAccount;
+	}
+
+	@Override
+    public int hashCode() {
+        int hash = 0;
+        hash += id;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof Account)) {
+            return false;
+        }
+        Account other = (Account) object;
+        if (this.id != other.id) {
+            return false;
+        }
+        return true;
+    }
 
 }

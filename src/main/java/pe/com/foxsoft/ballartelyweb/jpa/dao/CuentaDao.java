@@ -15,13 +15,13 @@ import pe.com.foxsoft.ballartelyweb.spring.util.Constantes;
 @Repository
 public class CuentaDao {
 	
-	public List<Account> getAccountsByOwnerDataBase(EntityManager em, Account account) throws BallartelyException {
+	public List<Account> getAccountsByOwnerDataBase(EntityManager em, Integer customerId) throws BallartelyException {
 		try {
 			TypedQuery<Account> queryAccounts = em.createQuery(
 					"select a from Account a left join fetch a.customer c where (a.accountType = '" + Constantes.ACCOUNT_TYPE_C + 
 					"' and c.id = :customerId) and a.accountStatus = :accountStatus", Account.class);
-			queryAccounts.setParameter("customerId", account.getCustomer().getId());
-			queryAccounts.setParameter("accountStatus", account.getAccountStatus());
+			queryAccounts.setParameter("customerId", customerId);
+			queryAccounts.setParameter("accountStatus", Constantes.STATUS_ACTIVE);
 			
 			return queryAccounts.getResultList();
 		} catch (NoResultException nre) {
