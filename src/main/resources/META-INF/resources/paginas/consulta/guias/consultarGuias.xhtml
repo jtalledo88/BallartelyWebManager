@@ -89,24 +89,24 @@
 							</div>
 							<div class="completo">
 								<div class="tercio">
-									<h:outputLabel for="cboEstado" value="Estado:" />
+									<h:outputLabel for="cboTipo" value="Tipo:" />
 								</div>
 								<div class="dostercios">
 									<div class="combo">
-										<p:selectOneMenu id="cboEstado"
-											value="#{consultaGuiaMB.objGuideHeadMain.guideStatus}">
+										<p:selectOneMenu id="cboTipo"
+											value="#{consultaGuiaMB.objGuideHeadMain.guideType}">
 											<f:selectItem itemLabel="-- Todos --" itemValue=""/>
-											<f:selectItem itemLabel="Fresco" itemValue="F" />
-											<f:selectItem itemLabel="Frio" itemValue="C" />
+											<f:selectItem itemLabel="Compra" itemValue="C" />
+											<f:selectItem itemLabel="Venta" itemValue="V" />
 										</p:selectOneMenu>
 									</div>
 									<div class="tooltip">
-										<h:graphicImage id="imgEstado"
+										<h:graphicImage id="imgTipo"
 											url="../../../recursos/imagenes/help.png"></h:graphicImage>
-										<p:tooltip for="imgEstado" value="Estado de la guía" />
+										<p:tooltip for="imgTipo" value="Tipo de guía (Compra, Venta)" />
 									</div>
 								</div>
-								<p:message for="cboEstado" />
+								<p:message for="cboTipo" />
 							</div>
 						</div>
 						<div class="mitad">
@@ -171,6 +171,27 @@
 								</div>
 								<p:message for="cldFechaRegistroFin" />
 							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="cboEstado" value="Estado:" />
+								</div>
+								<div class="dostercios">
+									<div class="combo">
+										<p:selectOneMenu id="cboEstado"
+											value="#{consultaGuiaMB.objGuideHeadMain.guideStatus}">
+											<f:selectItem itemLabel="-- Todos --" itemValue=""/>
+											<f:selectItem itemLabel="Fresco" itemValue="F" />
+											<f:selectItem itemLabel="Frio" itemValue="C" />
+										</p:selectOneMenu>
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgEstado"
+											url="../../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgEstado" value="Estado de la guía" />
+									</div>
+								</div>
+								<p:message for="cboEstado" />
+							</div>
 						</div>
 					</div>
 					<div class="boton">
@@ -231,6 +252,12 @@
 					</p:column>
 					<p:column styleClass="oficina">
 						<f:facet name="header">
+							<h:outputText value="Tipo" />
+						</f:facet>
+						<h:outputText value="#{guia.guideType}" converter="#{typeConverter}" />
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
 							<h:outputText value="Estado" />
 						</f:facet>
 						<h:outputText value="#{guia.guideStatus}" converter="#{statusConverter}" />
@@ -268,8 +295,8 @@
 							<h:outputText value="Ver Archivo" />
 						</f:facet>
 						<p:commandLink style="float: right; padding-right:48%;"
-							onclick="PF('dlgVerImagen').show()"
-							action="#{consultaGuiaMB.openVerImagen}"
+							oncomplete="PF('dlgVerImagen').show()"
+							actionListener="#{consultaGuiaMB.openVerImagen}"
 							update=":wVerImagen:pVerImagen">
 							<f:param name="itemGuiaArchivo" value="#{guia.id}"
 								id="itemGuiaArchivo" />
@@ -281,11 +308,13 @@
 							<h:outputText value="Ver Detalle" />
 						</f:facet>
 						<p:commandLink style="float: right; padding-right:48%;"
-							onclick="PF('dlgVerDetalleGuia').show()"
-							action="#{consultaGuiaMB.openVerDetalle}"
+							oncomplete="PF('dlgVerDetalleGuia').show()"
+							actionListener="#{consultaGuiaMB.openVerDetalle}"
 							update=":wVerDetGuia:pVerDetalleGuia">
 							<f:param name="itemGuiaDetalle" value="#{guia.id}"
 								id="itemGuiaDetalle" />
+							<f:param name="typeGuiaDetalle" value="#{guia.guideType}"
+								id="typeGuiaDetalle" />
 							<p:graphicImage  url="../../../recursos/imagenes/icon_lupa.png" width="15" height="15" />
 						</p:commandLink>
 					</p:column>
@@ -300,7 +329,7 @@
 							<p:graphicImage url="../../../recursos/imagenes/icon_beneficiar.png" width="15" height="15" />
 						</p:commandLink>
 					</p:column>
-					<p:column styleClass="eliminar" exportable="false" >
+					<p:column styleClass="eliminar" exportable="false">
 						<f:facet name="header">
 							<h:outputText value="Cotizar" rendered="#{guia.guideCotized == 'N'}"/>
 							<h:outputText value="Ver Cotización" rendered="#{guia.guideCotized != 'N'}"/>
@@ -311,7 +340,7 @@
 								target="#{cotizarGuiaMB.objGuideHeadMain}" />
 							<p:graphicImage url="../../../recursos/imagenes/icon-cotizar.png" width="15" height="15" />
 						</p:commandLink>
-						<p:commandLink style="float: right; padding-right:48%;" rendered="#{guia.guideCotized != 'N'}"
+						<p:commandLink style="float: right; padding-right:48%;" rendered="#{guia.guideCotized != 'N' &amp;&amp; guia.guideType == 'C'}"
 							action="/paginas/gestion/guias/cotizarGuias.xhtml?faces-redirect=true" ajax="false">
 							<f:setPropertyActionListener value="#{guia}"
 								target="#{cotizarGuiaMB.objGuideHeadMain}" />
@@ -363,7 +392,7 @@
 					<div class="scrollTabla">
 						<p:dataTable style="width: 100%;" var="itemGuia" value="#{consultaGuiaMB.lstItemsGuideMain}" 
 							id="tblItemGuia" widgetVar="tblItemGuia"
-							emptyMessage="Agregar Items a la Guía">
+							emptyMessage="Agregar Items a la Guía" rendered="#{consultaGuiaMB.typeGuia == 'C'}">
 							
 							<p:column styleClass="oficina">
 								<f:facet name="header">
@@ -436,6 +465,51 @@
 									<h:outputText value="Producto" />
 								</f:facet>
 								<h:outputText value="#{itemGuia.productDescription}"/>
+							</p:column>
+						</p:dataTable>
+						<p:dataTable style="width: 100%;" var="itemGuia" value="#{consultaGuiaMB.lstItemsGuideMain}" 
+							id="tblItemGuiaSales" widgetVar="tblItemGuiaSales"
+							emptyMessage="Agregar Items a la Guía" rendered="#{consultaGuiaMB.typeGuia == 'V'}">
+							
+							<p:column styleClass="oficina">
+								<f:facet name="header">
+									<h:outputText value="Item" />
+								</f:facet>
+								<h:outputText value="#{itemGuia.id}"/>	
+							</p:column>
+							<p:column styleClass="oficina">
+								<f:facet name="header">
+									<h:outputText value="Producto" />
+								</f:facet>
+								<h:outputText value="#{itemGuia.productLabel.productLabelDescription}"/>
+							</p:column>	
+							<p:column styleClass="oficina">
+								<f:facet name="header">
+									<h:outputText value="Cantidad" />
+								</f:facet>
+								<h:outputText value="#{itemGuia.productQuantity}"/>
+							</p:column>
+							<p:column styleClass="oficina">
+								<f:facet name="header">
+									<h:outputText value="Unidad de Medida" />
+								</f:facet>
+								<h:outputText value="#{itemGuia.metricUnit}" />
+							</p:column>
+							<p:column styleClass="oficina">
+								<f:facet name="header">
+									<h:outputText value="Peso Total" />
+								</f:facet>
+								<h:outputText value="#{itemGuia.totalWeight}">
+				                	<f:convertNumber maxFractionDigits="2" minFractionDigits="2" maxIntegerDigits="8" />
+				                </h:outputText>
+							</p:column>
+							<p:column styleClass="oficina">
+								<f:facet name="header">
+									<h:outputText value="Costo Total" />
+								</f:facet>
+								<h:outputText value="#{itemGuia.totalCost}">
+				                	<f:convertNumber maxFractionDigits="2" minFractionDigits="2" maxIntegerDigits="8" />
+				                </h:outputText>
 							</p:column>
 						</p:dataTable>
 					</div>

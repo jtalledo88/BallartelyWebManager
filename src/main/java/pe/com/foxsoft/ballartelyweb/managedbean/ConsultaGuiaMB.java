@@ -16,11 +16,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import pe.com.foxsoft.ballartelyweb.jpa.data.GeneralParameter;
-import pe.com.foxsoft.ballartelyweb.jpa.data.GuideDetail;
 import pe.com.foxsoft.ballartelyweb.jpa.data.GuideHead;
 import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
 import pe.com.foxsoft.ballartelyweb.spring.service.GuiaService;
 import pe.com.foxsoft.ballartelyweb.spring.service.ParametroGeneralService;
+import pe.com.foxsoft.ballartelyweb.spring.util.Constantes;
 import pe.com.foxsoft.ballartelyweb.spring.util.Propiedades;
 import pe.com.foxsoft.ballartelyweb.spring.util.Utilitarios;
 
@@ -47,10 +47,11 @@ public class ConsultaGuiaMB {
 	private StreamedContent guideImageSelected;
 	
 	private List<GuideHead> lstGuideHeadMain;
-	private List<GuideDetail> lstItemsGuideMain;
+	private List<?> lstItemsGuideMain;
 	
 	private boolean validaListaBuscar = true;
 	private int canRegTablaPrincipal;
+	private String typeGuia;
 
 	public ConsultaGuiaMB() {
 		objGuideHeadMain = new GuideHead();
@@ -75,9 +76,14 @@ public class ConsultaGuiaMB {
 	public void openVerDetalle() {
 		Map<String, String> paramMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 
-		int itemGuia = Integer.parseInt((String) paramMap.get("itemGuiaDetalle"));
+		int itemGuia = Integer.parseInt(paramMap.get("itemGuiaDetalle"));
+		this.typeGuia = paramMap.get("typeGuiaDetalle");
 		try {
-			lstItemsGuideMain = guiaService.getListaGuiasDetalle(itemGuia);
+			if(Constantes.GUIDE_TYPE_BUY.equals(typeGuia)) {
+				lstItemsGuideMain = guiaService.getListaGuiasDetalle(itemGuia);
+			}else if(Constantes.GUIDE_TYPE_SALES.equals(typeGuia)) {
+				lstItemsGuideMain = guiaService.getListaGuiasDetalleVenta(itemGuia);
+			}
 		} catch (BallartelyException e) {
 			String sMensaje = "Error en openEditarProveedor";
 			this.logger.error(e.getMessage());
@@ -221,12 +227,20 @@ public class ConsultaGuiaMB {
 		this.propiedades = propiedades;
 	}
 
-	public List<GuideDetail> getLstItemsGuideMain() {
+	public List<?> getLstItemsGuideMain() {
 		return lstItemsGuideMain;
 	}
 
-	public void setLstItemsGuideMain(List<GuideDetail> lstItemsGuideMain) {
+	public void setLstItemsGuideMain(List<?> lstItemsGuideMain) {
 		this.lstItemsGuideMain = lstItemsGuideMain;
+	}
+
+	public String getTypeGuia() {
+		return typeGuia;
+	}
+
+	public void setTypeGuia(String typeGuia) {
+		this.typeGuia = typeGuia;
 	}
 	
 }

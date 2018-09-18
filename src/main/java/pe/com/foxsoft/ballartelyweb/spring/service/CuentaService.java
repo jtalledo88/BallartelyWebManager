@@ -38,15 +38,7 @@ public class CuentaService {
 	public void setEm(EntityManager em) {
 		this.em = em;
 	}
-
-	public CuentaRepository getCuentaJPA() {
-		return cuentaRepository;
-	}
-
-	public void setCuentaJPA(CuentaRepository cuentaJPA) {
-		this.cuentaRepository = cuentaJPA;
-	}
-
+	
 	@Transactional(readOnly=false, rollbackFor=Throwable.class)
 	public Account agregarCuenta(Account account) throws BallartelyException {
 		return cuentaRepository.save(account);

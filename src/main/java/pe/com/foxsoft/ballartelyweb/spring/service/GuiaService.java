@@ -134,6 +134,9 @@ public class GuiaService {
 		return guiaDao.getGuideDetailsDataBase(em, guideHeadId);
 	}
 	
+	public List<GuideDetailSales> getListaGuiasDetalleVenta(int guideHeadId) throws BallartelyException {
+		return guiaDao.getGuideDetailSalesDataBase(em, guideHeadId);
+	}
 	public GuideCotization getCotization(GuideHead guideHead) throws BallartelyException {
 		GuideCotization guideCotization = new GuideCotization();
 		guideCotization.setGuideHead(guideHead);

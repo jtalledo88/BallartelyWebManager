@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import pe.com.foxsoft.ballartelyweb.jpa.data.GuideCotization;
 import pe.com.foxsoft.ballartelyweb.jpa.data.GuideDetail;
+import pe.com.foxsoft.ballartelyweb.jpa.data.GuideDetailSales;
 import pe.com.foxsoft.ballartelyweb.jpa.data.GuideHead;
 import pe.com.foxsoft.ballartelyweb.spring.domain.ProductGuide;
 import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
@@ -39,6 +40,7 @@ public class GuiaDao{
 			query.append("select gh from GuideHead gh where (:guideNumber is null or gh.guideNumber = :guideNumber) ");
 			query.append("and (:guideStatus is null or gh.guideStatus = :guideStatus) ");
 			query.append("and (:guideBenefied is null or gh.guideBenefied = :guideBenefied) ");
+			query.append("and (:guideType is null or gh.guideType = :guideType) ");
 			if(emissionDateInit != null && emissionDateEnd != null) {
 				query.append("and gh.emissionDate between :emissionDateInit and :emissionDateEnd ");
 			}
@@ -50,6 +52,7 @@ public class GuiaDao{
 			queryGuideHead.setParameter("guideNumber", Utilitarios.vacioComoNulo(objGuideSearch.getGuideNumber()));
 			queryGuideHead.setParameter("guideStatus", Utilitarios.vacioComoNulo(objGuideSearch.getGuideStatus()));
 			queryGuideHead.setParameter("guideBenefied", Utilitarios.vacioComoNulo(objGuideSearch.getGuideBenefied()));
+			queryGuideHead.setParameter("guideType", Utilitarios.vacioComoNulo(objGuideSearch.getGuideType()));
 			
 			if(emissionDateInit != null && emissionDateEnd != null) {
 				queryGuideHead.setParameter("emissionDateInit", emissionDateInit);
@@ -78,6 +81,27 @@ public class GuiaDao{
 		try {
 			TypedQuery<GuideDetail> queryGuideDetail = em.createQuery(
 					"select gd from GuideDetail gd join fetch gd.guideHead gh where gh.id = :guideHeadId", GuideDetail.class);
+			queryGuideDetail.setParameter("guideHeadId", guideHeadId);
+			
+			
+			return queryGuideDetail.getResultList();
+		} catch (NoResultException nre) {
+			throw new BallartelyException(BallartelyException.NO_RESULT_ERROR, nre.getMessage());
+		} catch (Exception e) {
+			throw new BallartelyException(BallartelyException.GENERAL_ERROR, e.getMessage());
+		}
+	}
+	
+	/**
+	 * @param em
+	 * @param guideHeadId
+	 * @return
+	 * @throws BallartelyException
+	 */
+	public List<GuideDetailSales> getGuideDetailSalesDataBase(EntityManager em, int guideHeadId) throws BallartelyException{
+		try {
+			TypedQuery<GuideDetailSales> queryGuideDetail = em.createQuery(
+					"select gd from GuideDetailSales gd join fetch gd.guideHead gh where gh.id = :guideHeadId", GuideDetailSales.class);
 			queryGuideDetail.setParameter("guideHeadId", guideHeadId);
 			
 			

@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="../../../plantillas/defecto.xhtml">
+	<ui:define name="titulo">Registrar Pagos</ui:define>
+	<ui:define name="contenido">
+
+		<script type="text/javascript">
+		<!--
+			-->
+		</script>
+
+
+		<h1>Registrar Pagos</h1>
+		<h:form id="wLisPay">
+			<!-- <p:panel header="Criterios de b&#250;squeda" toggleable="true"> -->
+
+			<p:growl life="3000" showDetail="true" id="msjLisPay"
+				autoUpdate="true" />
+				
+			<p:accordionPanel id="pTipoCuenta">
+				<p:tab title="Tipos de Cuentas">
+					<div class="filas">
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio">
+								</div>
+								<div class="dostercios">
+									<div class="input">
+								        <p:inputSwitch id="isTipoCuenta" value="#{registroPagoMB.accountClient}" offLabel="Principal" onLabel="Cliente">
+								            <p:ajax listener="#{registroPagoMB.cargaTipoCuenta}" process="@form" update="wLisPay:pTipoCuenta,wLisPay:pDatosPago" />
+								        </p:inputSwitch>
+									</div>
+									<div class="tooltip">
+									</div>
+								</div>
+								<p:message for="isTipoCuenta" />
+							</div>
+						</div>
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtRazonSocialCliente" value="Razón social:" />
+								</div>
+								<div class="dostercios">
+									<div class="combo" style="display: flex;">
+										<p:autoComplete id="txtRazonSocialCliente" value="#{registroPagoMB.objCustomer}" style="width: 180px;"
+											completeMethod="#{registroPagoMB.completeCustomer}" var="customer" itemLabel="#{customer.customerNames}" 
+											itemValue="#{customer}" converter="#{customerConverter}" forceSelection="true" dropdown="true" dropdownMode="blank"
+											disabled="#{!registroPagoMB.accountClient}">
+											<p:ajax event="itemSelect" listener="#{registroPagoMB.cargaCuentasCliente}" process="@form" update="wLisPay"/>
+											<p:ajax event="change" listener="#{registroPagoMB.cargaCuentasCliente}" process="@form" update="wLisPay"/>
+										</p:autoComplete>
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgRazonSocialCliente"
+											url="../../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgRazonSocialCliente"
+											value="Razón social del cliente" />
+									</div>
+								</div>
+								<p:message for="txtRazonSocialCliente" />
+							</div>
+						</div>
+					</div>
+					<div style="clear: both;"></div>
+					<!-- </p:panel> -->
+				</p:tab>
+			</p:accordionPanel>
+			<p:accordionPanel id="pDatosPago">
+				<p:tab title="Datos de Pago">
+					<div class="filas">
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="cboCuentasCliente" value="Cuenta de cargo:" />
+								</div>
+								<div class="dostercios">
+									<div class="combo" style="display: flex;">
+										<p:selectOneMenu id="cboCuentasCliente" value="#{registroPagoMB.objAccountCustomer}"
+											converter="#{accountConverter}">
+											<f:selectItem itemLabel="--Seleccione--" itemValue=""/>
+											<f:selectItems value="#{registroPagoMB.lstAccountsCustomer}" var="account"
+												itemLabel="#{account.codeAccount}" itemValue="#{account}" />
+											<p:ajax event="itemSelect" listener="#{registroPagoMB.cargaSaldoCuenta}" process="@form" update="txtSaldoCuenta,txtSaldoPagar"/>
+											<p:ajax event="change" listener="#{registroPagoMB.cargaSaldoCuenta}" process="@form" update="txtSaldoCuenta,txtSaldoPagar"/>
+										</p:selectOneMenu>
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgCuentaCliente"
+											url="../../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgCuentaCliente"
+											value="Cuentas del cliente" />
+									</div>
+								</div>
+								<p:message for="cboCuentasCliente" />
+							</div>
+							<div class="completo">
+								<div class="tercio">				
+									<h:outputLabel for="txtSaldoPagar" value="Monto a Pagar:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputNumber id="txtSaldoPagar" decimalPlaces="2" minValue="0" maxValue="#{registroPagoMB.amountAccount}"
+											value="#{registroPagoMB.amountToPay}" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgSaldoPagar"
+											url="../../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgSaldoPagar" value="Saldo a pagar" />
+									</div>
+								</div>
+								<p:message for="txtSaldoPagar" />
+							</div>
+						</div>
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio">				
+									<h:outputLabel for="txtSaldoCuenta" value="Saldo de Cuenta:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputNumber id="txtSaldoCuenta" readonly="true" decimalPlaces="2"
+											value="#{registroPagoMB.amountAccount}" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgSaldoCuenta"
+											url="../../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgSaldoCuenta" value="Saldo de la cuenta" />
+									</div>
+								</div>
+								<p:message for="txtSaldoCuenta" />
+							</div>
+						</div>
+					</div>
+					<div style="clear: both;"></div>
+					<!-- </p:panel> -->
+				</p:tab>
+			</p:accordionPanel>
+			
+			<p:separator />
+
+			<div class="opcionesTabla" style="text-align: left;">
+				
+				<p:commandButton value="Registrar Pago"
+					icon="ui-icon-disk"
+					onclick="PF('confirmationRegistrarPago').show()"/>
+
+				<div style="clear: both;"></div>
+			</div>
+		</h:form>
+		
+		<p:confirmDialog
+			message="¿Está usted seguro que desea registrar el pago?"
+			width="300" showEffect="explode" hideEffect="explode"
+			header="Mensaje de Confirmación" severity="alert"
+			widgetVar="confirmationRegistrarPago" modal="true"
+			id="confirmRegistrarGuia">
+			<h:form>
+				<p:commandButton value="Si" ajax="true"
+					actionListener="#{registroPagoMB.registrarPago}"
+					update=":wLisPay"
+					oncomplete="PF('confirmationRegistrarPago').hide()" />
+				<p:commandButton value="No"
+					onclick="PF('confirmationRegistrarPago').hide()" type="button" />
+			</h:form>
+		</p:confirmDialog>
+		
+	</ui:define>
+
+</ui:composition>
