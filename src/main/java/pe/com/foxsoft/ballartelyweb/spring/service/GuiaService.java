@@ -102,7 +102,9 @@ public class GuiaService {
 	
 	@Transactional(readOnly=false, rollbackFor=BallartelyException.class)
 	public String beneficiarGuia(GuideHead guideHead, List<ProductStock> lstLabelsStockGuide) throws BallartelyException{
-		guiaCabeceraRepository.save(guideHead);
+		if(guideHead != null) {
+			guiaCabeceraRepository.save(guideHead);
+		}
 		List<ProductStock> lstResult = stockProductoRepository.save(lstLabelsStockGuide);
 		return Utilitarios.reemplazarMensaje(Constantes.MESSAGE_PERSIST_LIST_SUCCESS, lstResult.size(), lstLabelsStockGuide.size());
 	}
@@ -124,19 +126,24 @@ public class GuiaService {
 		return guiaDao.getListaGuiaCotizacion(em, guideHeadId);
 	}
 	
+	@Transactional(readOnly=true, rollbackFor=BallartelyException.class)
 	public List<GuideHead> getListaGuiasCabecera(GuideHead objGuideSearch, Date emissionDateInit, Date emissionDateEnd, 
 			Date creationDateInit, Date creationDateEnd) throws BallartelyException {
 		return guiaDao.getGuideHeadsDataBase(em, objGuideSearch, emissionDateInit, 
 				emissionDateEnd, creationDateInit, creationDateEnd);
 	}
 	
+	@Transactional(readOnly=true, rollbackFor=BallartelyException.class)
 	public List<GuideDetail> getListaGuiasDetalle(int guideHeadId) throws BallartelyException {
 		return guiaDao.getGuideDetailsDataBase(em, guideHeadId);
 	}
 	
+	@Transactional(readOnly=true, rollbackFor=BallartelyException.class)
 	public List<GuideDetailSales> getListaGuiasDetalleVenta(int guideHeadId) throws BallartelyException {
 		return guiaDao.getGuideDetailSalesDataBase(em, guideHeadId);
 	}
+	
+	@Transactional(readOnly=true, rollbackFor=BallartelyException.class)
 	public GuideCotization getCotization(GuideHead guideHead) throws BallartelyException {
 		GuideCotization guideCotization = new GuideCotization();
 		guideCotization.setGuideHead(guideHead);
@@ -144,8 +151,16 @@ public class GuiaService {
 		return guiaCotizacionRepository.findOne(eGuideCotization);
 	}
 	
+	@Transactional(readOnly=true, rollbackFor=BallartelyException.class)
 	public List<ProductGuide> getListaProductoGuia() throws BallartelyException {
 		return guiaDao.getListaProductoGuia(em);
+	}
+	
+	@Transactional(readOnly=true, rollbackFor=BallartelyException.class)
+	public boolean validarGuiaRetorno(Integer guideHeadId) throws BallartelyException {
+		Integer guideQuantity = guiaDao.getGuideQuantityDataBase(em, guideHeadId);
+		Integer guideStockQuantity = guiaDao.getStockGuideQuantityDataBase(em, guideHeadId);
+		return !(guideQuantity.compareTo(guideStockQuantity) == 0);
 	}
 
 	public GuiaCabeceraRepository getGuiaCabeceraRepository() {
@@ -203,5 +218,5 @@ public class GuiaService {
 	public void setGuiaCotizacionRepository(GuiaCotizacionRepository guiaCotizacionRepository) {
 		this.guiaCotizacionRepository = guiaCotizacionRepository;
 	}
-	
+
 }

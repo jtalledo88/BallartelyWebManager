@@ -78,7 +78,6 @@ public class RegistroPagoMB {
 				return;
 			}
 			
-			//TODO Agregar alerta de tipo de cliente y combo de cuenta de cliente
 			Movement movement = new Movement();
 			movement.setAccount(this.objAccountCustomer);
 			movement.setMovementAmount(this.amountToPay);
@@ -166,12 +165,8 @@ public class RegistroPagoMB {
     }
 	
 	private void reiniciarFormulario() {
-		this.accountClient = false;
-		this.objCustomer = null;
-		this.lstAccountsCustomer = new ArrayList<>();
-		this.objAccountCustomer = null;
-		this.amountAccount = null;
 		this.amountToPay = null;
+		cargaSaldoCuenta(null);
 	}
 	
 	private void obtenerClientes() {

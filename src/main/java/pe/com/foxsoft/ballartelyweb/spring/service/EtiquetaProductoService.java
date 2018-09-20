@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import pe.com.foxsoft.ballartelyweb.jpa.dao.EtiquetaProductoDao;
+import pe.com.foxsoft.ballartelyweb.jpa.data.GuideHead;
 import pe.com.foxsoft.ballartelyweb.jpa.data.ProductLabel;
+import pe.com.foxsoft.ballartelyweb.jpa.data.ProductStock;
 import pe.com.foxsoft.ballartelyweb.jpa.repository.EtiquetaProductoRepository;
 import pe.com.foxsoft.ballartelyweb.jpa.repository.StockProductoRepository;
 import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
@@ -68,6 +70,13 @@ public class EtiquetaProductoService {
 		productLabel.setProductLabelStatus(Constantes.STATUS_ACTIVE);
 		Example<ProductLabel> eProductLabel = Example.of(productLabel);
 		return etiquetaProductoRepository.findAll(eProductLabel);
+	}
+	
+	public List<ProductStock> getListaStockProductos(GuideHead guideHead) throws BallartelyException {
+		ProductStock productStock = new ProductStock();
+		productStock.setGuideHead(guideHead);
+		Example<ProductStock> eProductStock = Example.of(productStock);
+		return stockProductoRepository.findAll(eProductStock);
 	}
 	
 	public List<ProductLabel> getListaEtiquetaProductosVenta() throws BallartelyException {

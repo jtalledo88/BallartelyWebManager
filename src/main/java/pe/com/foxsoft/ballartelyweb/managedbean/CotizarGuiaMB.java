@@ -59,12 +59,11 @@ public class CotizarGuiaMB {
 		lstGuideDetailMain = new ArrayList<>();
 		lstGastosMain = new ArrayList<>();
 		lstGuideCotizedMain = new ArrayList<>();
-		flagCotized = false;
 	}
 	
 	@PostConstruct
     public void init() {
-		//Logica despues de construir pagina
+		
 	}
 	
 	public void cotizarGuia() {
@@ -206,6 +205,8 @@ public class CotizarGuiaMB {
 			this.lstGuideHeadMain.add(objGuideHeadMain);
 			if(Constantes.COTIZED_YES.equals(objGuideHeadMain.getGuideCotized())) {
 				flagCotized = true;
+			}else {
+				flagCotized = false;
 			}
 		}else {
 			flagCotized = false;
@@ -309,6 +310,15 @@ public class CotizarGuiaMB {
 	}
 
 	public boolean isFlagCotized() {
+		if(this.objGuideHeadMain != null) {
+			if(Constantes.COTIZED_YES.equals(this.objGuideHeadMain.getGuideCotized())) {
+				flagCotized = true;
+			} else {
+				flagCotized = false;
+			}
+		}else {
+			flagCotized = false;
+		}
 		return flagCotized;
 	}
 

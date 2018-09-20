@@ -347,6 +347,17 @@
 							<p:graphicImage url="../../../recursos/imagenes/icon_lupa.png" width="15" height="15" />
 						</p:commandLink>
 					</p:column>
+					<p:column styleClass="eliminar" exportable="false">
+						<f:facet name="header">
+							<h:outputText value="Reg. Devolución"/>
+						</f:facet>
+						<p:commandLink style="float: right; padding-right:48%;" rendered="#{guia.guideType == 'C'}"
+							action="/paginas/gestion/devolucion/registrarDevolucion.xhtml?faces-redirect=true" ajax="false">
+							<f:setPropertyActionListener value="#{guia}"
+								target="#{registroDevolucionMB.objGuideHeadMain}" />
+							<p:graphicImage url="../../../recursos/imagenes/icon-cotizar.png" width="15" height="15" />
+						</p:commandLink>
+					</p:column>
 					<f:facet name="footer">  
           			Total registros: <h:outputText
 							value="#{consultaGuiaMB.canRegTablaPrincipal}" />

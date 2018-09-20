@@ -15,6 +15,7 @@ import pe.com.foxsoft.ballartelyweb.jpa.dao.MovimientoDao;
 import pe.com.foxsoft.ballartelyweb.jpa.data.Account;
 import pe.com.foxsoft.ballartelyweb.jpa.repository.CuentaRepository;
 import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
+import pe.com.foxsoft.ballartelyweb.spring.util.Constantes;
 
 @Service
 public class CuentaService {
@@ -73,7 +74,9 @@ public class CuentaService {
 	
 	@Transactional(readOnly=true, noRollbackFor=BallartelyException.class)
 	public BigDecimal getAmountAccountDataBase(Integer itemAccount) throws BallartelyException {
-		return movimientoDao.getAmountAccountDataBase(em, itemAccount);
+		BigDecimal amountSales = movimientoDao.getAmountAccountDataBase(em, itemAccount, Constantes.MOVEMENT_TYPE_SALES);
+		BigDecimal amountPay = movimientoDao.getAmountAccountDataBase(em, itemAccount, Constantes.MOVEMENT_TYPE_PAY);
+		return amountSales.subtract(amountPay);
 	}
 
 	public CuentaRepository getCuentaRepository() {

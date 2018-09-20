@@ -240,7 +240,7 @@
 					value="Generar Cotización"
 					icon="ui-icon-save"
 					oncomplete="PF('confirmationCotizar').show()"
-					rendered="#{cotizarGuiaMB.objGuideHeadMain != null}"/>
+					rendered="#{cotizarGuiaMB.objGuideHeadMain != null &amp;&amp;!cotizarGuiaMB.flagCotized}"/>
 				<div style="clear: both;"></div>
 			</div>
 		</h:form>

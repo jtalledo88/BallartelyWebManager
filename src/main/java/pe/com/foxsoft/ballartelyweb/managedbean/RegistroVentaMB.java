@@ -191,7 +191,7 @@ public class RegistroVentaMB {
 			}
 			
 			objGuideHeadMain.setGuideType(Constantes.GUIDE_TYPE_SALES);
-			//TODO Agregar alerta de tipo de cliente y combo de cuenta de cliente
+			
 			Movement movement = new Movement();
 			movement.setAccount(this.objCuentaCliente);
 			movement.setMovementAmount(getMovementAmount());

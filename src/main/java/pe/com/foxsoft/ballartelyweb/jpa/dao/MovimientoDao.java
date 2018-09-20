@@ -34,11 +34,12 @@ public class MovimientoDao {
 		}
 	}
 	
-	public BigDecimal getAmountAccountDataBase(EntityManager em, Integer itemAccount) throws BallartelyException {
+	public BigDecimal getAmountAccountDataBase(EntityManager em, Integer itemAccount, String movementType) throws BallartelyException {
 		try {
 			TypedQuery<BigDecimal> queryAmountAccount = em.createQuery(
-					"select sum(m.movementAmount) from Movement m where m.account.id = :accountId", BigDecimal.class);
+					"select sum(m.movementAmount) from Movement m where m.account.id = :accountId and m.movementType = :movementType", BigDecimal.class);
 			queryAmountAccount.setParameter("accountId", itemAccount);
+			queryAmountAccount.setParameter("movementType", movementType);
 			
 			BigDecimal result = queryAmountAccount.getSingleResult();
 			

@@ -18,6 +18,7 @@ import pe.com.foxsoft.ballartelyweb.jpa.data.GuideDetailSales;
 import pe.com.foxsoft.ballartelyweb.jpa.data.GuideHead;
 import pe.com.foxsoft.ballartelyweb.spring.domain.ProductGuide;
 import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
+import pe.com.foxsoft.ballartelyweb.spring.util.Constantes;
 import pe.com.foxsoft.ballartelyweb.spring.util.Utilitarios;
 
 @Repository
@@ -169,6 +170,40 @@ public class GuiaDao{
 			queryProductGuideStock.setParameter("productLabelId", productGuide.getId());
 			
 			return queryProductGuideStock.executeUpdate();
+		} catch (Exception e) {
+			throw new BallartelyException(BallartelyException.GENERAL_ERROR, e.getMessage());
+		}
+	}
+	
+	public Integer getGuideQuantityDataBase(EntityManager em, Integer guideHeadId) throws BallartelyException {
+		try {
+			TypedQuery<Long> queryAmountAccount = em.createQuery(
+					"select sum(gd.productQuantity) from GuideDetail gd where gd.guideHead.id = :guideHeadId", Long.class);
+			queryAmountAccount.setParameter("guideHeadId", guideHeadId);
+			
+			Integer result = queryAmountAccount.getSingleResult().intValue();
+			
+			return result != null ? result : 0;
+		} catch (NoResultException nre) {
+			throw new BallartelyException(BallartelyException.NO_RESULT_ERROR, nre.getMessage());
+		} catch (Exception e) {
+			throw new BallartelyException(BallartelyException.GENERAL_ERROR, e.getMessage());
+		}
+	}
+	
+	public Integer getStockGuideQuantityDataBase(EntityManager em, Integer guideHeadId) throws BallartelyException {
+		try {
+			TypedQuery<Long> queryQuantity = em.createQuery(
+					"select sum(ps.productStockCant) from ProductStock ps where ps.guideHead.id = :guideHeadId "
+					+ "and ps.productLabel.productLabelCode <> :productLabelCode", Long.class);
+			queryQuantity.setParameter("guideHeadId", guideHeadId);
+			queryQuantity.setParameter("productLabelCode", Constantes.PRODUCT_LABEL_DEAD);
+			
+			Integer result = queryQuantity.getSingleResult().intValue();
+			
+			return result != null ? result : 0;
+		} catch (NoResultException nre) {
+			throw new BallartelyException(BallartelyException.NO_RESULT_ERROR, nre.getMessage());
 		} catch (Exception e) {
 			throw new BallartelyException(BallartelyException.GENERAL_ERROR, e.getMessage());
 		}
