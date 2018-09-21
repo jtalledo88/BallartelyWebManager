@@ -1,6 +1,7 @@
 package pe.com.foxsoft.ballartelyweb.jpa.dao;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -19,14 +20,14 @@ public class MovimientoDao {
 	
 	public List<Movement> getAccountsByOwnerDataBase(EntityManager em, Account account) throws BallartelyException {
 		try {
-			TypedQuery<Movement> queryUser = em.createQuery(
+			TypedQuery<Movement> queryMovement = em.createQuery(
 					"select m from Movement a join fetch a.customer c where (a.accountType = '" + Constantes.ACCOUNT_TYPE_C + 
 					"' and c.id = :customerId) or (a.accountType = '" + Constantes.ACCOUNT_TYPE_P +"' and c.id is null) "
 							+ "and a.accountStatus = :accountStatus", Movement.class);
-			queryUser.setParameter("customerId", account.getCustomer().getId());
-			queryUser.setParameter("accountStatus", account.getAccountStatus());
+			queryMovement.setParameter("customerId", account.getCustomer().getId());
+			queryMovement.setParameter("accountStatus", account.getAccountStatus());
 			
-			return queryUser.getResultList();
+			return queryMovement.getResultList();
 		} catch (NoResultException nre) {
 			throw new BallartelyException(BallartelyException.NO_RESULT_ERROR, nre.getMessage());
 		} catch (Exception e) {
@@ -44,6 +45,23 @@ public class MovimientoDao {
 			BigDecimal result = queryAmountAccount.getSingleResult();
 			
 			return result != null ? result : BigDecimal.ZERO;
+		} catch (NoResultException nre) {
+			throw new BallartelyException(BallartelyException.NO_RESULT_ERROR, nre.getMessage());
+		} catch (Exception e) {
+			throw new BallartelyException(BallartelyException.GENERAL_ERROR, e.getMessage());
+		}
+	}
+	
+	public List<Movement> getMovementsByAccountDataBase(EntityManager em, Integer accountId, Date startDate, Date endDate) throws BallartelyException {
+		try {
+			TypedQuery<Movement> queryMoevement = em.createQuery(
+					"select m from Movement m where m.account.id = :accountId " + 
+					" and (:startDate is null or :endDate is null) or m.movementDate between :startDate and :endDate", Movement.class);
+			queryMoevement.setParameter("accountId", accountId);
+			queryMoevement.setParameter("startDate", startDate);
+			queryMoevement.setParameter("endDate", endDate);
+			
+			return queryMoevement.getResultList();
 		} catch (NoResultException nre) {
 			throw new BallartelyException(BallartelyException.NO_RESULT_ERROR, nre.getMessage());
 		} catch (Exception e) {

@@ -25,6 +25,12 @@ public class TypeConverter implements Converter{
 			statusDesc = "Compra";
 		}else if(Constantes.GUIDE_TYPE_SALES.equals(String.valueOf(value))) {
 			statusDesc = "Venta";
+		}else if(Constantes.MOVEMENT_TYPE_BUY.equals(String.valueOf(value))) {
+			statusDesc = "Compra";
+		}else if(Constantes.MOVEMENT_TYPE_SALES.equals(String.valueOf(value))) {
+			statusDesc = "Venta";
+		}else if(Constantes.MOVEMENT_TYPE_PAY.equals(String.valueOf(value))) {
+			statusDesc = "Abono";
 		}
 		
 		return statusDesc;

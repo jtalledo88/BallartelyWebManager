@@ -1,0 +1,220 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="../../../plantillas/defecto.xhtml">
+	<ui:define name="titulo">Consultar Movimientos</ui:define>
+	<ui:define name="contenido">
+
+		<script type="text/javascript">
+		<!--
+			-->
+		</script>
+
+
+		<h1>Consultar Movimientos</h1>
+		<h:form id="wLisMov">
+			<!-- <p:panel header="Criterios de b&#250;squeda" toggleable="true"> -->
+
+			<p:growl life="3000" showDetail="true" id="msjLisMov"
+				autoUpdate="true" />
+
+			<p:accordionPanel>
+				<p:tab title="Criterios de b&#250;squeda">
+					<div class="filas">
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtRazonSocialCliente" value="Razón social:" />
+								</div>
+								<div class="dostercios">
+									<div class="combo" style="display: flex;">
+										<p:autoComplete id="txtRazonSocialCliente" value="#{consultaMovimientoMB.objCustomer}" style="width: 180px;"
+											completeMethod="#{consultaMovimientoMB.completeCustomer}" var="customer" itemLabel="#{customer.customerNames}" 
+											itemValue="#{customer}" converter="#{customerConverter}" forceSelection="true" dropdown="true" dropdownMode="blank" >
+											<p:ajax event="itemSelect" listener="#{consultaMovimientoMB.cargaCuentasCliente}" process="@form" update="cboCuentasCliente"/>
+											<p:ajax event="change" listener="#{consultaMovimientoMB.cargaCuentasCliente}" process="@form" update="cboCuentasCliente"/>
+											</p:autoComplete>
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgRazonSocialCliente"
+											url="../../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgRazonSocialCliente"
+											value="Razón social del cliente" />
+									</div>
+								</div>
+								<p:message for="txtRazonSocialCliente" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="cldFechaInicio" value="Fecha Emisión (Desde):" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:calendar id="cldFechaInicio" pattern="dd/MM/yyyy" mask="true" maskAutoClear="true"
+											value="#{consultaMovimientoMB.dateStartSearch}">
+											<p:ajax event="dateSelect" update="cldFechaFin"/>
+											</p:calendar>
+
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgFechaInicio"
+											url="../../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgFechaInicio"
+											value="Fecha de Inicio" />
+									</div>
+								</div>
+								<p:message for="cldFechaInicio" />
+							</div>
+						</div>
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="cboCuentasCliente" value="Cuenta:" />
+								</div>
+								<div class="dostercios">
+									<div class="combo" style="display: flex;">
+										<p:selectOneMenu id="cboCuentasCliente" value="#{consultaMovimientoMB.objAccountCustomer}"
+											converter="#{accountConverter}">
+											<f:selectItem itemLabel="--Seleccione--" itemValue=""/>
+											<f:selectItems value="#{consultaMovimientoMB.lstAccountsCustomer}" var="account"
+												itemLabel="#{account.codeAccount}" itemValue="#{account}" />
+										</p:selectOneMenu>
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgCuentaCliente"
+											url="../../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgCuentaCliente"
+											value="Cuentas del cliente" />
+									</div>
+								</div>
+								<p:message for="cboCuentasCliente" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="cldFechaFin" value="Fecha Hasta:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:calendar id="cldFechaFin" pattern="dd/MM/yyyy" mask="true" maskAutoClear="true"
+											mindate="#{consultaMovimientoMB.dateStartSearch}"
+											value="#{consultaMovimientoMB.dateEndSearch}" />
+
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgFechaFin"
+											url="../../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgFechaFin"
+											value="Fecha de Fin" />
+									</div>
+								</div>
+								<p:message for="cldFechaFin" />
+							</div>
+						</div>
+					</div>
+					<div class="boton">
+						<p:commandButton value="Buscar" icon="ui-icon-search"
+							actionListener="#{consultaMovimientoMB.buscarMovimientos}"
+							update=":wLisMov:tblMovimientos, :wLisMov:msjLisMov" />
+					</div>
+					<div style="clear: both;"></div>
+					<!-- </p:panel> -->
+				</p:tab>
+			</p:accordionPanel>
+			<h2>Resultados</h2>
+			<p:separator />
+
+			<div class="scrollTabla">
+				<p:dataTable paginator="true" paginatorPosition="top" rows="10"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+					style="width: 100%; margin-bottom:20px;" var="movement"
+					value="#{consultaMovimientoMB.lstMovements}" id="tblMovimientos"
+					emptyMessage="No se encontraron registros">
+					<f:facet name="{Exporters}">
+						<h:commandLink>
+							<p:graphicImage url="../../../recursos/imagenes/excel.png"
+								width="24" />
+							<p:dataExporter type="xls" target="tblMovimientos"
+								fileName="Movements" />
+						</h:commandLink>
+
+						<h:commandLink>
+							<p:graphicImage url="../../../recursos/imagenes/pdf.png" width="24" />
+							<p:dataExporter type="pdf" target="tblMovimientos"
+								fileName="Movements" />
+						</h:commandLink>
+
+						<h:commandLink>
+							<p:graphicImage url="../../../recursos/imagenes/csv.png" width="24" />
+							<p:dataExporter type="csv" target="tblMovimientos"
+								fileName="Movements" />
+						</h:commandLink>
+
+						<h:commandLink>
+							<p:graphicImage url="../../../recursos/imagenes/xml.png" width="24" />
+							<p:dataExporter type="xml" target="tblMovimientos"
+								fileName="Movements" />
+						</h:commandLink>
+					</f:facet>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Item" />
+						</f:facet>
+						<h:outputText value="#{movement.id}" />
+					</p:column>
+					<p:column styleClass="fecha">
+						<f:facet name="header">
+							<h:outputText value="Fecha" />
+						</f:facet>
+						<h:outputText value="#{movement.movementDate}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Nro. Factura" />
+						</f:facet>
+						<h:outputText value="#{movement.paymentDocumentnumber}" />
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Tipo" />
+						</f:facet>
+						<h:outputText value="#{movement.movementType}" converter="#{typeConverter}" />
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Cantidad" />
+						</f:facet>
+						<h:outputText value="#{movement.movementQuantity}" >
+							<f:convertNumber integerOnly="true"/>
+						</h:outputText>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Saldo" />
+						</f:facet>
+						<h:outputText value="#{movement.movementAmount}" >
+							<f:convertNumber maxFractionDigits="2" maxIntegerDigits="8" minFractionDigits="2"/>
+						</h:outputText>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Observación" />
+						</f:facet>
+						<h:outputText value="#{movement.movementObservation}" />
+					</p:column>
+					
+					<f:facet name="footer">  
+          			Total registros: <h:outputText
+							value="#{consultaMovimientoMB.canRegTablaPrincipal}" />
+					</f:facet>
+				</p:dataTable>
+			</div>
+		</h:form>
+	</ui:define>
+
+</ui:composition>
