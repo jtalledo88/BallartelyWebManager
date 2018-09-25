@@ -78,6 +78,13 @@ public class CuentaService {
 		BigDecimal amountPay = movimientoDao.getAmountAccountDataBase(em, itemAccount, Constantes.MOVEMENT_TYPE_PAY);
 		return amountSales.subtract(amountPay);
 	}
+	
+	@Transactional(readOnly=true, noRollbackFor=BallartelyException.class)
+	public BigDecimal getAmountAccountPrincipalDataBase(Integer itemAccount) throws BallartelyException {
+		BigDecimal amountSales = movimientoDao.getAmountAccountDataBase(em, itemAccount, Constantes.MOVEMENT_TYPE_BUY);
+		BigDecimal amountPay = movimientoDao.getAmountAccountDataBase(em, itemAccount, Constantes.MOVEMENT_TYPE_PAY);
+		return amountSales.subtract(amountPay);
+	}
 
 	public CuentaRepository getCuentaRepository() {
 		return cuentaRepository;

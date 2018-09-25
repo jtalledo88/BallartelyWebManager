@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="../../../plantillas/defecto.xhtml">
+	<ui:define name="titulo">Consultar Saldos</ui:define>
+	<ui:define name="contenido">
+
+		<script type="text/javascript">
+		<!--
+			-->
+		</script>
+
+
+		<h1>Consultar Saldos</h1>
+		<h:form id="wLisBalance">
+			<!-- <p:panel header="Criterios de b&#250;squeda" toggleable="true"> -->
+
+			<p:growl life="3000" showDetail="true" id="msjLisMov"
+				autoUpdate="true" />
+
+			<p:accordionPanel>
+				<p:tab title="Criterios de b&#250;squeda">
+					<div class="filas">
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtRazonSocialCliente" value="Razón social:" />
+								</div>
+								<div class="dostercios">
+									<div class="combo" style="display: flex;">
+										<p:autoComplete id="txtRazonSocialCliente" value="#{consultaSaldoMB.objCustomer}" style="width: 180px;"
+											completeMethod="#{consultaSaldoMB.completeCustomer}" var="customer" itemLabel="#{customer.customerNames}" 
+											itemValue="#{customer}" converter="#{customerConverter}" forceSelection="true" dropdown="true" dropdownMode="blank" >
+											<p:ajax event="itemSelect" listener="#{consultaSaldoMB.cargaCuentasCliente}" process="@form" update="cboCuentasCliente"/>
+											<p:ajax event="change" listener="#{consultaSaldoMB.cargaCuentasCliente}" process="@form" update="cboCuentasCliente"/>
+											</p:autoComplete>
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgRazonSocialCliente"
+											url="../../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgRazonSocialCliente"
+											value="Razón social del cliente" />
+									</div>
+								</div>
+								<p:message for="txtRazonSocialCliente" />
+							</div>
+						</div>
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="cboCuentasCliente" value="Cuenta:" />
+								</div>
+								<div class="dostercios">
+									<div class="combo" style="display: flex;">
+										<p:selectOneMenu id="cboCuentasCliente" value="#{consultaSaldoMB.objAccountCustomer}"
+											converter="#{accountConverter}">
+											<f:selectItem itemLabel="--Seleccione--" itemValue=""/>
+											<f:selectItems value="#{consultaSaldoMB.lstAccountsCustomer}" var="account"
+												itemLabel="#{account.codeAccount}" itemValue="#{account}" />
+										</p:selectOneMenu>
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgCuentaCliente"
+											url="../../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgCuentaCliente"
+											value="Cuentas del cliente" />
+									</div>
+								</div>
+								<p:message for="cboCuentasCliente" />
+							</div>
+						</div>
+					</div>
+					<div class="boton">
+						<p:commandButton value="Consultar" icon="ui-icon-search"
+							actionListener="#{consultaSaldoMB.consultarSaldo}"
+							update="wLisBalance:iddlgVerSaldo" 
+							oncomplete="PF('dlgVerSaldo').show()"/>
+					</div>
+					<div style="clear: both;"></div>
+					<!-- </p:panel> -->
+				</p:tab>
+			</p:accordionPanel>
+			<p:dialog header="Ver Saldo" widgetVar="dlgVerSaldo"
+				modal="true" width="330" position="top" id="iddlgVerSaldo" resizable="false">
+
+				<p:growl life="3000" showDetail="true" id="msjVerSaldo"
+					autoUpdate="true" />
+				<h:form id="wVerSaldo">
+					<p:panelGrid columns="2"  header="Saldo" toggleable="false"
+						id="pVerSaldo">
+						<h:outputLabel for="txtFechaConsulta" value="Fecha:"/>
+						<p:inputText id="txtFechaConsulta" value="#{consultaSaldoMB.fechaConsulta}" readonly="true">
+							<f:convertDateTime pattern="dd/MM/yyyy"/>
+						</p:inputText>
+						<h:outputLabel for="txtSaldo" value="Saldo:"/>
+						<p:inputNumber id="txtSaldo" value="#{consultaSaldoMB.saldoConsulta}" decimalPlaces="2" readonly="true"/>
+					</p:panelGrid>
+					<div style="clear: both;"></div>
+	
+				</h:form>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

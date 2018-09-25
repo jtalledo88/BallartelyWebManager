@@ -318,11 +318,11 @@
 							<p:graphicImage  url="../../../recursos/imagenes/icon_lupa.png" width="15" height="15" />
 						</p:commandLink>
 					</p:column>
-					<p:column styleClass="eliminar" exportable="false" rendered="#{guia.guideBenefied == 'N'}">
+					<p:column styleClass="eliminar" exportable="false" >
 						<f:facet name="header">
 							<h:outputText value="Beneficiar" />
 						</f:facet>
-						<p:commandLink style="float: right; padding-right:48%;"
+						<p:commandLink style="float: right; padding-right:48%;" rendered="#{guia.guideBenefied == 'N'}"
 							action="/paginas/gestion/guias/beneficiarGuias.xhtml?faces-redirect=true" ajax="false">
 							<f:setPropertyActionListener value="#{guia}"
 								target="#{beneficiarGuiaMB.objGuideHeadMain}" />
@@ -331,8 +331,7 @@
 					</p:column>
 					<p:column styleClass="eliminar" exportable="false">
 						<f:facet name="header">
-							<h:outputText value="Cotizar" rendered="#{guia.guideCotized == 'N'}"/>
-							<h:outputText value="Ver Cotización" rendered="#{guia.guideCotized != 'N'}"/>
+							<h:outputText value="Cotizar/Ver Cotización" />
 						</f:facet>
 						<p:commandLink style="float: right; padding-right:48%;" rendered="#{guia.guideCotized == 'N'}"
 							action="/paginas/gestion/guias/cotizarGuias.xhtml?faces-redirect=true" ajax="false">
@@ -355,7 +354,7 @@
 							action="/paginas/gestion/devolucion/registrarDevolucion.xhtml?faces-redirect=true" ajax="false">
 							<f:setPropertyActionListener value="#{guia}"
 								target="#{registroDevolucionMB.objGuideHeadMain}" />
-							<p:graphicImage url="../../../recursos/imagenes/icon-cotizar.png" width="15" height="15" />
+							<p:graphicImage url="../../../recursos/imagenes/icon-return.png" width="15" height="15" />
 						</p:commandLink>
 					</p:column>
 					<f:facet name="footer">  

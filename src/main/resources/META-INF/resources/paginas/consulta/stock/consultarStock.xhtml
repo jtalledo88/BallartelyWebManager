@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="../../../plantillas/defecto.xhtml">
+	<ui:define name="titulo">Consultar Stock</ui:define>
+	<ui:define name="contenido">
+
+		<script type="text/javascript">
+		<!--
+			-->
+		</script>
+
+
+		<h1>Consultar Stock</h1>
+		<h:form id="wLisStock">
+			<!-- <p:panel header="Criterios de b&#250;squeda" toggleable="true"> -->
+
+			<p:growl life="3000" showDetail="true" id="msjLisStock"
+				autoUpdate="true" />
+
+			<div class="scrollTabla">
+				<p:dataTable id="tblStock" var="stock" value="#{consultaStockMB.lstStock}" sortBy="#{stock.guideHead.id}" expandableRowGroups="true"
+					emptyMessage="No se encontraron registros">
+					<p:headerRow>
+		            	<p:column colspan="3">
+		                	<h:outputText value="Guia Nro: #{stock.guideHead.id}" />
+		            	</p:column>
+		        	</p:headerRow>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Item" />
+						</f:facet>
+						<h:outputText value="#{stock.id}" />
+					</p:column>
+					<p:column styleClass="fecha">
+						<f:facet name="header">
+							<h:outputText value="Producto" />
+						</f:facet>
+						<h:outputText value="#{stock.productLabel.productLabelDescription}" />
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Stock" />
+						</f:facet>
+						<h:outputText value="#{stock.productStockCant}" />
+					</p:column>
+					 <p:summaryRow listener="#{consultaStockMB.calcularTotal}">
+			            <p:column colspan="2" style="text-align:right">
+			                <h:outputText value="Total:" />
+			            </p:column>
+			            <p:column>
+			                <h:outputText value="#{consultaStockMB.totalStock}">
+			                    <f:convertNumber type="number" />
+			                </h:outputText>
+			            </p:column>
+			        </p:summaryRow>
+			        <f:facet name="footer">  
+          			Total Stock: <h:outputText
+							value="#{consultaStockMB.canRegTablaPrincipal}" >
+							<f:convertNumber type="number" />
+							</h:outputText>
+					</f:facet>
+				</p:dataTable>
+			</div>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

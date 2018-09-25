@@ -22,14 +22,13 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import pe.com.foxsoft.ballartelyweb.batch.processor.ComprasItemProcessor;
-import pe.com.foxsoft.ballartelyweb.jpa.data.Provider;
 import pe.com.foxsoft.ballartelyweb.jpa.data.GuideHead;
 
-//@Configuration
-//@EnableBatchProcessing
+@Configuration
+@EnableBatchProcessing
 public class BatchCompras {
 	
-	private static final String SQL_READER = "SELECT sh FROM ShippingHead sh";
+	private static final String SQL_READER = "SELECT gh FROM GuideHead gh";
 
 	@Autowired
 	private JobBuilderFactory jobBuilderFactory;
@@ -54,8 +53,8 @@ public class BatchCompras {
 	}
 	
 	@Bean
-	public ItemWriter<Provider> writter() {
-		JpaItemWriter<Provider> writter = new JpaItemWriter<>();
+	public ItemWriter<GuideHead> writter() {
+		JpaItemWriter<GuideHead> writter = new JpaItemWriter<>();
 		writter.setEntityManagerFactory(entityManagerFactory().getNativeEntityManagerFactory());
 		return writter;
 	}
@@ -65,7 +64,7 @@ public class BatchCompras {
 		return stepBuilderFactory
 				.get("step1")
 				.transactionManager(jpaTransactionManager())
-				.<GuideHead, Provider> chunk(10)
+				.<GuideHead, GuideHead> chunk(10)
 				.reader(reader())
 				.processor(processor())
 				.writer(writter())
@@ -92,13 +91,13 @@ public class BatchCompras {
         return lef;
 	}
 
-	@Bean
+	
 	public JpaVendorAdapter jpaVendorAdapter() {
 		HibernateJpaVendorAdapter jpaVendorAdapter = new HibernateJpaVendorAdapter();
 		return jpaVendorAdapter;
 	}
 	
-	@Bean
+	
 	public PlatformTransactionManager jpaTransactionManager() {
 	       return new JpaTransactionManager(entityManagerFactory().getNativeEntityManagerFactory());
 	}

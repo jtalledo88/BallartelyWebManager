@@ -79,6 +79,10 @@ public class EtiquetaProductoService {
 		return stockProductoRepository.findAll(eProductStock);
 	}
 	
+	public List<ProductStock> getListaStockProductos() throws BallartelyException {
+		return stockProductoRepository.findAll();
+	}
+	
 	public List<ProductLabel> getListaEtiquetaProductosVenta() throws BallartelyException {
 		return etiquetaProductoDao.getProductLabelSalesDataBase(em);
 	}

@@ -40,6 +40,7 @@ public class BeneficiarGuiaMB {
 	private int cantidadVivosDetalle;
 	private int cantidadMuertosDetalle;
 	private int cantTotalBeneficiados;
+	private boolean flagEdit;
 	
 	private GuideHead objGuideHeadMain;
 
@@ -112,6 +113,7 @@ public class BeneficiarGuiaMB {
 		String sMensaje = null;
 		try {
 			if(objGuideHeadMain != null) {
+				cantTotalBeneficiados = 0;
 				List<ProductLabel> lstEtiquetas = this.etiquetaProductoService.getListaEtiquetaProductos();
 				for(ProductLabel productLabel: lstEtiquetas) {
 					ProductStock productStock = new ProductStock();
@@ -143,10 +145,18 @@ public class BeneficiarGuiaMB {
 	}
 
 	public void onEtiquetaCellEdit(CellEditEvent cellEditEvent) {
-		int oldCant = (Integer)cellEditEvent.getOldValue();
-		int newCant = (Integer)cellEditEvent.getNewValue();
+		int oldCant = 0;
+		int newCant = 0;
+		if(cellEditEvent.getOldValue() != null) {
+			oldCant = (Integer)cellEditEvent.getOldValue();	
+		}
+		
+		if(cellEditEvent.getNewValue() != null) {
+			newCant = (Integer)cellEditEvent.getNewValue();
+		}
 		cantTotalBeneficiados += newCant;
 		cantTotalBeneficiados -= oldCant;
+		flagEdit = true;
 	}
 
 	private void obtenerGuiasHead() {
@@ -175,7 +185,9 @@ public class BeneficiarGuiaMB {
 	}
 
 	public List<ProductStock> getLstEtiquetasStockMain() {
-		cargaTablaEtiquetas();
+		if(!flagEdit) {
+			cargaTablaEtiquetas();
+		}
 		return lstEtiquetasStockMain;
 	}
 

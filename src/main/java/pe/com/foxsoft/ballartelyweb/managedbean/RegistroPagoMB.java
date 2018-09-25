@@ -65,7 +65,7 @@ public class RegistroPagoMB {
 		
 		try {
 			
-			if(this.objCustomer == null) {
+			if(this.accountClient && this.objCustomer == null) {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe seleccionar el cliente.");
 				return;
 			}
@@ -143,7 +143,11 @@ public class RegistroPagoMB {
 
 	public void cargaSaldoCuenta(AjaxBehaviorEvent event) {
 		try {
-			this.amountAccount = this.cuentaService.getAmountAccountDataBase(this.objAccountCustomer.getId());
+			if(this.accountClient) {
+				this.amountAccount = this.cuentaService.getAmountAccountDataBase(this.objAccountCustomer.getId());
+			}else {
+				this.amountAccount = this.cuentaService.getAmountAccountPrincipalDataBase(this.objAccountCustomer.getId());
+			}
 		} catch (BallartelyException e) {
 			String sMensaje = "Error en cargaSaldoCuenta";
 			this.logger.error(e.getMessage());

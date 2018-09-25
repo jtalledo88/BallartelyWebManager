@@ -15,8 +15,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-//@Component
-//@EnableScheduling
+@Component
+@EnableScheduling
 public class ComprasScheduler {
 
 	@Autowired
@@ -25,7 +25,7 @@ public class ComprasScheduler {
 	@Autowired
 	private Job job;
 	
-	@Scheduled(cron = "0 19 16 * * *")
+	@Scheduled(cron = "0 41 17 * * *")
 	public void comprasScheduler() {
 		JobParameters jobParameters = new JobParametersBuilder().addLong("time", System.currentTimeMillis()).toJobParameters();
 		

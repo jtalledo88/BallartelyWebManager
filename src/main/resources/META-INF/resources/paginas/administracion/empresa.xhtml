@@ -208,7 +208,7 @@
 							<f:facet name="header">
 								<h:outputText value="Item" />
 							</f:facet>
-							<h:outputText value="#{cuenta.accountId}" />
+							<h:outputText value="#{cuenta.id}" />
 						</p:column>
 						<p:column styleClass="oficina" exportable="false">
 							<f:facet name="header">
@@ -218,8 +218,8 @@
 								onclick="PF('dlgVerMovimientos').show()"
 								action="#{empresaMB.openVerMovimientos}"
 								update=":wViewMov:tblMovimientos">
-								<f:param name="itemAccount" value="#{proveedor.accountId}"
-									id="itemProveedor" />
+								<f:param name="itemAccount" value="#{cuenta.id}"
+									id="itemAccount" />
 							</p:commandLink>
 						</p:column>
 						
@@ -254,17 +254,101 @@
 
 		<!-- ******************************************** EDITAR PRODUCTO ****************************************** -->
 
-		<p:dialog header="Editar Proveedor"
+		<p:dialog header="Ver Movimientos"
 			widgetVar="dlgVerMovimientos" modal="true" width="930" position="top">
 
-			<p:growl life="3000" showDetail="true" id="msjEditarProveedor"
+			<p:growl life="3000" showDetail="true" id="msjVerMovimientos"
 				autoUpdate="true" />
 
-			<h1>Editar Proveedor</h1>
-			<!-- TODO -->
+			<h1>Ver Movimientos</h1>
 			<h:form id="wViewMov">
-			<p:dataTable id="tblMovimientos">
-			</p:dataTable>
+				<div class="scrollTabla">
+					<p:dataTable paginator="true" paginatorPosition="top" rows="10"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+						style="width: 100%; margin-bottom:20px;" var="movement"
+						value="#{empresaMB.lstMovements}" id="tblMovimientos"
+						emptyMessage="No se encontraron registros">
+						<f:facet name="{Exporters}">
+							<h:commandLink>
+								<p:graphicImage url="../../../recursos/imagenes/excel.png"
+									width="24" />
+								<p:dataExporter type="xls" target="tblMovimientos"
+									fileName="Movements" />
+							</h:commandLink>
+	
+							<h:commandLink>
+								<p:graphicImage url="../../../recursos/imagenes/pdf.png" width="24" />
+								<p:dataExporter type="pdf" target="tblMovimientos"
+									fileName="Movements" />
+							</h:commandLink>
+	
+							<h:commandLink>
+								<p:graphicImage url="../../../recursos/imagenes/csv.png" width="24" />
+								<p:dataExporter type="csv" target="tblMovimientos"
+									fileName="Movements" />
+							</h:commandLink>
+	
+							<h:commandLink>
+								<p:graphicImage url="../../../recursos/imagenes/xml.png" width="24" />
+								<p:dataExporter type="xml" target="tblMovimientos"
+									fileName="Movements" />
+							</h:commandLink>
+						</f:facet>
+						<p:column styleClass="oficina">
+							<f:facet name="header">
+								<h:outputText value="Item" />
+							</f:facet>
+							<h:outputText value="#{movement.id}" />
+						</p:column>
+						<p:column styleClass="fecha">
+							<f:facet name="header">
+								<h:outputText value="Fecha" />
+							</f:facet>
+							<h:outputText value="#{movement.movementDate}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+						</p:column>
+						<p:column styleClass="oficina">
+							<f:facet name="header">
+								<h:outputText value="Nro. Factura" />
+							</f:facet>
+							<h:outputText value="#{movement.paymentDocumentnumber}" />
+						</p:column>
+						<p:column styleClass="oficina">
+							<f:facet name="header">
+								<h:outputText value="Tipo" />
+							</f:facet>
+							<h:outputText value="#{movement.movementType}" converter="#{typeConverter}" />
+						</p:column>
+						<p:column styleClass="oficina">
+							<f:facet name="header">
+								<h:outputText value="Cantidad" />
+							</f:facet>
+							<h:outputText value="#{movement.movementQuantity}" >
+								<f:convertNumber integerOnly="true"/>
+							</h:outputText>
+						</p:column>
+						<p:column styleClass="oficina">
+							<f:facet name="header">
+								<h:outputText value="Saldo" />
+							</f:facet>
+							<h:outputText value="#{movement.movementAmount}" >
+								<f:convertNumber maxFractionDigits="2" maxIntegerDigits="8" minFractionDigits="2"/>
+							</h:outputText>
+						</p:column>
+						<p:column styleClass="oficina">
+							<f:facet name="header">
+								<h:outputText value="Observación" />
+							</f:facet>
+							<h:outputText value="#{movement.movementObservation}" />
+						</p:column>
+						
+						<f:facet name="footer">  
+	          			Total registros: <h:outputText
+								value="#{empresaMB.canRegTablaPrincipal}" />
+						</f:facet>
+					</p:dataTable>
+				</div>
 			</h:form>
 		</p:dialog>
 		

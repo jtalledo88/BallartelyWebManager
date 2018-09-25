@@ -1,11 +1,14 @@
 package pe.com.foxsoft.ballartelyweb.managedbean;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
 import javax.faces.FacesException;
+import javax.faces.context.FacesContext;
 
 import org.primefaces.model.DualListModel;
 import org.primefaces.model.ScheduleModel;
@@ -18,10 +21,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import pe.com.foxsoft.ballartelyweb.jpa.data.Account;
 import pe.com.foxsoft.ballartelyweb.jpa.data.Enterprise;
 import pe.com.foxsoft.ballartelyweb.jpa.data.EnterpriseTransport;
+import pe.com.foxsoft.ballartelyweb.jpa.data.Movement;
 import pe.com.foxsoft.ballartelyweb.jpa.data.Transport;
 import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
 import pe.com.foxsoft.ballartelyweb.spring.service.CuentaService;
 import pe.com.foxsoft.ballartelyweb.spring.service.EmpresaService;
+import pe.com.foxsoft.ballartelyweb.spring.service.MovimientoService;
 import pe.com.foxsoft.ballartelyweb.spring.service.TransporteService;
 import pe.com.foxsoft.ballartelyweb.spring.util.CalendarioModel;
 import pe.com.foxsoft.ballartelyweb.spring.util.Constantes;
@@ -39,11 +44,17 @@ public class EmpresaMB {
 	private CuentaService cuentaService;
 	
 	@Autowired
+	private MovimientoService movimientoService;
+	
+	@Autowired
 	private TransporteService transporteService;
 
 	private Enterprise empresa = new Enterprise();
 	private List<Account> lstCuentaPrincipal;
-	private double saldoCuentaTotal = 10.05;
+	private List<Movement> lstMovements;
+	
+	private int canRegTablaPrincipal;
+	private BigDecimal saldoCuentaTotal;
 	
 	private ScheduleModel calendarioEventos;
 	
@@ -97,7 +108,9 @@ public class EmpresaMB {
 		String sMensaje = null;
 		try {
 			lstCuentaPrincipal = new ArrayList<>();
-			lstCuentaPrincipal.add(cuentaService.obtenerCuentaPrincipal());
+			Account accountPrincipal = cuentaService.obtenerCuentaPrincipal();
+			lstCuentaPrincipal.add(accountPrincipal);
+			saldoCuentaTotal = cuentaService.getAmountAccountPrincipalDataBase(accountPrincipal.getId());
 		} catch (BallartelyException e) {
 			sMensaje = "Error en openVerCuenta";
 			this.logger.error(e.getMessage());
@@ -118,6 +131,19 @@ public class EmpresaMB {
 	}
 	
 	public void openVerMovimientos() {
+		try {
+			Map<String, String> paramMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+
+			int itemCuenta = Integer.parseInt((String) paramMap.get("itemAccount"));
+			
+			this.lstMovements = this.movimientoService.getListaMovimientosCuenta(itemCuenta, null, null);
+			this.canRegTablaPrincipal = this.lstMovements.size();
+		} catch (BallartelyException e) {
+			String sMensaje = "Ocurrió un error en openVerMovimientos, intente nuevamente.";
+			this.logger.error(e.getMessage());
+			Utilitarios.mensajeError("Excepcion", sMensaje);
+		}
+		
 		
 	}
 	
@@ -208,11 +234,11 @@ public class EmpresaMB {
 		this.lstTransports = lstTransports;
 	}
 
-	public double getSaldoCuentaTotal() {
+	public BigDecimal getSaldoCuentaTotal() {
 		return saldoCuentaTotal;
 	}
 
-	public void setSaldoCuentaTotal(double saldoCuentaTotal) {
+	public void setSaldoCuentaTotal(BigDecimal saldoCuentaTotal) {
 		this.saldoCuentaTotal = saldoCuentaTotal;
 	}
 
@@ -222,6 +248,30 @@ public class EmpresaMB {
 
 	public void setCalendarioEventos(ScheduleModel calendarioEventos) {
 		this.calendarioEventos = calendarioEventos;
+	}
+
+	public MovimientoService getMovimientoService() {
+		return movimientoService;
+	}
+
+	public void setMovimientoService(MovimientoService movimientoService) {
+		this.movimientoService = movimientoService;
+	}
+
+	public List<Movement> getLstMovements() {
+		return lstMovements;
+	}
+
+	public void setLstMovements(List<Movement> lstMovements) {
+		this.lstMovements = lstMovements;
+	}
+
+	public int getCanRegTablaPrincipal() {
+		return canRegTablaPrincipal;
+	}
+
+	public void setCanRegTablaPrincipal(int canRegTablaPrincipal) {
+		this.canRegTablaPrincipal = canRegTablaPrincipal;
 	}
 	
 	
