@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 import javax.faces.application.FacesMessage;
@@ -251,6 +252,13 @@ public class Utilitarios {
 
 	public static String rellenarCadena(String cadena, int longi, String caracter) {
 		return StringUtils.leftPad(cadena, longi, caracter);
+	}
+
+	public static String getDayName(Object oDate) {
+		Date date = (Date)oDate;
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		return cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG_FORMAT, new Locale("ES", "PE"));
 	}
 	
 }
