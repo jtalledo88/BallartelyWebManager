@@ -6,7 +6,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui"
 	template="../../../plantillas/defecto.xhtml">
-	<ui:define name="titulo">Reporte de Ventas por Día</ui:define>
+	<ui:define name="titulo">Reporte de Ventas por Periodo</ui:define>
 	<ui:define name="contenido">
 
 		<script type="text/javascript">
@@ -14,7 +14,7 @@
 			-->
 		</script>
 
-		<h1>Reporte de Ventas por Día</h1>
+		<h1>Reporte de Ventas por Periodo</h1>
 		
 		<h:form id="wLisRVD">
 			<!-- <p:panel header="Criterios de b&#250;squeda" toggleable="true"> -->
@@ -23,15 +23,15 @@
 				autoUpdate="true" />
 
 			<div class="scrollTabla">
-				<p:chart type="line" model="#{reporteMB.modelRVD}" style="height:400px;"/>
+				<p:chart type="pie" model="#{reporteMB.modelRVP}" style="height:400px;width:500px;"/>
 			</div>
 			<div style="clear: both;"></div>
 			<div class="scrollTabla">
-				<p:dataTable id="tblReport" var="report" value="#{reporteMB.lstReportVD}" widgetVar="tblReport">    
+				<p:dataTable id="tblReport" var="report" value="#{reporteMB.lstReportVP}" widgetVar="tblReport">    
 			 		<f:facet name="header">
 		            	Resultado
 		        	</f:facet>                
-        			<p:columns value="#{reporteMB.columnsRVD}" var="column" columnIndexVar="colIndex">
+        			<p:columns value="#{reporteMB.columnsRVP}" var="column" columnIndexVar="colIndex">
             			<f:facet name="header">
                 			<h:outputText value="#{column.header}" />
             			</f:facet>

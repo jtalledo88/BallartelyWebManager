@@ -261,4 +261,11 @@ public class Utilitarios {
 		return cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG_FORMAT, new Locale("ES", "PE"));
 	}
 	
+	public static String getMonthName(Integer nMonth) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new Date());
+		cal.set(Calendar.MONTH, nMonth - 1);
+		return cal.getDisplayName(Calendar.MONTH, Calendar.LONG_FORMAT, new Locale("ES", "PE"));
+	}
+	
 }
