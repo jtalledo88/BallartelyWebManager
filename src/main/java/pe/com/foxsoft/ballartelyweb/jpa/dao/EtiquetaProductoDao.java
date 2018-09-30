@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import pe.com.foxsoft.ballartelyweb.jpa.data.ProductLabel;
 import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
 import pe.com.foxsoft.ballartelyweb.spring.util.Constantes;
+import pe.com.foxsoft.ballartelyweb.spring.util.Utilitarios;
 
 @Repository
 public class EtiquetaProductoDao {
@@ -18,11 +19,12 @@ public class EtiquetaProductoDao {
 	public List<ProductLabel> getProductLabelsDataBase(EntityManager em, ProductLabel productLabel) throws BallartelyException {
 		try {
 			TypedQuery<ProductLabel> queryProductLabel = em.createQuery(
-					"select p from ProductLabel p join fetch p.productLabelStatus ps where p.productLabelCode = :productLabelCode "
-					+ "or p.productLabelDescription like :productLabelDescription or ps.paramId =:productLabelStatus", ProductLabel.class);
-			queryProductLabel.setParameter("productLabelCode", productLabel.getProductLabelCode());
-			queryProductLabel.setParameter("productLabelDescription", productLabel.getProductLabelDescription());
-			queryProductLabel.setParameter("productLabelStatus", productLabel.getProductLabelStatus());
+					"select p from ProductLabel p where (:productLabelCode is null or p.productLabelCode = :productLabelCode) "
+					+ "and p.productLabelDescription like :productLabelDescription and (:productLabelStatus is null or "
+					+ "p.productLabelStatus = :productLabelStatus)", ProductLabel.class);
+			queryProductLabel.setParameter("productLabelCode", Utilitarios.vacioComoNulo(productLabel.getProductLabelCode()));
+			queryProductLabel.setParameter("productLabelDescription", "%" + productLabel.getProductLabelDescription() + "%");
+			queryProductLabel.setParameter("productLabelStatus", Utilitarios.vacioComoNulo(productLabel.getProductLabelStatus()));
 			
 			return queryProductLabel.getResultList();
 		} catch (NoResultException nre) {

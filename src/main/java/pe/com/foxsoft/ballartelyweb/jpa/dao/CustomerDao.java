@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import pe.com.foxsoft.ballartelyweb.jpa.data.Customer;
 import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
+import pe.com.foxsoft.ballartelyweb.spring.util.Utilitarios;
 
 @Repository
 public class CustomerDao{
@@ -17,14 +18,14 @@ public class CustomerDao{
 	public List<Customer> getCustomersDataBase(EntityManager em, Customer customer) throws BallartelyException {
 		try {
 			TypedQuery<Customer> queryCustomers = em.createQuery(
-					"select c from Customer c join fetch c.customerStatus cs join fetch c.customerType ct join fetch c.documentType dt "
-					+ "where c.customerNames = :customerNames or c.documentNumber =:documentNumber or cs.paramId = :customerStatus or "
-					+ "or ct.paramId =:customerType or dt.paramId =:documentType", Customer.class);
-			queryCustomers.setParameter("customerNames", customer.getCustomerNames());
-			queryCustomers.setParameter("documentNumber", customer.getDocumentNumber());
-			queryCustomers.setParameter("customerStatus", customer.getCustomerStatus());
-			queryCustomers.setParameter("customerType", customer.getCustomerType());
-			queryCustomers.setParameter("documentType", customer.getDocumentType());
+					"select c from Customer c where c.customerNames like :customerNames and "
+					+ "(:documentNumber is null or c.documentNumber =:documentNumber) and (:customerStatus is null or c.customerStatus = :customerStatus) and "
+					+ "(:customerType is null or c.customerType = :customerType) and (:documentType is null or c.documentType = :documentType)", Customer.class);
+			queryCustomers.setParameter("customerNames", "%" + customer.getCustomerNames() + "%");
+			queryCustomers.setParameter("documentNumber", Utilitarios.vacioComoNulo(customer.getDocumentNumber()));
+			queryCustomers.setParameter("customerStatus", Utilitarios.vacioComoNulo(customer.getCustomerStatus()));
+			queryCustomers.setParameter("customerType", Utilitarios.vacioComoNulo(customer.getCustomerType()));
+			queryCustomers.setParameter("documentType", Utilitarios.vacioComoNulo(customer.getDocumentType()));
 			
 			return queryCustomers.getResultList();
 		} catch (NoResultException nre) {

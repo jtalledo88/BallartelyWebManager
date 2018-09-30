@@ -67,7 +67,6 @@ public class EmpresaMB {
 	
 	public EmpresaMB() {
 		lstCuentaPrincipal = new ArrayList<>();
-		calendarioEventos = new CalendarioModel();
 	}
 	
 	public void logOut() {
@@ -243,6 +242,7 @@ public class EmpresaMB {
 	}
 
 	public ScheduleModel getCalendarioEventos() {
+		calendarioEventos = new CalendarioModel(this.movimientoService);
 		return calendarioEventos;
 	}
 

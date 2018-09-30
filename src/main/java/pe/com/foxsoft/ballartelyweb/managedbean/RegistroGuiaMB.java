@@ -160,10 +160,10 @@ public class RegistroGuiaMB {
 			movement.setPaymentDocumentnumber(objGuideHeadMain.getGuideNumber());
 			movement.setProvider(objGuideHeadMain.getProvider());
 			
-			sMensaje = guiaService.insertarGuia(objGuideHeadMain, lstItemsGuideMain, movement);
-			GeneralParameter generalParameterUpload = this.parametroGeneralService.obtenerParametroGeneral(propiedades.getUniqueCodeUpload());
 			String guideFile = Constantes.MOVEMENT_TYPE_BUY + "_" + objGuideHeadMain.getGuideNumber() + "." + objGuideHeadMain.getGuideFile();
 			objGuideHeadMain.setGuideFile(guideFile);
+			sMensaje = guiaService.insertarGuia(objGuideHeadMain, lstItemsGuideMain, movement);
+			GeneralParameter generalParameterUpload = this.parametroGeneralService.obtenerParametroGeneral(propiedades.getUniqueCodeUpload());
 			Utilitarios.guardarArchivo(generalParameterUpload.getParamValue(), objGuideHeadMain.getGuideFile(), isGuide);
 			reiniciarFormulario();
 			Utilitarios.mensaje("", sMensaje);

@@ -55,7 +55,7 @@ public class MovimientoDao {
 	public List<Movement> getMovementsByAccountDataBase(EntityManager em, Integer accountId, Date startDate, Date endDate) throws BallartelyException {
 		try {
 			TypedQuery<Movement> queryMoevement = em.createQuery(
-					"select m from Movement m where m.account.id = :accountId " + 
+					"select m from Movement m where (:accountId is null or m.account.id = :accountId) " + 
 					" and (:startDate is null or :endDate is null) or m.movementDate between :startDate and :endDate "
 					+ "order by m.movementDate desc", Movement.class);
 			queryMoevement.setParameter("accountId", accountId);

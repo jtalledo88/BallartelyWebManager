@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import pe.com.foxsoft.ballartelyweb.jpa.data.GeneralParameter;
 import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
+import pe.com.foxsoft.ballartelyweb.spring.util.Utilitarios;
 
 @Repository
 public class ParametroGeneralDao {
@@ -48,13 +49,13 @@ public class ParametroGeneralDao {
 	public List<GeneralParameter> getGeneralParametersDataBase(EntityManager em, GeneralParameter generalParameter) throws BallartelyException {
 		try {
 			TypedQuery<GeneralParameter> queryProductLabel = em.createQuery(
-					"select g from GeneralParameter g where g.paramCode = :paramCode "
-					+ "or g.paramDescription like %:paramDescription% or "
-					+ "g.paramStatus =: paramStatus or g.paramType = :paramType", GeneralParameter.class);
-			queryProductLabel.setParameter("paramCode", generalParameter.getParamCode());
-			queryProductLabel.setParameter("paramDescription", generalParameter.getParamDescription());
-			queryProductLabel.setParameter("paramStatus", generalParameter.getParamStatus());
-			queryProductLabel.setParameter("paramType", generalParameter.getParamType());
+					"select g from GeneralParameter g where (:paramCode is null or g.paramCode = :paramCode) "
+					+ "and g.paramDescription like :paramDescription and "
+					+ "(:paramStatus is null or g.paramStatus = :paramStatus) and (:paramType is null or g.paramType = :paramType)", GeneralParameter.class);
+			queryProductLabel.setParameter("paramCode", Utilitarios.vacioComoNulo(generalParameter.getParamCode()));
+			queryProductLabel.setParameter("paramDescription", "%" + generalParameter.getParamDescription() + "%");
+			queryProductLabel.setParameter("paramStatus", Utilitarios.vacioComoNulo(generalParameter.getParamStatus()));
+			queryProductLabel.setParameter("paramType", Utilitarios.vacioComoNulo(generalParameter.getParamType()));
 			
 			return queryProductLabel.getResultList();
 		} catch (NoResultException nre) {
