@@ -37,6 +37,9 @@ public class Constantes {
 	public static final String GUIDE_TYPE_SALES = "V";
 	public static final String GUIDE_TYPE_BUY = "C";
 	public static final String CUSTOMER_TYPE_MOROSO = "M";
+	public static final String BACKUP_PATH_CODE = "BACKUPDIR";
+	public static final String SCHEMA_BD = "db_ballartelyweb";
+	public static final String MYSQL_CODE = "MYSQL";
 	
 
 }

@@ -6,7 +6,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.Normalizer;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -266,6 +268,11 @@ public class Utilitarios {
 		cal.setTime(new Date());
 		cal.set(Calendar.MONTH, nMonth - 1);
 		return cal.getDisplayName(Calendar.MONTH, Calendar.LONG_FORMAT, new Locale("ES", "PE"));
+	}
+
+	public static String getTime() {
+		DateFormat ftm = new SimpleDateFormat("ddMMyyyy_hhmmss");
+		return ftm.format(getFechaActual());
 	}
 	
 }

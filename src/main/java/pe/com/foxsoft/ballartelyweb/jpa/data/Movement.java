@@ -42,7 +42,7 @@ public class Movement implements Serializable {
 	@Column(name="movement_type")
 	private String movementType;
 
-	@Column(name="payment_documentnumber")
+	@Column(name="payment_documentnumber", unique=true)
 	private String paymentDocumentnumber;
 
 	//bi-directional many-to-one association to Account

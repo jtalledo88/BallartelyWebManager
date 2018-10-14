@@ -51,7 +51,7 @@ public class Customer implements Serializable {
 	@Column(name="customer_type")
 	private String customerType;
 
-	@Column(name="document_number")
+	@Column(name="document_number", unique=true)
 	private String documentNumber;
 
 	@Column(name="document_type")

@@ -42,7 +42,7 @@ public class Provider implements Serializable {
 	@Column(name="provider_phone_number")
 	private String providerPhoneNumber;
 
-	@Column(name="provider_ruc")
+	@Column(name="provider_ruc", unique=true)
 	private String providerRuc;
 
 	@Column(name="provider_social_reason")

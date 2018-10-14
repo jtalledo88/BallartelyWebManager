@@ -25,7 +25,7 @@ public class GeneralParameter implements Serializable {
 	@Column(name="id")
 	private Integer id;
 
-	@Column(name="param_code")
+	@Column(name="param_code", unique=true)
 	private String paramCode;
 
 	@Temporal(TemporalType.TIMESTAMP)

@@ -34,7 +34,7 @@ public class ProductLabel implements Serializable {
 	@Column(name="id")
 	private Integer id;
 
-	@Column(name="product_label_code")
+	@Column(name="product_label_code", unique=true)
 	private String productLabelCode;
 
 	@Temporal(TemporalType.TIMESTAMP)

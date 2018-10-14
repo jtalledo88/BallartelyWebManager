@@ -38,14 +38,14 @@ public class GuideHead implements Serializable {
 	@Column(name="id")
 	private Integer id;
 
-	@Column(name="guide_number")
+	@Column(name="guide_number", unique=true)
 	private String guideNumber;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="emission_date")
 	private Date emissionDate;
 	
-	@Column(name = "invoice_number")
+	@Column(name = "invoice_number", unique=true)
 	private String invoiceNumber;
 	
 	@Column(name = "observations")

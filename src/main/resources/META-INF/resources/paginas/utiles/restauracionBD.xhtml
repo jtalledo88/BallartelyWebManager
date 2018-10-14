@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="../../plantillas/defecto.xhtml">
+	<ui:define name="titulo">Restaurar BD</ui:define>
+	<ui:define name="contenido">
+	
+		<script type="text/javascript">
+			<!--
+
+			
+			-->
+		</script>
+	
+	
+		<h1>Restaurar BD</h1>
+		<h:form id="wLisRespBD">
+			<!-- <p:panel header="Criterios de b&#250;squeda" toggleable="true"> -->
+			
+			<p:growl life="3000" showDetail="true" id="msjLisRespBD" autoUpdate="true"/>
+			
+			<p:accordionPanel>
+				<p:tab title="Criterios de Proceso">
+					<div class="filas">
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="cboFile" value="Seleccione archivo:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:selectOneMenu id="cboFile"
+											value="#{restauracionMB.objSelectedFile}" >
+											<f:selectItem itemLabel="--Seleccione--" itemValue=""/>
+											<f:selectItems value="#{restauracionMB.lstFiles}" var="file" 
+												itemLabel="#{file}" itemValue="#{file}"/>
+										</p:selectOneMenu>
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgFile"
+											url="../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgFile"
+											value="Archivo de respaldo" />
+									</div>
+								</div>
+								<p:message for="cboFile" />
+							</div>
+						</div>
+					</div>
+					<div class="boton">
+						<p:commandButton value="Restaurar BD" icon="ui-icon-disk"  
+						onclick="PF('confirmationProcessBackup').show()"/>
+					</div>
+					<div style="clear: both;"></div>
+					<!-- </p:panel> -->
+				</p:tab>
+			</p:accordionPanel>
+			
+		</h:form>
+
+		<!-- ******************************************* PRODUCTOS ************************************************ -->
+
+		<p:confirmDialog message="¿Está seguro de Generar el Respaldo?"
+			width="300" showEffect="explode" hideEffect="explode"
+			header="Mensaje de Confirmación" severity="alert"
+			widgetVar="confirmationProcessBackup" modal="true">
+			<h:form>
+				<p:commandButton value="Si" ajax="true"
+					actionListener="#{restauracionMB.process}"
+					update="wLisRespBD:msjLisRespBD"
+					oncomplete="PF('confirmationProcessBackup').hide()" />
+				<p:commandButton value="No"
+					onclick="PF('confirmationProcessBackup').hide()" type="button" />
+			</h:form>
+		</p:confirmDialog>
+	</ui:define>
+
+</ui:composition>
