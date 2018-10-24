@@ -101,25 +101,6 @@
 							</div>
 							<div class="completo">
 								<div class="tercio">				
-									<h:outputLabel for="txtSaldoPagar" value="Monto a Pagar:" />
-								</div>
-								<div class="dostercios">
-									<div class="input">
-										<p:inputNumber id="txtSaldoPagar" decimalPlaces="2" minValue="0" maxValue="#{registroPagoMB.amountAccount}"
-											value="#{registroPagoMB.amountToPay}" />
-									</div>
-									<div class="tooltip">
-										<h:graphicImage id="imgSaldoPagar"
-											url="../../../recursos/imagenes/help.png"></h:graphicImage>
-										<p:tooltip for="imgSaldoPagar" value="Saldo a pagar" />
-									</div>
-								</div>
-								<p:message for="txtSaldoPagar" />
-							</div>
-						</div>
-						<div class="mitad">
-							<div class="completo">
-								<div class="tercio">				
 									<h:outputLabel for="txtSaldoCuenta" value="Saldo de Cuenta:" />
 								</div>
 								<div class="dostercios">
@@ -134,6 +115,47 @@
 									</div>
 								</div>
 								<p:message for="txtSaldoCuenta" />
+							</div>
+						</div>
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtRazonSocialProveedor" value="Proveedor:" />
+								</div>
+								<div class="dostercios">
+									<div class="combo" style="display: flex;">
+										<p:autoComplete id="txtRazonSocialProveedor" value="#{registroPagoMB.objProvider}" style="width: 180px;"
+											completeMethod="#{registroPagoMB.completeProvider}" var="provider" itemLabel="#{provider.providerSocialReason}" 
+											itemValue="#{provider}" converter="#{providerConverter}" forceSelection="true" dropdown="true" dropdownMode="blank" disabled="#{registroPagoMB.accountClient}">
+											<p:ajax event="itemSelect" listener="#{registroPagoMB.cargaSaldoCuenta}" process="@form" update="txtSaldoCuenta,txtSaldoPagar"/>
+											<p:ajax event="change" listener="#{registroPagoMB.cargaSaldoCuenta}" process="@form" update="txtSaldoCuenta,txtSaldoPagar"/>
+										</p:autoComplete>
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgRazonSocialProveedor"
+											url="../../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgRazonSocialProveedor"
+											value="Razón social del proveedor" />
+									</div>
+								</div>
+								<p:message for="txtRazonSocialProveedor" />
+							</div>
+							<div class="completo">
+								<div class="tercio">				
+									<h:outputLabel for="txtSaldoPagar" value="Monto a Pagar:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputNumber id="txtSaldoPagar" decimalPlaces="2" minValue="0" maxValue="#{registroPagoMB.amountAccount}"
+											value="#{registroPagoMB.amountToPay}" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgSaldoPagar"
+											url="../../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgSaldoPagar" value="Saldo a pagar" />
+									</div>
+								</div>
+								<p:message for="txtSaldoPagar" />
 							</div>
 						</div>
 					</div>

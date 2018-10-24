@@ -16,10 +16,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import pe.com.foxsoft.ballartelyweb.jpa.data.Account;
 import pe.com.foxsoft.ballartelyweb.jpa.data.Customer;
 import pe.com.foxsoft.ballartelyweb.jpa.data.Movement;
+import pe.com.foxsoft.ballartelyweb.jpa.data.Provider;
 import pe.com.foxsoft.ballartelyweb.spring.exception.BallartelyException;
 import pe.com.foxsoft.ballartelyweb.spring.service.ClienteService;
 import pe.com.foxsoft.ballartelyweb.spring.service.CuentaService;
 import pe.com.foxsoft.ballartelyweb.spring.service.MovimientoService;
+import pe.com.foxsoft.ballartelyweb.spring.service.ProveedorService;
 import pe.com.foxsoft.ballartelyweb.spring.util.Constantes;
 import pe.com.foxsoft.ballartelyweb.spring.util.Propiedades;
 import pe.com.foxsoft.ballartelyweb.spring.util.Utilitarios;
@@ -39,10 +41,14 @@ public class RegistroPagoMB {
 	private MovimientoService movimientoService;
 	
 	@Autowired
+	private ProveedorService proveedorService;
+	
+	@Autowired
 	private Propiedades propiedades;
 	
 	private Customer objCustomer;
 	private Account objAccountCustomer;
+	private Provider objProvider;
 	
 	private BigDecimal amountAccount;
 	private BigDecimal amountToPay;
@@ -50,6 +56,7 @@ public class RegistroPagoMB {
 	
 	private List<Customer> lstClientes;
 	private List<Account> lstAccountsCustomer;
+	private List<Provider> lstProveedores;
 
 	public RegistroPagoMB() {
 		this.lstAccountsCustomer = new ArrayList<>();
@@ -73,6 +80,10 @@ public class RegistroPagoMB {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe seleccionar una cuenta.");
 				return;
 			}
+			if(this.amountAccount == null || BigDecimal.ZERO.compareTo(this.amountAccount) == 0) {
+				Utilitarios.mensajeError("Campos Obligatorios", "El monto de deuda es 0.");
+				return;
+			}
 			if(this.amountToPay == null || BigDecimal.ZERO.compareTo(this.amountToPay) == 0) {
 				Utilitarios.mensajeError("Campos Obligatorios", "Debe ingresar un monto mayor a 0.");
 				return;
@@ -86,6 +97,7 @@ public class RegistroPagoMB {
 			movement.setMovementType(Constantes.MOVEMENT_TYPE_PAY);
 			movement.setPaymentDocumentnumber(null);
 			movement.setCustomer(this.objCustomer);
+			movement.setProvider(this.objProvider);
 			
 			movement = this.movimientoService.agregarMovimiento(movement);
 			sMensaje = Utilitarios.reemplazarMensaje(Constantes.MESSAGE_PERSIST_SUCCESS, movement.getId());
@@ -102,6 +114,7 @@ public class RegistroPagoMB {
 		this.amountAccount = null;
 		this.objCustomer = null;
 		if(this.accountClient) {
+			this.objProvider = null;
 			this.lstAccountsCustomer = new ArrayList<>();
 		}else {
 			cargaCuentaPrincipal();
@@ -143,10 +156,14 @@ public class RegistroPagoMB {
 
 	public void cargaSaldoCuenta(AjaxBehaviorEvent event) {
 		try {
-			if(this.accountClient) {
-				this.amountAccount = this.cuentaService.getAmountAccountDataBase(this.objAccountCustomer.getId());
+			if(this.objAccountCustomer == null || (this.objProvider == null && !this.accountClient)) {
+				this.amountAccount = BigDecimal.ZERO;
 			}else {
-				this.amountAccount = this.cuentaService.getAmountAccountPrincipalDataBase(this.objAccountCustomer.getId());
+				if(this.accountClient) {
+					this.amountAccount = this.cuentaService.getAmountAccountDataBase(this.objAccountCustomer.getId());
+				}else {
+					this.amountAccount = this.cuentaService.getAmountAccountPrincipalDataBase(this.objAccountCustomer.getId(), this.objProvider.getId());
+				}
 			}
 		} catch (BallartelyException e) {
 			String sMensaje = "Error en cargaSaldoCuenta";
@@ -154,6 +171,19 @@ public class RegistroPagoMB {
 			throw new FacesException(sMensaje, e);
 		}
 	}
+	
+	public List<Provider> completeProvider(String query) {
+        List<Provider> lstProveedoresFiltro = new ArrayList<Provider>();
+        obtenerProveedores();
+        for (int i = 0; i < lstProveedores.size(); i++) {
+        	Provider provider = lstProveedores.get(i);
+            if(provider.getProviderSocialReason().toLowerCase().indexOf(query.toLowerCase()) != -1) {
+            	lstProveedoresFiltro.add(provider);
+            }
+        }
+         
+        return lstProveedoresFiltro;
+    }
 
 	public List<Customer> completeCustomer(String query) {
         List<Customer> lstClientesFiltro = new ArrayList<Customer>();
@@ -167,6 +197,16 @@ public class RegistroPagoMB {
          
         return lstClientesFiltro;
     }
+	
+	private void obtenerProveedores() {
+		try {
+			this.lstProveedores = this.proveedorService.getListaProveedores();
+		} catch (BallartelyException e) {
+			String sMensaje = "Error en obtenerProveedores";
+			this.logger.error(e.getMessage(), e);
+			throw new FacesException(sMensaje, e);
+		}
+	}
 	
 	private void reiniciarFormulario() {
 		this.amountToPay = null;
@@ -269,6 +309,30 @@ public class RegistroPagoMB {
 
 	public void setMovimientoService(MovimientoService movimientoService) {
 		this.movimientoService = movimientoService;
+	}
+
+	public ProveedorService getProveedorService() {
+		return proveedorService;
+	}
+
+	public void setProveedorService(ProveedorService proveedorService) {
+		this.proveedorService = proveedorService;
+	}
+
+	public List<Provider> getLstProveedores() {
+		return lstProveedores;
+	}
+
+	public void setLstProveedores(List<Provider> lstProveedores) {
+		this.lstProveedores = lstProveedores;
+	}
+
+	public Provider getObjProvider() {
+		return objProvider;
+	}
+
+	public void setObjProvider(Provider objProvider) {
+		this.objProvider = objProvider;
 	}
 	
 }

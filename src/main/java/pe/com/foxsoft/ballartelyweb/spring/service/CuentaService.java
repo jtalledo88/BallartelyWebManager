@@ -74,15 +74,15 @@ public class CuentaService {
 	
 	@Transactional(readOnly=true, noRollbackFor=BallartelyException.class)
 	public BigDecimal getAmountAccountDataBase(Integer itemAccount) throws BallartelyException {
-		BigDecimal amountSales = movimientoDao.getAmountAccountDataBase(em, itemAccount, Constantes.MOVEMENT_TYPE_SALES);
-		BigDecimal amountPay = movimientoDao.getAmountAccountDataBase(em, itemAccount, Constantes.MOVEMENT_TYPE_PAY);
+		BigDecimal amountSales = movimientoDao.getAmountAccountDataBase(em, itemAccount, null, Constantes.MOVEMENT_TYPE_SALES);
+		BigDecimal amountPay = movimientoDao.getAmountAccountDataBase(em, itemAccount, null, Constantes.MOVEMENT_TYPE_PAY);
 		return amountSales.subtract(amountPay);
 	}
 	
 	@Transactional(readOnly=true, noRollbackFor=BallartelyException.class)
-	public BigDecimal getAmountAccountPrincipalDataBase(Integer itemAccount) throws BallartelyException {
-		BigDecimal amountSales = movimientoDao.getAmountAccountDataBase(em, itemAccount, Constantes.MOVEMENT_TYPE_BUY);
-		BigDecimal amountPay = movimientoDao.getAmountAccountDataBase(em, itemAccount, Constantes.MOVEMENT_TYPE_PAY);
+	public BigDecimal getAmountAccountPrincipalDataBase(Integer itemAccount, Integer itemProvider) throws BallartelyException {
+		BigDecimal amountSales = movimientoDao.getAmountAccountDataBase(em, itemAccount, itemProvider, Constantes.MOVEMENT_TYPE_BUY);
+		BigDecimal amountPay = movimientoDao.getAmountAccountDataBase(em, itemAccount, itemProvider, Constantes.MOVEMENT_TYPE_PAY);
 		return amountSales.subtract(amountPay);
 	}
 

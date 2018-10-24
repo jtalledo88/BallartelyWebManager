@@ -109,7 +109,7 @@ public class EmpresaMB {
 			lstCuentaPrincipal = new ArrayList<>();
 			Account accountPrincipal = cuentaService.obtenerCuentaPrincipal();
 			lstCuentaPrincipal.add(accountPrincipal);
-			saldoCuentaTotal = cuentaService.getAmountAccountPrincipalDataBase(accountPrincipal.getId());
+			saldoCuentaTotal = cuentaService.getAmountAccountPrincipalDataBase(accountPrincipal.getId(), null);
 		} catch (BallartelyException e) {
 			sMensaje = "Error en openVerCuenta";
 			this.logger.error(e.getMessage());
