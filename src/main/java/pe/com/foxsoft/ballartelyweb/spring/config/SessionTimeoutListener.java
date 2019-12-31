@@ -42,7 +42,7 @@ public class SessionTimeoutListener implements PhaseListener {
 	}
 	
 	private String getLoginPath() {
-        return "/paginas/inicio/login.xhtml";
+        return "/login.xhtml";
     }
 	
 	private String getIndexPath() {
