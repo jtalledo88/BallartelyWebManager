@@ -24,7 +24,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 
 /**
- * The persistent class for the shipping_head database table.
+ * The persistent class for the guide_head database table.
  * 
  */
 @Entity
@@ -95,9 +95,13 @@ public class GuideHead implements Serializable {
 	@JoinColumn(name="transport_id")
 	private Transport transport;
 
-	//bi-directional many-to-one association to ShippingDetail
+	//bi-directional many-to-one association to GuideDetail
 	@OneToMany(mappedBy="guideHead", fetch=FetchType.LAZY)
 	private List<GuideDetail> guideDetails;
+	
+	//bi-directional many-to-one association to Invoice
+	@OneToMany(mappedBy="guideHead", fetch=FetchType.LAZY)
+	private List<Invoice> invoices;
 
 	//bi-directional many-to-one association to Provider
 	@ManyToOne
@@ -246,6 +250,14 @@ public class GuideHead implements Serializable {
 
 	public void setGuideDetails(List<GuideDetail> guideDetails) {
 		this.guideDetails = guideDetails;
+	}
+
+	public List<Invoice> getInvoices() {
+		return invoices;
+	}
+
+	public void setInvoices(List<Invoice> invoices) {
+		this.invoices = invoices;
 	}
 
 	public Provider getProvider() {

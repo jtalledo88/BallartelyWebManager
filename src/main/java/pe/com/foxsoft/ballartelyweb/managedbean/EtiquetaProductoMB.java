@@ -88,6 +88,7 @@ public class EtiquetaProductoMB {
 			objEtiquetaProducto.setProductLabelCode(this.objEtiquetaProductoMain.getProductLabelCode().toUpperCase());
 			objEtiquetaProducto.setProductLabelDescription(this.objEtiquetaProductoMain.getProductLabelDescription());
 			objEtiquetaProducto.setProductLabelStatus(this.objEtiquetaProductoMain.getProductLabelStatus());
+			objEtiquetaProducto.setProductLabelWeight(this.objEtiquetaProductoMain.getProductLabelWeight());
 			
 			ProductLabel productLabelIns = this.etiquetaProductoService.agregarEtiquetaProducto(objEtiquetaProducto);
 			sMensaje = Utilitarios.reemplazarMensaje(Constantes.MESSAGE_PERSIST_SUCCESS, productLabelIns.getId());

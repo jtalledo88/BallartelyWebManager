@@ -357,6 +357,17 @@
 							<p:graphicImage url="../../../recursos/imagenes/icon-return.png" width="15" height="15" />
 						</p:commandLink>
 					</p:column>
+					<p:column styleClass="eliminar" exportable="false">
+						<f:facet name="header">
+							<h:outputText value="Datos Factura"/>
+						</f:facet>
+						<p:commandLink style="float: right; padding-right:48%;" rendered="#{guia.guideType == 'V'}"
+							action="/paginas/gestion/facturas/registrarFactura.xhtml?faces-redirect=true" ajax="false">
+							<f:setPropertyActionListener value="#{guia}"
+								target="#{registrarFacturaMB.objGuideHeadMain}" />
+							<p:graphicImage url="../../../recursos/imagenes/icon_invoice.png" width="15" height="15" />
+						</p:commandLink>
+					</p:column>
 					<f:facet name="footer">  
           			Total registros: <h:outputText
 							value="#{consultaGuiaMB.canRegTablaPrincipal}" />

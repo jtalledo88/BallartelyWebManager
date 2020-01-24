@@ -99,6 +99,27 @@ public class GuiaDao{
 	 * @return
 	 * @throws BallartelyException
 	 */
+	public List<GuideDetailSales> getGuideSaleDetailsDataBase(EntityManager em, int guideHeadId) throws BallartelyException{
+		try {
+			TypedQuery<GuideDetailSales> queryGuideDetail = em.createQuery(
+					"select gd from GuideDetailSales gd join fetch gd.guideHead gh where gh.id = :guideHeadId", GuideDetailSales.class);
+			queryGuideDetail.setParameter("guideHeadId", guideHeadId);
+			
+			
+			return queryGuideDetail.getResultList();
+		} catch (NoResultException nre) {
+			throw new BallartelyException(BallartelyException.NO_RESULT_ERROR, nre.getMessage());
+		} catch (Exception e) {
+			throw new BallartelyException(BallartelyException.GENERAL_ERROR, e.getMessage());
+		}
+	}
+	
+	/**
+	 * @param em
+	 * @param guideHeadId
+	 * @return
+	 * @throws BallartelyException
+	 */
 	public List<GuideDetailSales> getGuideDetailSalesDataBase(EntityManager em, int guideHeadId) throws BallartelyException{
 		try {
 			TypedQuery<GuideDetailSales> queryGuideDetail = em.createQuery(

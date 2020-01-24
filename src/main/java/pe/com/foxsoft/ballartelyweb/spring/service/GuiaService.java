@@ -139,6 +139,11 @@ public class GuiaService {
 	}
 	
 	@Transactional(readOnly=true, rollbackFor=BallartelyException.class)
+	public List<GuideDetailSales> getListaGuiasVentaDetalle(int guideHeadId) throws BallartelyException {
+		return guiaDao.getGuideSaleDetailsDataBase(em, guideHeadId);
+	}
+	
+	@Transactional(readOnly=true, rollbackFor=BallartelyException.class)
 	public List<GuideDetailSales> getListaGuiasDetalleVenta(int guideHeadId) throws BallartelyException {
 		return guiaDao.getGuideDetailSalesDataBase(em, guideHeadId);
 	}

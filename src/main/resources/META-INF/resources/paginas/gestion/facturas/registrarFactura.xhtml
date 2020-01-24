@@ -1,0 +1,258 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="../../../plantillas/defecto.xhtml">
+	<ui:define name="titulo">Registrar Factura</ui:define>
+	<ui:define name="contenido">
+
+		<script type="text/javascript">
+		<!--
+			-->
+		</script>
+
+
+		<h1>Registrar Factura</h1>
+		
+		<h:form id="wLisLabels">
+			<p:growl life="3000" showDetail="true" id="msjLisLabel"
+				autoUpdate="true" />
+				
+			<p:accordionPanel>
+				<p:tab title="Datos de Factura" id="pDatosFactura">
+					<div class="filas">
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtSerie" value="Serie:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<h:outputLabel value="F - " style="font-weight:bold;"/>
+										<p:inputText id="txtSerie" disabled="#{registrarFacturaMB.objInvoiceMain.invoiceSerie != null and registrarFacturaMB.facturaRegistrada}" maxlength="3" style="width: 40px;text-transform:uppercase;" value="#{registrarFacturaMB.objInvoiceMain.invoiceSerie}" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgSerie"
+											url="../../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgSerie"
+											value="Serie de la factura" />
+									</div>
+								</div>
+								<p:message for="txtSerie" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtNumero" value="Número:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputNumber decimalPlaces="0" thousandSeparator="" id="txtNumero" disabled="#{registrarFacturaMB.objInvoiceMain.invoiceNumber != null and registrarFacturaMB.facturaRegistrada}" value="#{registrarFacturaMB.objInvoiceMain.invoiceNumber}" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgNumero"
+											url="../../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgNumero" value="Número de la factura" />
+									</div>
+								</div>
+								<p:message for="txtNumero" />
+							</div>
+							<div class="completo" >
+								<div class="tercio">
+									<h:outputLabel for="txtCodigoSunat" value="Código Sunat:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtCodigoSunat" disabled="true" value="#{registrarFacturaMB.objInvoiceMain.invoiceSunatCode}" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgCodigoSunat"
+											url="../../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgCodigoSunat" value="Código de estado en sunat" />
+									</div>
+								</div>
+								<p:message for="txtCodigoSunat" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="txtMensajeSunat" value="Mensaje Sunat:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:inputText id="txtMensajeSunat" disabled="true" value="#{registrarFacturaMB.objInvoiceMain.invoiceSunatMessage}" />
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgMensajeSunat"
+											url="../../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgMensajeSunat" value="Código de estado en sunat" />
+									</div>
+								</div>
+								<p:message for="txtMensajeSunat" />
+							</div>
+						</div>
+						<div class="mitad">
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="cldFechaEmision" value="Fecha de emisión:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:calendar id="cldFechaEmision" pattern="dd/MM/yyyy HH:mm:ss" mask="true" maskAutoClear="true"
+											maxdate="#{now}" disabled="#{registrarFacturaMB.objInvoiceMain.invoiceEmissionDate != null and registrarFacturaMB.facturaRegistrada}"
+											value="#{registrarFacturaMB.objInvoiceMain.invoiceEmissionDate}" />
+
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgFechaEmision"
+											url="../../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgFechaEmision"
+											value="Fecha de emisión de la factura" />
+									</div>
+								</div>
+								<p:message for="cldFechaEmision" />
+							</div>
+							<div class="completo">
+								<div class="tercio">
+									<h:outputLabel for="cldFechaExpiracion" value="Fecha de exiración:" />
+								</div>
+								<div class="dostercios">
+									<div class="input">
+										<p:calendar id="cldFechaExpiracion" mindate="#{now}" pattern="dd/MM/yyyy" 
+										mask="true" maskAutoClear="true" disabled="#{registrarFacturaMB.objInvoiceMain.invoiceExpirationDate != null and registrarFacturaMB.facturaRegistrada}"
+											value="#{registrarFacturaMB.objInvoiceMain.invoiceExpirationDate}" />
+
+									</div>
+									<div class="tooltip">
+										<h:graphicImage id="imgFechaExpiration"
+											url="../../../recursos/imagenes/help.png"></h:graphicImage>
+										<p:tooltip for="imgFechaExpiration"
+											value="Fecha de expiración de la factura" />
+									</div>
+								</div>
+								<p:message for="cldFechaExpiracion" />
+							</div>				
+						</div>
+					</div>
+					<div style="clear: both;"></div>
+					<!-- </p:panel> -->
+				</p:tab>
+			</p:accordionPanel>
+			
+			<div class="scrollTabla" style="min-height: 150px;">
+				<h3 style="text-decoration: underline;">Cabecera de Guía</h3>
+				<p:dataTable paginator="true" paginatorPosition="top" rows="5"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+					id="tblGuia" var="guia" value="#{registrarFacturaMB.lstGuideHeadMain}" style="width: 100%; margin-bottom:20px;"
+                 emptyMessage="No existen registros">
+			    	<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Item" />
+						</f:facet>
+							<h:outputText value="#{guia.id}"/>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Cliente" />
+						</f:facet>
+							<h:outputText value="#{guia.customer.customerNames}"/>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Nro. Comprobante" />
+						</f:facet>
+							<h:outputText value="#{guia.guideNumber}"/>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Fec. Creación" />
+						</f:facet>
+							<h:outputText value="#{guia.guideCreationDate}">
+								<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+							</h:outputText>
+					</p:column>
+					<f:facet name="footer">
+						<p:commandButton value="Seleccionar Guía" icon="ui-icon-search"
+							action="/paginas/consulta/guias/consultarGuias.xhtml?faces-redirect=true" ajax="false"/>
+					</f:facet>
+			    </p:dataTable> 
+			</div>
+			<div class="scrollTabla" style="min-height: 150px;">
+				<h3 style="text-decoration: underline;">Detalle de Guía</h3>
+				<p:dataTable paginator="true" paginatorPosition="top" rows="5"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" 
+					id="tblGuiaDetalle" var="guiaDetalle" value="#{registrarFacturaMB.lstGuideDetailMain}" style="width: 100%;"
+                 	emptyMessage="No existen registros">
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Item" />
+						</f:facet>
+							<h:outputText value="#{guiaDetalle.id}"/>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Código" />
+						</f:facet>
+							<h:outputText value="#{guiaDetalle.productLabel.productLabelCode}"/>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Descripción" />
+						</f:facet>
+							<h:outputText value="#{guiaDetalle.productLabel.productLabelDescription}"/>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Cantidad" />
+						</f:facet>
+							<h:outputText value="#{guiaDetalle.productQuantity}"/>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Unidad" />
+						</f:facet>
+							<h:outputText value="#{guiaDetalle.metricUnit}"/>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Peso total" />
+						</f:facet>
+							<h:outputText value="#{guiaDetalle.totalWeight}"/>
+					</p:column>
+					<p:column styleClass="oficina">
+						<f:facet name="header">
+							<h:outputText value="Costo total" />
+						</f:facet>
+							<h:outputText value="#{guiaDetalle.totalCost}"/>
+					</p:column>
+					<f:facet name="footer">
+						Total registros: <h:outputText value="#{registrarFacturaMB.cantidadRegistrosDetalle}"/>
+					</f:facet>
+			    </p:dataTable> 
+			</div>
+			<div class="opcionesTabla" style="text-align: left;">
+				<p:commandButton 
+					value="Grabar"
+					icon="ui-icon-save"
+					oncomplete="PF('confirmationRegistrar').show()"
+					rendered="#{registrarFacturaMB.objGuideHeadMain != null and !registrarFacturaMB.facturaRegistrada}"/>
+				<div style="clear: both;"></div>
+			</div>
+		</h:form>
+		<p:confirmDialog message="¿Está seguro de guardar los cambios?"
+			width="300" showEffect="explode" hideEffect="explode"
+			header="Mensaje de Confirmación" severity="alert"
+			widgetVar="confirmationRegistrar" modal="true">
+			<h:form>
+				<p:commandButton value="Si"
+					actionListener="#{registrarFacturaMB.registrar}"
+					update=":wLisLabels"
+					oncomplete="PF('confirmationRegistrar').hide()"/>
+				<p:commandButton value="No"
+					onclick="PF('confirmationRegistrar').hide()" type="button" />
+			</h:form>
+		</p:confirmDialog>
+	</ui:define>
+
+</ui:composition>

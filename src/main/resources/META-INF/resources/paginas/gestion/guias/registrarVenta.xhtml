@@ -62,21 +62,23 @@
 							</div>
 							<div class="completo">
 								<div class="tercio">
-									<h:outputLabel for="txtNumeroFactura" value="Nro. Factura:" />
+									<h:outputLabel for="cboMotivo" value="Motivo:" />
 								</div>
 								<div class="dostercios">
 									<div class="input">
-										<p:inputText id="txtNumeroFactura"
-											value="#{registroVentaMB.objGuideHeadMain.invoiceNumber}" />
+										<p:selectOneMenu id="cboMotivo"
+											value="#{registroVentaMB.objGuideHeadMain.reason}" >
+											<f:selectItem itemValue="Venta" itemLabel="1. Venta"/>
+										</p:selectOneMenu>
 									</div>
 									<div class="tooltip">
-										<h:graphicImage id="imgNumerofactura"
+										<h:graphicImage id="imgMotivo"
 											url="../../../recursos/imagenes/help.png"></h:graphicImage>
-										<p:tooltip for="imgNumerofactura"
-											value="Número de Factura" />
+										<p:tooltip for="imgMotivo"
+											value="Observaciones" />
 									</div>
 								</div>
-								<p:message for="txtNumeroFactura" />
+								<p:message for="cboMotivo" />
 							</div>
 							<div class="completo">
 								<div class="tercio">
@@ -133,28 +135,6 @@
 									</div>
 								</div>
 								<p:message for="txtPuntoLlegada" />
-							</div>
-							<div class="completo">
-								<div class="tercio">
-									<h:outputLabel for="cboMotivo" value="Motivo:" />
-								</div>
-								<div class="dostercios">
-									<div class="input">
-										<p:selectOneMenu id="cboMotivo"
-											value="#{registroVentaMB.objGuideHeadMain.reason}" >
-											<f:selectItem itemValue="Venta" itemLabel="1. Venta"/>
-											<f:selectItem itemValue="Devolucion" itemLabel="2. Devolución"/>
-											<f:selectItem itemValue="Translado" itemLabel="3. Translado"/>
-										</p:selectOneMenu>
-									</div>
-									<div class="tooltip">
-										<h:graphicImage id="imgMotivo"
-											url="../../../recursos/imagenes/help.png"></h:graphicImage>
-										<p:tooltip for="imgMotivo"
-											value="Observaciones" />
-									</div>
-								</div>
-								<p:message for="cboMotivo" />
 							</div>
 							<div class="completo">
 								<div class="tercio">
