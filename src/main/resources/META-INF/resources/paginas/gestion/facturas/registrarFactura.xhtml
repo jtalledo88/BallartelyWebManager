@@ -173,7 +173,7 @@
 							</h:outputText>
 					</p:column>
 					<f:facet name="footer">
-						<p:commandButton value="Seleccionar Guía" icon="ui-icon-search"
+						<p:commandButton value="Seleccionar Guía" icon="ui-icon-search" actionListener="#{registrarFacturaMB.reiniciarVista}"
 							action="/paginas/consulta/guias/consultarGuias.xhtml?faces-redirect=true" ajax="false"/>
 					</f:facet>
 			    </p:dataTable> 

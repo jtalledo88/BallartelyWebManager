@@ -83,7 +83,7 @@ public class RegistrarFacturaMB {
 		}
 	}
 	
-	private void reiniciarVista() {
+	public void reiniciarVista() {
 		this.cantidadRegistrosDetalle = 0;
 		this.lstGuideDetailMain = new ArrayList<>();
 		this.lstGuideHeadMain = new ArrayList<>();
